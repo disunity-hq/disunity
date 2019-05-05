@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{22E3C484-3EBD-4469-A704-ACF23B4FE8DD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Disunity.Editor</RootNamespace>
+    <AssemblyName>Disunity.Editor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Disunity.Editor.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Disunity.Editor.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libs\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsmDef.cs" />
+    <Compile Include="Pickers\StringPicker.cs" />
+    <Compile Include="SceneEditor.cs" />
+    <Compile Include="PrefabEditor.cs" />
+    <Compile Include="Pickers\AssetPathFilterAttribute.cs" />
+    <Compile Include="Pickers\AssetPickerAttribute.cs" />
+    <Compile Include="Pickers\AssetPicker.cs" />
+    <Compile Include="AssetUtility.cs" />
+    <Compile Include="Pickers\PickerFields.cs" />
+    <Compile Include="Pickers\ValuePicker.cs" />
+    <Compile Include="Pickers\TypePicker.cs" />
+    <Compile Include="RuntimeAssemblyEditor.cs" />
+    <Compile Include="ArtifactEditor.cs" />
+    <Compile Include="PreloadAssemblyEditor.cs" />
+    <Compile Include="ExportValidationError.cs" />
+    <Compile Include="SelectionEditor.cs" />
+    <Compile Include="ExportEditor.cs" />
+    <Compile Include="EditorModPlatformExtensions.cs" />
+    <Compile Include="EditorScriptableSingleton.cs" />
+    <Compile Include="Export.cs" />
+    <Compile Include="ExporterEditorWindow.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disunity.Cecil\Disunity.Cecil.csproj">
+      <Project>{C07BE8A5-F75A-4A95-8ED1-450162264EAF}</Project>
+      <Name>Disunity.Cecil</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disunity.Interface\Disunity.Interface.csproj">
+      <Project>{f3f7f434-f83d-4ab5-872c-122d89ec81ea}</Project>
+      <Name>Disunity.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Disunity.Shared\Disunity.Shared.csproj">
+      <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
+      <Name>Disunity.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Editor\$(TargetName).dll"
+
+echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Editor\$(TargetName).dll"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,22 @@
+{
+    "name": "ExampleMod",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Disunity.Interface.dll",
+        "Assembly-CSharp.dll",
+        "BepInEx.dll",
+        "MMHOOK_Assembly-CSharp.dll",
+        "R2API.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
