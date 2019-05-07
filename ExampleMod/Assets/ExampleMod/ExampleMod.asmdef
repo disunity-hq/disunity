@@ -11,11 +11,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Disunity.Runtime.dll",
-        "R2API.dll",
-        "Assembly-CSharp.dll",
-        "BepInEx.dll",
-        "MMHOOK_Assembly-CSharp.dll"
+        "Disunity.Runtime.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": []

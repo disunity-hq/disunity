@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BepInEx;
 using Disunity.Core;
-using On.RoR2;
-using UnityEngine;
 using Path = System.IO.Path;
 
 
@@ -16,9 +14,10 @@ namespace Disunity.Runtime {
         private List<RuntimeMod> instances = new List<RuntimeMod>();
 
         private void Awake() {
-            RoR2Application.UnitySystemConsoleRedirector.Redirect += orig => { };
 
-            Debug.Log("[Disunity] RUNTIME stage starting...");
+            var log = BepInEx.Logging.Logger.CreateLogSource("Disunity");
+
+            log.LogInfo("RUNTIME stage starting...");
 
             var searchDirectory = Path.Combine(Paths.PluginPath, "../mods");
 
@@ -31,7 +30,7 @@ namespace Disunity.Runtime {
                 var startupClass = mod.Info.StartupClass;
 
                 if (startupAssembly.IsNullOrWhiteSpace() || startupClass.IsNullOrWhiteSpace()) {
-                    Debug.Log($"[Disunity] Loaded {mod.Info.Name}");
+                    log.LogInfo($"Loaded {mod.Info.Name}");
                     continue;
                 }
 
@@ -39,21 +38,23 @@ namespace Disunity.Runtime {
                 var assembly = assemblies.FirstOrDefault(a => a.GetName().Name == startupAssembly);
 
                 if (assembly == null) {
-                    Debug.Log($"[Disunity] Couldn't find startup assembly for {mod.Info.Name}: {startupAssembly}");
+                    log.LogInfo($"Couldn't find startup assembly for {mod.Info.Name}: {startupAssembly}");
                     continue;
                 }
 
                 var type = assembly.GetType(startupClass);
 
                 if (type == null) {
-                    Debug.Log($"[Disunity] Couldn't find startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
+                    log.LogInfo($"Couldn't find startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
                     continue;
                 }
 
-                Activator.CreateInstance(type, mod);
+
+                RuntimeLogger logger = new RuntimeLogger(mod.Info.Name);
+                Activator.CreateInstance(type, mod, logger);
                 instances.Add(mod);
 
-                Debug.Log($"[Disunity] Loaded {mod.Info.Name}");
+                log.LogInfo($"Loaded {mod.Info.Name}");
             }
         }
 
