@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DisunityPatcher.cs" />
+    <Compile Include="PreloaderMod.cs" />
     <Compile Include="PreloaderPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
