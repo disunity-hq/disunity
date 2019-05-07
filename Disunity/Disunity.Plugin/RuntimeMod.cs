@@ -34,7 +34,7 @@ namespace Disunity.Runtime {
             _assetsResource = new AssetBundleResource(Info.Name + " assets", assets);
             _scenesResource = new AssetBundleResource(Info.Name + " scenes", scenes);
 
-            CheckResources();
+            IsValid = CheckResources();
             if (!IsValid) return;
             LoadAssemblies();
             LoadPrefabs();
@@ -76,23 +76,31 @@ namespace Disunity.Runtime {
             OnUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        private void CheckResources() {
-            var contentTypes = (ContentType) Info.ContentTypes;
-
-            if (contentTypes.HasFlag(ContentType.Prefabs) && !_assetsResource.IsValid) {
-                IsValid = false;
-                _log.LogError($"Couldn't load prefab bundle: {_assetsResource.Path}");
+        private bool CheckPrefabBundle(ContentType contentTypes) {
+            if (!contentTypes.HasFlag(ContentType.Prefabs) || _assetsResource.IsValid) {
+                return true;
             }
 
-            if (contentTypes.HasFlag(ContentType.Scenes) && !_scenesResource.IsValid) {
-                IsValid = false;
-                _log.LogError($"Couldn't load scene bundle: {_scenesResource.Path}");
+            _log.LogError($"Couldn't load prefab bundle: {_assetsResource.Path}");
+            return false;
+        }
+
+        private bool CheckSceneBundle(ContentType contentTypes) {
+            if (!contentTypes.HasFlag(ContentType.Scenes) || _scenesResource.IsValid) {
+                return true;
             }
 
+            _log.LogError($"Couldn't load scene bundle: {_scenesResource.Path}");
+            return false;
+        }
+
+        private bool CheckRuntimeAssemblies(ContentType contentTypes) {
             if (contentTypes.HasFlag(ContentType.RuntimeAssemblies) && Info.RuntimeAssemblies.Length == 0) {
-                IsValid = false;
                 _log.LogError($"Mod advertises runtime assemblies but none listed in metadata.");
+                return false;
             }
+
+            var returnValue = true;
 
             foreach (var path in Info.RuntimeAssemblies) {
                 var modPath = Path.GetDirectoryName(Info.Path);
@@ -104,11 +112,18 @@ namespace Disunity.Runtime {
                     continue;
                 }
 
-                IsValid = false;
                 _log.LogError($"Couldn't find listed assembly: {path}");
+                returnValue = false;
             }
 
-            IsValid = true;
+            return returnValue;
+        }
+
+        private bool CheckResources() {
+            var contentTypes = (ContentType) Info.ContentTypes;
+            return CheckPrefabBundle(contentTypes) &&
+                   CheckSceneBundle(contentTypes) &&
+                   CheckRuntimeAssemblies(contentTypes);
         }
 
         protected void LoadScenes() {
