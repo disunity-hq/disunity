@@ -11,8 +11,8 @@ namespace Disunity.Runtime {
     public class RuntimeMod : Mod {
 
         private readonly RuntimeLogger _log;
-        private readonly AssetBundleResource _assetsResource;
-        private readonly AssetBundleResource _scenesResource;
+        private AssetBundleResource _assetsResource;
+        private AssetBundleResource _scenesResource;
         private readonly List<string> _runtimeAssemblyFiles = new List<string>();
         private readonly List<string> _runtimeAssemblyNames = new List<string>();
         private readonly List<Assembly> _runtimeAssemblies = new List<Assembly>();
@@ -28,17 +28,7 @@ namespace Disunity.Runtime {
 
             _log = new RuntimeLogger(Info.Name);
 
-            var assets = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".assets");
-            var scenes = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".scenes");
-
-            _assetsResource = new AssetBundleResource(Info.Name + " assets", assets);
-            _scenesResource = new AssetBundleResource(Info.Name + " scenes", scenes);
-
-            IsValid = CheckResources();
-            if (!IsValid) return;
-            LoadAssemblies();
-            LoadPrefabs();
-            LoadScenes();
+            LoadResources();
         }
 
         /// <summary>
@@ -74,6 +64,24 @@ namespace Disunity.Runtime {
 
         public void InvokeOnUpdate() {
             OnUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void InitAssetBundles() {
+            var assets = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".assets");
+            var scenes = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".scenes");
+
+            _assetsResource = new AssetBundleResource(Info.Name + " assets", assets);
+            _scenesResource = new AssetBundleResource(Info.Name + " scenes", scenes);
+        }
+
+        private void LoadResources() {
+            InitAssetBundles();
+            IsValid = CheckResources();
+            if (IsValid) {
+                LoadAssemblies();
+                LoadPrefabs();
+                LoadScenes();
+            }
         }
 
         private bool CheckPrefabBundle(ContentType contentTypes) {
