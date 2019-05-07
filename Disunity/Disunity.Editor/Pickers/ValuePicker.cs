@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Disunity.Core;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
-using Disunity.Shared;
 
-namespace Disunity.Editor {
+
+namespace Disunity.Editor.Pickers {
     // ReSharper disable StaticMemberInGenericType
     public abstract class ValuePicker<T> : EditorWindow {
         private static readonly Vector2 Size = new Vector2(200, 300);

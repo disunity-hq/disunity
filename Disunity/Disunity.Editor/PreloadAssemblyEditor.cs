@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Disunity.Shared;
+using Disunity.Editor.Pickers;
 using UnityEditor;
 using UnityEditor.VersionControl;
 using UnityEditorInternal;

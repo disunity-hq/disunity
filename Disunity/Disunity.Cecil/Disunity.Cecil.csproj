@@ -52,8 +52,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyFilter.cs" />
-    <Compile Include="AssemblyUtility.cs" />
     <Compile Include="CecilExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,9 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MultiMod.Shared\Disunity.Shared.csproj">
+    <ProjectReference Include="..\Disunity.Shared\Disunity.Core.csproj">
       <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
-      <Name>Disunity.Shared</Name>
+      <Name>Disunity.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

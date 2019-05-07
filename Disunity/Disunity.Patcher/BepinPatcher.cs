@@ -1,3 +1,3 @@
-﻿namespace Disunity.Patcher {
+﻿namespace Disunity.Preloader {
 
 }

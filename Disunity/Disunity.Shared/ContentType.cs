@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Disunity.Shared {
+namespace Disunity.Core {
 
     /// <summary>
     ///     Stores the exporter's settings.

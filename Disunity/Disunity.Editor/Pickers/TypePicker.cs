@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Disunity.Editor {
+
+namespace Disunity.Editor.Pickers {
     public class TypePicker : ValuePicker<Type> {
         public static void Button(
             [NotNull] string buttonText,

@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 
 
-namespace Disunity.Shared {
+namespace Disunity.Editor {
 
     public abstract class ScriptableSingleton<T> : ScriptableObject where T : ScriptableSingleton<T> {
 

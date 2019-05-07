@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 
-namespace Disunity.Core {
+namespace Disunity.Runtime {
 
     /// <summary>
     ///     Extensions for the Scene class.

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using Disunity.Cecil;
-using Disunity.Shared;
-using Disunity.Interface;
+using Disunity.Core;
+using Disunity.Editor.Pickers;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
 
 
@@ -74,12 +72,17 @@ namespace Disunity.Editor {
 
         private Dictionary<string, Type> GetModBehaviours(ExportSettings settings) {
             var modBehaviours = new Dictionary<string, Type>();
+            var runtimeAssemblies = settings.RuntimeAssemblies.Select(o => ((AssemblyDefinitionAsset) o).name);
 
-            foreach (var type in AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(ModBehaviour))) {
-                var assemblyName = type.Assembly.GetName().Name;
-                var identifier = $"{assemblyName}.{type.FullName}";
-                if (settings.StartupClass != type.FullName && settings.StartupAssembly != assemblyName)
-                    modBehaviours[identifier] = type;
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                if (!runtimeAssemblies.Contains(assembly.GetName().Name)) {
+                    continue;
+                }
+
+                var types = assembly.ExportedTypes;
+                foreach (var type in types) {
+                    modBehaviours[$"{assembly.GetName().Name}.{type.FullName}"] = type;
+                }
             }
 
             return modBehaviours;
@@ -144,13 +147,8 @@ namespace Disunity.Editor {
             }
         }
 
-        private void DrawLogSelector() {
-            LogUtility.LogLevel = (LogLevel) EditorGUILayout.EnumPopup("Log Level:", LogUtility.LogLevel);
-        }
-
         private void DrawExportOptions(ExportSettings settings) {
             DrawSection(() => {
-                DrawLogSelector();
                 DrawDirectorySelector(settings);
             });
         }

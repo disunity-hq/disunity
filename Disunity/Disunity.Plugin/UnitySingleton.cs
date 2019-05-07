@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace Disunity.Core {
+namespace Disunity.Runtime {
 
     /// <summary>
     ///     A generic singleton class for MonoBehaviours

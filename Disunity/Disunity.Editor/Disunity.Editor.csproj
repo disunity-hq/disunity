@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsmDef.cs" />
+    <Compile Include="ExportSettings.cs" />
     <Compile Include="Pickers\StringPicker.cs" />
     <Compile Include="SceneEditor.cs" />
     <Compile Include="PrefabEditor.cs" />
@@ -77,26 +78,18 @@
     <Compile Include="ArtifactEditor.cs" />
     <Compile Include="PreloadAssemblyEditor.cs" />
     <Compile Include="ExportValidationError.cs" />
+    <Compile Include="ScriptableSingleton.cs" />
     <Compile Include="SelectionEditor.cs" />
     <Compile Include="ExportEditor.cs" />
-    <Compile Include="EditorModPlatformExtensions.cs" />
     <Compile Include="EditorScriptableSingleton.cs" />
     <Compile Include="Export.cs" />
     <Compile Include="ExporterEditorWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Disunity.Cecil\Disunity.Cecil.csproj">
-      <Project>{C07BE8A5-F75A-4A95-8ED1-450162264EAF}</Project>
-      <Name>Disunity.Cecil</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Disunity.Interface\Disunity.Interface.csproj">
-      <Project>{f3f7f434-f83d-4ab5-872c-122d89ec81ea}</Project>
-      <Name>Disunity.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Disunity.Shared\Disunity.Shared.csproj">
+    <ProjectReference Include="..\Disunity.Shared\Disunity.Core.csproj">
       <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
-      <Name>Disunity.Shared</Name>
+      <Name>Disunity.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Disunity.Core;
+using UnityEngine;
 
 
-namespace Disunity.Shared {
+namespace Disunity.Editor {
 
     public class ExportSettings : ScriptableObject {
 
@@ -40,15 +41,9 @@ namespace Disunity.Shared {
 
         [field: SerializeField] public ContentType ContentTypes { get; set; }
 
-        [field: SerializeField] public BootType BootType { get; set; }
-
         [field: SerializeField] public string StartupClass { get; set; }
 
         [field: SerializeField] public string StartupAssembly { get; set; }
-
-        [field: SerializeField] public string StartupScene { get; set; }
-
-        [field: SerializeField] public GameObject StartupPrefab { get; set; }
 
     }
 

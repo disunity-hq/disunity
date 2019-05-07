@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Disunity.Shared {
+
+namespace Disunity.Core {
     public static class StringUtils {
         public static bool MatchesFilter(string text, string filter) {
             var elems = filter

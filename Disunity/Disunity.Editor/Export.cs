@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using Disunity.Shared;
+using Disunity.Core;
 using UnityEditor;
 using UnityEngine;
 using Object = System.Object;
@@ -48,7 +48,7 @@ namespace Disunity.Editor {
                 Directory.Delete(_tempModDirectory, true);
             }
 
-            LogUtility.LogDebug($"Creating build directory: {_tempModDirectory}");
+            Debug.Log($"Creating build directory: {_tempModDirectory}");
             Directory.CreateDirectory(_tempModDirectory);
         }
 
@@ -67,16 +67,32 @@ namespace Disunity.Editor {
 
 
                 if (!File.Exists(modAsmPath)) {
-                    LogUtility.LogError($"{asmDef.name} not found: {modAsmPath}");
+                    Debug.LogError($"{asmDef.name} not found: {modAsmPath}");
                     continue;
                 }
 
                 var destination = Path.Combine(destinationPath, assemblyName);
                 File.Copy(modAsmPath, destination);
-                destinations.Add(destination);
+                destinations.Add(Path.Combine(folder, assemblyName));
             }
 
             return destinations;
+        }
+
+        private void SetContentTypes() {
+            _settings.ContentTypes = 0;
+            if (_settings.PreloadAssemblies.Length > 0) {
+                _settings.ContentTypes |= ContentType.PreloadAssemblies;
+            }
+            if (_settings.RuntimeAssemblies.Length > 0) {
+                _settings.ContentTypes |= ContentType.RuntimeAssemblies;
+            }
+            if (_settings.Prefabs.Length > 0) {
+                _settings.ContentTypes |= ContentType.Prefabs;
+            }
+            if (_settings.Scenes.Length > 0) {
+                _settings.ContentTypes |= ContentType.Scenes;
+            }
         }
 
         private List<string> ExportRuntimeAssemblies() {
@@ -88,7 +104,7 @@ namespace Disunity.Editor {
         }
 
         private void ExportCopyAssets() {
-            LogUtility.LogDebug("Exporting copy assets...");
+            Debug.Log("Exporting copy assets...");
             foreach (var asset in _settings.Artifacts) {
                 var path = AssetDatabase.GetAssetPath(asset);
                 var filename = Path.GetFileName(path);
@@ -98,15 +114,11 @@ namespace Disunity.Editor {
         }
 
         private void ExportModAssets() {
+            var destination = Path.Combine(_tempModDirectory, "assetbundles");
+            Directory.CreateDirectory(destination);
             _settings.Prefabs.ToList().ForEach(s => SetAssetBundle(AssetDatabase.GetAssetPath((s))));
             _settings.Scenes.ToList().ForEach(s => SetAssetBundle(AssetDatabase.GetAssetPath(s), "scenes"));
-            ModPlatform.Windows.GetBuildTargets().ForEach(target => {
-                var platform = target.GetModPlatform().ToString();
-                var subDir = Path.Combine(_tempModDirectory, platform);
-                Directory.CreateDirectory(subDir);
-                Debug.Log($"Exporting assets for {platform} to: {subDir}");
-                BuildPipeline.BuildAssetBundles(subDir, BuildAssetBundleOptions.None, target);
-            });
+            BuildPipeline.BuildAssetBundles(destination, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
         }
 
         private void SaveMetadata(List<string> preloadAssemblies, List<string> runtimeAssemblies) {
@@ -116,7 +128,6 @@ namespace Disunity.Editor {
                 _settings.Description,
                 _settings.Version,
                 Application.unityVersion,
-                ModPlatform.Windows,
                 _settings.ContentTypes,
                 preloadAssemblies.ToArray(),
                 runtimeAssemblies.ToArray(),
@@ -134,21 +145,22 @@ namespace Disunity.Editor {
 
                 Debug.Log($"Copying {_tempModDirectory} => {_modDirectory}");
                 CopyAll(_tempModDirectory, _modDirectory);
-                LogUtility.LogInfo($"Export completed: {_modDirectory}");
+                Debug.Log($"Export completed: {_modDirectory}");
             }
             catch (Exception e) {
-                LogUtility.LogWarning("There was an issue while copying the mod to the output folder. ");
-                LogUtility.LogWarning(e.Message);
+                Debug.LogWarning("There was an issue while copying the mod to the output folder. ");
+                Debug.LogWarning(e.Message);
             }
         }
 
         public void Run() {
-            LogUtility.LogDebug($"Starting export of {_settings.Name}");
+            Debug.Log($"Starting export of {_settings.Name}");
             CreateTempDirectory();
             var preloadAssemblies = ExportPreloadAssemblies();
             var runtimeAssemblies = ExportRuntimeAssemblies();
             ExportCopyAssets();
             ExportModAssets();
+            SetContentTypes();
             SaveMetadata(preloadAssemblies, runtimeAssemblies);
             CopyToOutput();
         }

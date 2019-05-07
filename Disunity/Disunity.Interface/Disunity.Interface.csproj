@@ -48,10 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IModHandler.cs" />
-    <Compile Include="IResource.cs" />
     <Compile Include="ModBehaviour.cs" />
-    <Compile Include="ContentHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

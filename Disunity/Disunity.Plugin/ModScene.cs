@@ -1,21 +1,22 @@
-﻿using System.Collections;
-using Disunity.Interface;
+﻿using Disunity.Core;
 using UnityEngine.SceneManagement;
 
 
-namespace Disunity.Core {
+namespace Disunity.Runtime {
 
     /// <summary>
     ///     Represents a Scene that is included in a Mod.
     /// </summary>
-    public class ModScene : Resource {
+    public class ModScene {
 
+        public string Name { get; private set; }
         /// <summary>
         ///     Initialize a new ModScene with a Scene name and a Mod
         /// </summary>
         /// <param name="name">The scene's name</param>
         /// <param name="mod">The Mod this ModScene belongs to.</param>
-        public ModScene(string name, Mod mod) : base(name) {
+        public ModScene(string name, Mod mod) {
+            Name = name;
             Mod = mod;
             Scene = null;
         }
@@ -30,37 +31,10 @@ namespace Disunity.Core {
         /// </summary>
         public Mod Mod { get; }
 
-        /// <summary>
-        ///     Can the scene be loaded? False if this scene's Mod is not loaded.
-        /// </summary>
-        public override bool CanLoad => Mod.LoadState == ResourceLoadState.Loaded;
-
-        protected override IEnumerator LoadResources() {
-            //NOTE: Loading a scene synchronously prevents the scene from being initialized, so force async loading.
-            yield return LoadResourcesAsync();
-        }
-
-        protected override IEnumerator LoadResourcesAsync() {
-            var loadOperation = SceneManager.LoadSceneAsync(Name, LoadSceneMode.Additive);
-            loadOperation.allowSceneActivation = false;
-
-            while (loadOperation.progress < .9f) {
-                LoadProgress = loadOperation.progress;
-                yield return null;
-            }
-
-            loadOperation.allowSceneActivation = true;
-
-            yield return loadOperation;
-
+        protected void Load() {
+            SceneManager.LoadScene(Name, LoadSceneMode.Additive);
             Scene = SceneManager.GetSceneByName(Name);
-
             SetActive();
-        }
-
-        protected override void UnloadResources() {
-            Scene?.Unload();
-            Scene = null;
         }
 
         /// <summary>
@@ -72,21 +46,13 @@ namespace Disunity.Core {
             }
         }
 
-        protected override void OnLoaded() {
-            foreach (var modHandler in GetComponentsInScene<IModHandler>()) {
-                modHandler.OnLoaded(Mod.ContentHandler);
-            }
-
-            base.OnLoaded();
-        }
-
         /// <summary>
         ///     Returns the first Component of type T in this Scene.
         /// </summary>
         /// <typeparam name="T">The Component that will be looked for.</typeparam>
         /// <returns>An array of found Components of Type T.</returns>
         public T GetComponentInScene<T>() {
-            return LoadState != ResourceLoadState.Loaded ? default : Scene.Value.GetComponentInScene<T>();
+            return Scene.Value.GetComponentInScene<T>();
         }
 
         /// <summary>
@@ -95,7 +61,7 @@ namespace Disunity.Core {
         /// <typeparam name="T">The Component that will be looked for.</typeparam>
         /// <returns>An array of found Components of Type T.</returns>
         public T[] GetComponentsInScene<T>() {
-            return LoadState != ResourceLoadState.Loaded ? new T[0] : Scene.Value.GetComponentsInScene<T>();
+            return Scene.Value.GetComponentsInScene<T>();
         }
     }
 }

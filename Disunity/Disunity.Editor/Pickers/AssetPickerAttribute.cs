@@ -1,7 +1,8 @@
 ﻿using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Disunity.Editor {
+
+namespace Disunity.Editor.Pickers {
     public class AssetPickerAttribute : PropertyAttribute {
         [NotNull]
         public string Path;

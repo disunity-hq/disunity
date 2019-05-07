@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Disunity.Core;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
-using Disunity.Shared;
 using Object = UnityEngine.Object;
 
-namespace Disunity.Editor {
+namespace Disunity.Editor.Pickers {
     public class AssetPicker : EditorWindow {
         public class HierarchyEntry : IComparable<HierarchyEntry> {
             public HierarchyEntry Parent;

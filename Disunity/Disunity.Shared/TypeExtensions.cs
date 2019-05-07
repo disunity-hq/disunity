@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using JetBrains.Annotations;
-using UnityEngine;
 
-namespace Disunity.Shared {
+
+namespace Disunity.Core {
     public static class TypeExtensions {
 
 
@@ -13,29 +12,19 @@ namespace Disunity.Shared {
             var result = new List<System.Type>();
             var assemblies = aAppDomain.GetAssemblies();
             foreach (var assembly in assemblies) {
-                try {
-                    var types = assembly.GetTypes();
-                    foreach (var type in types) {
-                        if (type.IsSubclassOf(aType))
-                            result.Add(type);
-                    }
-                }
-                catch (TypeLoadException e) {
-                    Debug.Log($"Couldn't load types from {assembly.FullName}");
-                }
-                catch (ReflectionTypeLoadException e) {
-                    Debug.Log($"Couldn't load types from {assembly.FullName}");
+                var types = assembly.GetTypes();
+                foreach (var type in types) {
+                    if (type.IsSubclassOf(aType))
+                        result.Add(type);
                 }
             }
             return result.ToArray();
         }
 
-
         public static bool HasAttribute<T>(this Type t) where T : Attribute {
             return t.GetCustomAttributes(typeof(T), true).Length > 0;
         }
 
-        [CanBeNull]
         public static T GetAttribute<T>(this Type t) where T : Attribute {
             return t.GetCustomAttributes(typeof(T), true).Cast<T>().FirstOrDefault();
         }
@@ -48,7 +37,6 @@ namespace Disunity.Shared {
             return m.GetCustomAttributes(typeof(T), true).Length > 0;
         }
 
-        [CanBeNull]
         public static T GetAttribute<T>(this MemberInfo m) where T : Attribute {
             return m.GetCustomAttributes(typeof(T), true).OfType<T>().FirstOrDefault();
         }
@@ -95,22 +83,11 @@ namespace Disunity.Shared {
             }
         }
 
-        public static IEnumerable<FieldInfo> GetUnitySerializedFields(this Type type) {
-            var t =
-                type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
-            var fields = t
-                .Where(f => f.IsPublic || f.HasAttribute<SerializeField>());
-            if (type.BaseType != null) {
-                fields = fields.Concat(GetUnitySerializedFields(type.BaseType));
-            }
-            return fields;
-        }
 
         public static bool IsUnityCollection(this Type type) {
             return type.IsArray || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>);
         }
 
-        [CanBeNull]
         public static FieldInfo GetFieldByPath(this Type type, string path) {
             if (path.Contains('.')) {
                 return type.GetFieldByPath(path.Split('.'));
@@ -120,7 +97,6 @@ namespace Disunity.Shared {
             return type.GetField(path, flags);
         }
 
-        [CanBeNull]
         public static FieldInfo GetFieldByPath(this Type sourceType, IEnumerable<string> path) {
             FieldInfo fieldInfo = null;
             Type type = sourceType;

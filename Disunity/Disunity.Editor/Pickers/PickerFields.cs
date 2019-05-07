@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 
-namespace Disunity.Editor {
+namespace Disunity.Editor.Pickers {
     class PickerFields {
         public static void AssetField<T>([CanBeNull] Object currentValue, Action<T> callback, Func<AssetPicker.HierarchyEntry, bool> filter = null) where T : Object{
 

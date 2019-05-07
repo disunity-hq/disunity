@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-namespace Disunity.Editor {
+
+namespace Disunity.Editor.Pickers {
     public class AssetPathFilterAttribute : PropertyAttribute {
         public string[] Filters;
 

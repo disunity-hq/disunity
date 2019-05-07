@@ -1,12 +1,21 @@
-﻿using Disunity.Interface;
-using UnityEngine;
+﻿using System.Linq;
 
-public class ExampleMod : ModBehaviour
+using UnityEngine;
+using RoR2;
+using Disunity.Runtime;
+
+
+public class ExampleMod
 {
-    public GameObject prefab;
-    public override void OnLoaded(ContentHandler contentHandler)
+    RuntimeMod _mod;
+
+    public ExampleMod(RuntimeMod mod)
     {
-        Debug.Log("Hello World!!!!!!!!!???");
+        Debug.Log("Hello from Example Mod!");
+
+        _mod = mod;
+
+        _mod.OnStart += (s, a) => Start();
 
         // unlock all the things
         On.RoR2.UserProfile.HasSurvivorUnlocked += (o, s, i) => true;
@@ -15,11 +24,21 @@ public class ExampleMod : ModBehaviour
         On.RoR2.UserProfile.CanSeeAchievement += (o, s, i) => true;
         On.RoR2.UserProfile.HasUnlockable_UnlockableDef += (o, s, i) => true;
 
+    }
+
+    void Start() {
         // get reference to game's main canvas
-        var canvas = RoR2.RoR2Application.instance.mainCanvas;
+        var canvas = RoR2Application.instance.mainCanvas;
+
+        var prefab = _mod.Prefabs.Where(p => p.name == "ExampleUI").FirstOrDefault();
+
+        if (prefab == null) {
+            Debug.Log("Prefab was null, aborting.");
+            return;
+        }
 
         // instantiate UI prefab
-        var gobj = Instantiate(prefab);
+        var gobj = GameObject.Instantiate(prefab);
         gobj.transform.SetParent(canvas.transform, false);
 
         // set the parent to game's canvas and fix the sizings

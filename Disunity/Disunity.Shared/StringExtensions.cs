@@ -2,7 +2,7 @@
 using System.IO;
 
 
-namespace Disunity.Shared {
+namespace Disunity.Core {
 
     /// <summary>
     ///     Extension methods for strings.
@@ -17,26 +17,20 @@ namespace Disunity.Shared {
         /// <returns>True if this string is a sub directory or the same directory as the other.</returns>
         public static bool IsDirectoryOrSubdirectory(this string self, string other) {
             var isChild = false;
-            try {
-                var candidateInfo = new DirectoryInfo(self);
-                var otherInfo = new DirectoryInfo(other);
+            var candidateInfo = new DirectoryInfo(self);
+            var otherInfo = new DirectoryInfo(other);
 
-                if (candidateInfo.FullName == otherInfo.FullName) {
-                    return true;
-                }
-
-                while (candidateInfo.Parent != null) {
-                    if (candidateInfo.Parent.FullName == otherInfo.FullName) {
-                        isChild = true;
-                        break;
-                    }
-
-                    candidateInfo = candidateInfo.Parent;
-                }
+            if (candidateInfo.FullName == otherInfo.FullName) {
+                return true;
             }
-            catch (Exception e) {
-                var message = $"Unable to check directories {self} and {other}: {e}";
-                LogUtility.LogWarning(message);
+
+            while (candidateInfo.Parent != null) {
+                if (candidateInfo.Parent.FullName == otherInfo.FullName) {
+                    isChild = true;
+                    break;
+                }
+
+                candidateInfo = candidateInfo.Parent;
             }
 
             return isChild;

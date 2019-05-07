@@ -42,45 +42,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\libs\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\libs\UnityEngine.AssetBundleModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\libs\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssetBundleResource.cs" />
-    <Compile Include="Dispatcher.cs" />
-    <Compile Include="ModManager.cs" />
-    <Compile Include="Resource.cs" />
-    <Compile Include="ModSearchDirectory.cs" />
-    <Compile Include="Mod.cs" />
-    <Compile Include="ModScene.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResourceLoadState.cs" />
-    <Compile Include="SceneExtensions.cs" />
-    <Compile Include="UnitySingleton.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MultiMod.Cecil\Disunity.Cecil.csproj">
-      <Project>{C07BE8A5-F75A-4A95-8ED1-450162264EAF}</Project>
-      <Name>Disunity.Cecil</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiMod.Interface\Disunity.Interface.csproj">
-      <Project>{f3f7f434-f83d-4ab5-872c-122d89ec81ea}</Project>
-      <Name>Disunity.Interface</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MultiMod.Shared\Disunity.Shared.csproj">
-      <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
-      <Name>Disunity.Shared</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disunity.Shared\Disunity.Shared.csproj">
+      <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
+      <Name>Disunity.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
