@@ -9,10 +9,10 @@ public class ExampleMod
     RuntimeMod _mod;
     RuntimeLogger _log;
 
-    public ExampleMod(RuntimeMod mod, RuntimeLogger logger)
+    public ExampleMod(RuntimeMod mod)
     {
-        _log = logger;
         _mod = mod;
+        _log = mod.Log;
 
         _log.LogInfo("Hello from Example Mod!");
 

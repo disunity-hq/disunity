@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using BepInEx;
 using Disunity.Core;
 using Path = System.IO.Path;
@@ -11,63 +12,72 @@ namespace Disunity.Runtime {
     [BepInPlugin("com.disunity.plugin", "Disunity", "0.1")]
     public class BepinPlugin : BaseUnityPlugin {
 
-        private List<RuntimeMod> instances = new List<RuntimeMod>();
+        private readonly List<RuntimeMod> _instances = new List<RuntimeMod>();
+        private readonly RuntimeLogger _log = new RuntimeLogger("Disunity");
 
         private void Awake() {
-
-            var log = BepInEx.Logging.Logger.CreateLogSource("Disunity");
-
-            log.LogInfo("RUNTIME stage starting...");
-
+            _log.LogInfo("RUNTIME stage starting...");
             var searchDirectory = Path.Combine(Paths.PluginPath, "../mods");
-
-            var mm = new ModManager<RuntimeMod>();
-            mm.AddSearchDirectory(searchDirectory);
-            mm.DiscoverMods();
-
-            foreach (var mod in mm.Mods) {
-                var startupAssembly = mod.Info.StartupAssembly;
-                var startupClass = mod.Info.StartupClass;
-
-                if (startupAssembly.IsNullOrWhiteSpace() || startupClass.IsNullOrWhiteSpace()) {
-                    log.LogInfo($"Loaded {mod.Info.Name}");
-                    continue;
-                }
-
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                var assembly = assemblies.FirstOrDefault(a => a.GetName().Name == startupAssembly);
-
-                if (assembly == null) {
-                    log.LogInfo($"Couldn't find startup assembly for {mod.Info.Name}: {startupAssembly}");
-                    continue;
-                }
-
-                var type = assembly.GetType(startupClass);
-
-                if (type == null) {
-                    log.LogInfo($"Couldn't find startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
-                    continue;
-                }
-
-
-                RuntimeLogger logger = new RuntimeLogger(mod.Info.Name);
-                Activator.CreateInstance(type, mod, logger);
-                instances.Add(mod);
-
-                log.LogInfo($"Loaded {mod.Info.Name}");
-            }
+            ModFinder.Find(searchDirectory).ToList().ForEach(LoadMod);
         }
 
         private void Start() {
-            foreach (RuntimeMod mod in instances) {
+            foreach (RuntimeMod mod in _instances) {
                 mod.InvokeOnStart();
             }
         }
 
         private void Update() {
-            foreach (RuntimeMod mod in instances) {
+            foreach (RuntimeMod mod in _instances) {
                 mod.InvokeOnUpdate();
             }
+        }
+
+        private static Assembly GetStartupAssembly(string name) {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            return assemblies.FirstOrDefault(a => a.GetName().Name == name);
+        }
+
+        private static Type GetStartupClass(Assembly assembly, string name) {
+            return assembly.GetType(name);
+        }
+
+        private void InstantiateStartupClass(Type type, RuntimeMod mod) {
+            Activator.CreateInstance(type, mod);
+            _instances.Add(mod);
+        }
+
+        private void BootMod(RuntimeMod mod) {
+            var startupAssembly = mod.Info.StartupAssembly;
+            var startupClass = mod.Info.StartupClass;
+
+            if (startupAssembly.IsNullOrWhiteSpace() || startupClass.IsNullOrWhiteSpace()) {
+                _log.LogInfo($"Loaded {mod.Info.Name}");
+                return;
+            }
+
+            var assembly = GetStartupAssembly(startupAssembly);
+            if (assembly == null) {
+                _log.LogInfo($"Couldn't find startup assembly for {mod.Info.Name}: {startupAssembly}");
+                return;
+            }
+
+            var type = GetStartupClass(assembly, startupClass);
+            if (type == null) {
+                _log.LogInfo($"Couldn't find startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
+                return;
+            }
+
+            InstantiateStartupClass(type, mod);
+            _log.LogInfo($"Loaded {mod.Info.Name}");
+        }
+
+        private void LoadMod(string modInfoPath) {
+            var mod = new RuntimeMod(modInfoPath);
+
+            if (!mod.IsValid) return;
+
+            BootMod(mod);
         }
     }
 }

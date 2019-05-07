@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 using Disunity.Core;
@@ -9,8 +8,9 @@ using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
 namespace Disunity.Runtime {
-    public class RuntimeMod : Mod { 
+    public class RuntimeMod : Mod {
 
+        private readonly RuntimeLogger _log;
         private readonly AssetBundleResource _assetsResource;
         private readonly AssetBundleResource _scenesResource;
         private readonly List<string> _runtimeAssemblyFiles = new List<string>();
@@ -18,14 +18,15 @@ namespace Disunity.Runtime {
         private readonly List<Assembly> _runtimeAssemblies = new List<Assembly>();
         private readonly List<GameObject> _prefabs = new List<GameObject>();
         private readonly List<ModScene> _scenes = new List<ModScene>();
+        private readonly List<string> _sceneNames = new List<string>();
+        private readonly List<string> _assetPaths = new List<string>();
 
         public event EventHandler OnStart;
         public event EventHandler OnUpdate;
 
         public RuntimeMod(string infoPath) : base(infoPath) {
 
-            Prefabs = _prefabs.AsReadOnly();
-            Scenes = _scenes.AsReadOnly();
+            _log = new RuntimeLogger(Info.Name);
 
             var assets = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".assets");
             var scenes = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".scenes");
@@ -33,48 +34,39 @@ namespace Disunity.Runtime {
             _assetsResource = new AssetBundleResource(Info.Name + " assets", assets);
             _scenesResource = new AssetBundleResource(Info.Name + " scenes", scenes);
 
-            AssetPaths = _assetsResource.AssetPaths;
-            SceneNames = _scenesResource.AssetPaths;
-            RuntimeAssemblyNames = _runtimeAssemblyNames.AsReadOnly();
-
-            if (!CheckResources()) {
-                return;
-            }
-
-            try {
-                LoadAssemblies();
-                LoadPrefabs();
-                LoadScenes();
-            } catch (Exception e) {
-                Debug.LogException(e);
-                SetInvalid();
-            }
+            CheckResources();
+            if (!IsValid) return;
+            LoadAssemblies();
+            LoadPrefabs();
+            LoadScenes();
         }
 
         /// <summary>
         ///     Collection of names of RuntimeAssemblies included in this Mod.
         /// </summary>
-        public ReadOnlyCollection<string> RuntimeAssemblyNames { get; private set; }
+        public ICollection<string> RuntimeAssemblyNames => new ReadOnlyCollection<string>(_runtimeAssemblyNames);
 
         /// <summary>
         ///     Collection of names of Scenes included in this Mod.
         /// </summary>
-        public ReadOnlyCollection<string> SceneNames { get; private set; }
+        public ICollection<string> SceneNames => new ReadOnlyCollection<string>(_sceneNames);
 
         /// <summary>
         ///     Collection of paths of assets included in this Mod.
         /// </summary>
-        public ReadOnlyCollection<string> AssetPaths { get; private set; }
+        public ICollection<string> AssetPaths => new ReadOnlyCollection<string>(_assetPaths);
 
         /// <summary>
         ///     Collection of ModScenes included in this Mod.
         /// </summary>
-        public ReadOnlyCollection<ModScene> Scenes { get; private set; }
+        public ICollection<ModScene> Scenes => new ReadOnlyCollection<ModScene>(_scenes);
 
         /// <summary>
         ///     Collection of loaded prefabs included in this Mod. Only available when the mod is loaded.
         /// </summary>
-        public ReadOnlyCollection<GameObject> Prefabs { get; private set; }
+        public ICollection<GameObject> Prefabs => new ReadOnlyCollection<GameObject>(_prefabs);
+
+        public RuntimeLogger Log => _log;
 
         public void InvokeOnStart() {
             OnStart?.Invoke(this, EventArgs.Empty);
@@ -84,24 +76,22 @@ namespace Disunity.Runtime {
             OnUpdate?.Invoke(this, EventArgs.Empty);
         }
 
-        private bool CheckResources() {
-            Debug.Log("Checking Resources...");
-
+        private void CheckResources() {
             var contentTypes = (ContentType) Info.ContentTypes;
 
             if (contentTypes.HasFlag(ContentType.Prefabs) && !_assetsResource.IsValid) {
                 IsValid = false;
-                Debug.Log("Assets assetbundle missing for Mod: " + Info.Name);
+                _log.LogError($"Couldn't load prefab bundle: {_assetsResource.Path}");
             }
 
             if (contentTypes.HasFlag(ContentType.Scenes) && !_scenesResource.IsValid) {
                 IsValid = false;
-                Debug.Log("Scenes assetbundle missing for Mod: " + Info.Name);
+                _log.LogError($"Couldn't load scene bundle: {_scenesResource.Path}");
             }
 
             if (contentTypes.HasFlag(ContentType.RuntimeAssemblies) && Info.RuntimeAssemblies.Length == 0) {
                 IsValid = false;
-                Debug.Log("Runtime assembly metadata missing for Mod: " + Info.Name);
+                _log.LogError($"Mod advertises runtime assemblies but none listed in metadata.");
             }
 
             foreach (var path in Info.RuntimeAssemblies) {
@@ -115,11 +105,10 @@ namespace Disunity.Runtime {
                 }
 
                 IsValid = false;
-                Debug.Log(path + " missing for Mod: " + Info.Name);
+                _log.LogError($"Couldn't find listed assembly: {path}");
             }
 
-            return IsValid;
-
+            IsValid = true;
         }
 
         protected void LoadScenes() {
@@ -135,18 +124,9 @@ namespace Disunity.Runtime {
 
         private void LoadAssemblies() {
             foreach (var path in _runtimeAssemblyFiles) {
-                if (!File.Exists(path)) {
-                    continue;
-                }
-
-                try {
-                    var assembly = Assembly.Load(File.ReadAllBytes(path));
-                    assembly.GetTypes();
-                    _runtimeAssemblies.Add(assembly);
-                } catch (Exception e) {
-                    Debug.LogError(e);
-                    SetInvalid();
-                }
+                var assembly = Assembly.Load(File.ReadAllBytes(path));
+                assembly.GetTypes();
+                _runtimeAssemblies.Add(assembly);
             }
         }
 
