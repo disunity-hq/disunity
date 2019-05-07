@@ -26,17 +26,6 @@ namespace Disunity.Core {
         public bool IsValid { get; protected set; }
 
         /// <summary>
-        ///     Set the mod to be enabled or disabled
-        /// </summary>
-        public bool IsEnabled {
-            get => Info.IsEnabled;
-            set {
-                Info.IsEnabled = value;
-                Info.Save();
-            }
-        }
-
-        /// <summary>
         ///     Initialize a new Mod with a path to a mod file.
         /// </summary>
         /// <param name="infoPath">The path to a mod file</param>
