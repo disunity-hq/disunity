@@ -70,7 +70,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Disunity.Shared\Disunity.Core.csproj">
+    <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj">
       <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
       <Name>Disunity.Core</Name>
     </ProjectReference>

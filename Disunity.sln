@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Editor", "Disunity\Disunity.Editor\Disunity.Editor.csproj", "{22E3C484-3EBD-4469-A704-ACF23B4FE8DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Preloader", "Disunity\Disunity.Patcher\Disunity.Preloader.csproj", "{1BA6FF9F-E574-4425-96AD-2045604E216D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Core", "Disunity\Disunity.Core\Disunity.Core.csproj", "{5E13231B-CA13-4496-B32C-BB033B15A379}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Runtime", "Disunity\Disunity.Plugin\Disunity.Runtime.csproj", "{764626B2-4780-4DFC-B144-553FB18F5A97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Preloader", "Disunity\Disunity.Preloader\Disunity.Preloader.csproj", "{1BA6FF9F-E574-4425-96AD-2045604E216D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Core", "Disunity\Disunity.Shared\Disunity.Core.csproj", "{5E13231B-CA13-4496-B32C-BB033B15A379}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Runtime", "Disunity\Disunity.Runtime\Disunity.Runtime.csproj", "{764626B2-4780-4DFC-B144-553FB18F5A97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +21,10 @@ Global
 		{22E3C484-3EBD-4469-A704-ACF23B4FE8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22E3C484-3EBD-4469-A704-ACF23B4FE8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22E3C484-3EBD-4469-A704-ACF23B4FE8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E13231B-CA13-4496-B32C-BB033B15A379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E13231B-CA13-4496-B32C-BB033B15A379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E13231B-CA13-4496-B32C-BB033B15A379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E13231B-CA13-4496-B32C-BB033B15A379}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BA6FF9F-E574-4425-96AD-2045604E216D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BA6FF9F-E574-4425-96AD-2045604E216D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BA6FF9F-E574-4425-96AD-2045604E216D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,10 +33,6 @@ Global
 		{764626B2-4780-4DFC-B144-553FB18F5A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{764626B2-4780-4DFC-B144-553FB18F5A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{764626B2-4780-4DFC-B144-553FB18F5A97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E13231B-CA13-4496-B32C-BB033B15A379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E13231B-CA13-4496-B32C-BB033B15A379}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E13231B-CA13-4496-B32C-BB033B15A379}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E13231B-CA13-4496-B32C-BB033B15A379}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

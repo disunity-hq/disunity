@@ -87,12 +87,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Disunity.Shared\Disunity.Core.csproj">
+    <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj">
       <Project>{5e13231b-ca13-4496-b32c-bb033b15a379}</Project>
       <Name>Disunity.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Editor\$(TargetName).dll"
