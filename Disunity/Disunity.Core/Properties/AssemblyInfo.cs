@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Disunity.Core")]
+[assembly: AssemblyTitle("Disunity.Shared")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b8cbc92f-7c31-452c-bba8-a91957d332df")]
+[assembly: Guid("5e13231b-ca13-4496-b32c-bb033b15a379")]
 
 // Version information for an assembly consists of the following four values:
 //
