@@ -64,24 +64,24 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity\$(TargetName).dll"
+    <PostBuildEvent>echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity\plugins\Disunity\$(TargetName).dll"
 if not exist "$(SolutionDir)build\Disunity\mods" mkdir "$(SolutionDir)build\Disunity\mods"
 
 echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\$(TargetName).dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity\$(TargetName).dll"
+echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity\plugins\Disunity\$(TargetName).dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\$(TargetName).dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Commons.Json.dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)build\Disunity\Commons.Json.dll"
+echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)build\Disunity\plugins\Disunity\Commons.Json.dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Commons.Json.dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Commons.Utils.dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)build\Disunity\Commons.Utils.dll"
+echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)build\Disunity\plugins\Disunity\Commons.Utils.dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Commons.Utils.dll"</PostBuildEvent>
   </PropertyGroup>

@@ -63,24 +63,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsmDef.cs" />
-    <Compile Include="ExportSettings.cs" />
-    <Compile Include="Pickers\StringPicker.cs" />
-    <Compile Include="SceneEditor.cs" />
-    <Compile Include="PrefabEditor.cs" />
-    <Compile Include="Pickers\AssetPathFilterAttribute.cs" />
-    <Compile Include="Pickers\AssetPickerAttribute.cs" />
+    <Compile Include="Editors\BaseEditor.cs" />
+    <Compile Include="Editors\BaseSelectionEditor.cs" />
+    <Compile Include="AsyncEditorTask.cs" />
+    <Compile Include="Editors\BaseAssetEditor.cs" />
+    <Compile Include="Fields\BasePickerField.cs" />
+    <Compile Include="Fields\ClassPickerField.cs" />
+    <Compile Include="Pickers\BasePicker.cs" />
     <Compile Include="Pickers\AssetPicker.cs" />
+    <Compile Include="Pickers\ClassPicker.cs" />
+    <Compile Include="Pickers\FilteredPicker.cs" />
+    <Compile Include="StoreClient.cs" />
+    <Compile Include="JsonExtensions.cs" />
+    <Compile Include="Editors\DependencyEditor.cs" />
+    <Compile Include="EditorSelector.cs" />
+    <Compile Include="ExportSettings.cs" />
+    <Compile Include="Pickers\DependencyPicker.cs" />
+    <Compile Include="Pickers\HierarchyPicker.cs" />
+    <Compile Include="Editors\SceneEditor.cs" />
+    <Compile Include="Editors\PrefabEditor.cs" />
     <Compile Include="AssetUtility.cs" />
-    <Compile Include="Pickers\PickerFields.cs" />
-    <Compile Include="Pickers\ValuePicker.cs" />
-    <Compile Include="Pickers\TypePicker.cs" />
-    <Compile Include="RuntimeAssemblyEditor.cs" />
-    <Compile Include="ArtifactEditor.cs" />
-    <Compile Include="PreloadAssemblyEditor.cs" />
+    <Compile Include="Editors\RuntimeAssemblyEditor.cs" />
+    <Compile Include="Editors\ArtifactEditor.cs" />
+    <Compile Include="Editors\PreloadAssemblyEditor.cs" />
     <Compile Include="ExportValidationError.cs" />
     <Compile Include="ScriptableSingleton.cs" />
-    <Compile Include="SelectionEditor.cs" />
-    <Compile Include="ExportEditor.cs" />
+    <Compile Include="Editors\ExportEditor.cs" />
     <Compile Include="EditorScriptableSingleton.cs" />
     <Compile Include="Export.cs" />
     <Compile Include="ExporterEditorWindow.cs" />
@@ -92,6 +100,7 @@
       <Name>Disunity.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Editor\$(TargetName).dll"

@@ -41,9 +41,13 @@ namespace Disunity.Editor {
 
         [field: SerializeField] public ContentType ContentTypes { get; set; }
 
-        [field: SerializeField] public string StartupClass { get; set; }
+        [field: SerializeField] public string RuntimeClass { get; set; }
 
-        [field: SerializeField] public string StartupAssembly { get; set; }
+        [field: SerializeField] public string RuntimeAssembly { get; set; }
+
+        [field: SerializeField] public string PreloadClass { get; set; }
+
+        [field: SerializeField] public string PreloadAssembly { get; set; }
 
     }
 

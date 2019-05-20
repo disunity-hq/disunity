@@ -131,8 +131,10 @@ namespace Disunity.Editor {
                 _settings.ContentTypes,
                 preloadAssemblies.ToArray(),
                 runtimeAssemblies.ToArray(),
-                _settings.StartupClass,
-                _settings.StartupAssembly);
+                _settings.PreloadClass,
+                _settings.PreloadAssembly,
+                _settings.RuntimeClass,
+                _settings.RuntimeAssembly);
 
             ModInfo.Save(Path.Combine(_tempModDirectory, _settings.Name + ".info"), modInfo);
         }

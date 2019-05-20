@@ -48,8 +48,8 @@ namespace Disunity.Runtime {
         }
 
         private void BootMod(RuntimeMod mod) {
-            var startupAssembly = mod.Info.StartupAssembly;
-            var startupClass = mod.Info.StartupClass;
+            var startupAssembly = mod.Info.RuntimeAssembly;
+            var startupClass = mod.Info.RuntimeClass;
 
             if (startupAssembly.IsNullOrWhiteSpace() || startupClass.IsNullOrWhiteSpace()) {
                 _log.LogInfo($"Loaded {mod.Info.Name}");

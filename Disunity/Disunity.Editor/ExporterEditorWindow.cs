@@ -1,4 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using Disunity.Editor.Editors;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -13,70 +16,80 @@ namespace Disunity.Editor {
         private PreloadAssemblyEditor _preloadAssemblyEditor;
         private PrefabEditor _prefabEditor;
         private SceneEditor _sceneEditor;
+        private EditorSelector _editorSelector;
+        private DependencyEditor _dependencyEditor;
 
         private ExportEditor _exportEditor;
         private EditorScriptableSingleton<ExportSettings> _exportSettings;
 
         private int _selectedTab;
 
-
-        [MenuItem("Disunity/Export Mod")]
+        [MenuItem("Disunity/Exporter")]
         public static void ShowWindow() {
             var window = GetWindow<ExporterEditorWindow>();
-            window.titleContent = new GUIContent("Disunity Mod Export");
-            window.minSize = new Vector2(450, 320);
+            window.titleContent = new GUIContent("Disunity Exporter");
+            window.minSize = new Vector2(150, 150);
             window.Focus();
         }
 
         private void OnEnable() {
             _exportSettings = new EditorScriptableSingleton<ExportSettings>();
-            _runtimeAssemblyEditor = new RuntimeAssemblyEditor(_exportSettings.Instance);
-            _preloadAssemblyEditor = new PreloadAssemblyEditor(_exportSettings.Instance);
-            _artifactEditor = new ArtifactEditor(_exportSettings.Instance);
-            _prefabEditor = new PrefabEditor(_exportSettings.Instance);
-            _sceneEditor = new SceneEditor(_exportSettings.Instance);
-            _exportEditor = new ExportEditor();
+            _runtimeAssemblyEditor = new RuntimeAssemblyEditor(this, _exportSettings.Instance);
+            _preloadAssemblyEditor = new PreloadAssemblyEditor(this, _exportSettings.Instance);
+            _artifactEditor = new ArtifactEditor(this, _exportSettings.Instance);
+            _prefabEditor = new PrefabEditor(this);
+            _sceneEditor = new SceneEditor(this, _exportSettings.Instance);
+            _exportEditor = new ExportEditor(this, _exportSettings.Instance);
+            _dependencyEditor = new DependencyEditor(this);
+            _editorSelector = new EditorSelector();
+            _editorSelector.AddEditor(_runtimeAssemblyEditor);
+            _editorSelector.AddEditor(_prefabEditor);
+            _editorSelector.AddEditor(_sceneEditor);
+            _editorSelector.AddEditor(_preloadAssemblyEditor);
+            _editorSelector.AddEditor(_dependencyEditor);
+            _editorSelector.AddEditor(_exportEditor);
         }
 
-        private void DrawExportEditor(ExportSettings settings) {
-            if (_exportEditor.Draw(settings)) {
-                var buttonPressed = GUILayout.Button("Export", GUILayout.Height(30));
+        private void DrawHelpInfo() {
+            var message = @"<b>Disunity Exporter Quickhelp</b>
 
-                if (buttonPressed) {
-                    Export.ExportMod(settings);
-                }
-            }
+The full documentation is available at https://disunity.io/exporter/
+
+<b>Exporting requires:</b>
+    - All basic mod info specified
+    - At least one kind of mod content is included
+
+<b>Content types:</b>
+    - Prefabs : premade gameobjects from your project
+    - Scenes  : entire unity scenes to load in the game
+    - Scripts : Assemblies of classes loaded at runtime
+    - Preload : Assemblies of classes loaded before the game
+
+<b>Assembly Definitions</b>
+
+There are two kinds of mod assemblies. Runtime script assemblies, and
+Preload assemblies. Runtime assemblies are loaded after the game, and 
+can modify and hook game code, load prefabs and scenes and so on. 
+
+Preload assemblies are loaded before the game, and can patch assemblies
+before they loaded normally.
+
+In both cases, assemblies are defined by Unity 'Assembly Definition Assets'
+which can be created using the <b>Assets -> Create -> Assembly Definition</b> 
+menu. Any script files in the same or child folders of the '.asmdef' file 
+will be included in that assembly. 
+
+Check the documentation for more information.
+";
+
+            GUIStyle myStyle = GUI.skin.GetStyle("HelpBox");
+            myStyle.richText = true;
+
+            EditorGUILayout.TextArea(message, myStyle);
         }
 
         private void OnGUI() {
-            GUI.enabled = !EditorApplication.isCompiling && !Application.isPlaying;
-
-            var settings = _exportSettings.Instance;
-
-            var tabs = new[] {"Export",  "Runtime Assemblies", "Prefabs", "Scenes", "Copy Artifacts", "Preload Assemblies"};
-
-            _selectedTab = GUILayout.Toolbar(_selectedTab, tabs);
-
-            switch (tabs[_selectedTab]) {
-                case "Export":
-                    DrawExportEditor(settings);
-                    break;
-                case "Runtime Assemblies":
-                    _runtimeAssemblyEditor.Draw();
-                    break;
-                case "Preload Assemblies":
-                    _preloadAssemblyEditor.Draw();
-                    break;
-                case "Copy Artifacts":
-                    _artifactEditor.Draw();
-                    break;
-                case "Prefabs":
-                    _prefabEditor.Draw();
-                    break;
-                case "Scenes":
-                    _sceneEditor.Draw();
-                    break;
-            }
+            _editorSelector.Draw();
         }
 
         public static void ExportMod() {

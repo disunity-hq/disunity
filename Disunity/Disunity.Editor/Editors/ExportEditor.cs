@@ -1,16 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Disunity.Core;
-using Disunity.Editor.Pickers;
+using Disunity.Editor.Fields;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 
-namespace Disunity.Editor {
+namespace Disunity.Editor.Editors {
 
-    internal class ExportEditor {
+    internal class ExportEditor : BaseEditor {
+
+        private readonly ExportSettings _settings;
+        private readonly ClassPickerField preloadPicker;
+        private readonly ClassPickerField runtimePicker;
+
+        public ExportEditor(EditorWindow window, ExportSettings settings) : base(window) {
+            _settings = settings;
+            preloadPicker = new ClassPickerField();
+            runtimePicker = new ClassPickerField();
+        }
 
         private string GetShortString(string str) {
             var maxWidth = (int) EditorGUIUtility.currentViewWidth - 252;
@@ -42,10 +51,10 @@ namespace Disunity.Editor {
 
         private void DrawDetails(ExportSettings settings) {
             DrawSection(() => {
-                settings.Name = EditorGUILayout.TextField("Mod name:", settings.Name);
-                settings.Author = EditorGUILayout.TextField("Author:", settings.Author);
+                settings.Name = EditorGUILayout.TextField(new GUIContent("Mod name:", "Your mod's public name"), settings.Name);
+                settings.Author = EditorGUILayout.TextField(new GUIContent("Author:", "Who should get credit for this mod?"), settings.Author);
                 settings.Version = EditorGUILayout.TextField("Version:", settings.Version);
-                settings.Description = EditorGUILayout.TextField("Description:", settings.Description, GUILayout.Height(60));
+                settings.Description = EditorGUILayout.TextField(new GUIContent("Description:", "Short sentence describing what this mod does."), settings.Description, GUILayout.Height(60));
             });
 
             var details = new[] {settings.Name, settings.Author, settings.Version, settings.Description};
@@ -53,9 +62,13 @@ namespace Disunity.Editor {
             if (details.Any(o => o == "")) {
                 throw new ExportValidationError("All mod details must be specified.");
             }
+
+            DrawContentWarning(settings);
         }
 
-        private void DrawContentSelector(ExportSettings settings) {
+        private void DrawContentWarning(ExportSettings settings) {
+
+            settings.ContentTypes = 0;
             if (settings.PreloadAssemblies.Length > 0)
                 settings.ContentTypes |= ContentType.PreloadAssemblies;
             if (settings.RuntimeAssemblies.Length > 0)
@@ -64,62 +77,30 @@ namespace Disunity.Editor {
                 settings.ContentTypes |= ContentType.Prefabs;
             if (settings.Scenes.Length > 0)
                 settings.ContentTypes |= ContentType.Scenes;
+            if (settings.Artifacts.Length > 0)
+                settings.ContentTypes |= ContentType.Artifacts;
 
-            if ((int) settings.ContentTypes == 0) {
+            if (settings.ContentTypes == 0) {
                 throw new ExportValidationError("You must include some content in your mod.");
             }
         }
 
-        private Dictionary<string, Type> GetModBehaviours(ExportSettings settings) {
-            var modBehaviours = new Dictionary<string, Type>();
-            var runtimeAssemblies = settings.RuntimeAssemblies.Select(o => ((AssemblyDefinitionAsset) o).name);
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-                if (!runtimeAssemblies.Contains(assembly.GetName().Name)) {
-                    continue;
-                }
-
-                var types = assembly.ExportedTypes;
-                foreach (var type in types) {
-                    modBehaviours[$"{assembly.GetName().Name}.{type.FullName}"] = type;
-                }
-            }
-
-            return modBehaviours;
-        }
-
-        private void DrawStartupSelector(ExportSettings settings) {
-            if (settings.RuntimeAssemblies.Length == 0) {
-                settings.StartupClass = null;
-                settings.StartupAssembly = null;
+        private void DrawStartupSelector(ClassPickerField field, Object[] assemblies, string currentClass, string currentAssembly, Action<string, string> handler, string labelText) {
+            if (assemblies.Length == 0) {
                 return;
             }
 
             DrawSection(() => {
-                var modBehaviours = new Dictionary<string, Type>();
-
-                var style = new GUIStyle("TextField") { fixedHeight = 16 };
-
-                var label = string.IsNullOrEmpty(settings.StartupClass) ? 
-                    "None Selected." : $"{settings.StartupAssembly}.{settings.StartupClass}";
-
                 EditorGUILayout.BeginHorizontal();
 
-                EditorGUILayout.LabelField("Startup ModBehaviour:", GUILayout.Width(145));
+                EditorGUILayout.LabelField($"{labelText}:", GUILayout.Width(145));
 
-                StringPicker.Button(label, () => {
-                    modBehaviours = GetModBehaviours(settings);
-                    return modBehaviours.Keys;
-                }, t => {
-                    var behaviour = modBehaviours[t];
-                    settings.StartupClass = behaviour.FullName;
-                    settings.StartupAssembly = behaviour.Assembly.GetName().Name;
-                }, false, style);
+                field.OnGUI(currentClass, currentAssembly, assemblies, handler);
 
-                if (settings.StartupClass != null) {
+                if (field.Selection != null) {
                     if (GUILayout.Button("X", GUILayout.Width(24), GUILayout.Height(14))) {
-                        settings.StartupClass = null;
-                        settings.StartupAssembly = null;
+                        field.Selection = null;
+                        handler(null, null);
                     }
                 }
 
@@ -130,7 +111,7 @@ namespace Disunity.Editor {
         private void DrawDirectorySelector(ExportSettings settings) {
             GUILayout.BeginHorizontal();
 
-            EditorGUILayout.TextField("Output Directory*:", GetShortString(settings.OutputDirectory));
+            EditorGUILayout.TextField("Output Directory:", GetShortString(settings.OutputDirectory));
 
             if (GUILayout.Button("...", GUILayout.Width(30))) {
                 var selectedDirectory =
@@ -155,22 +136,54 @@ namespace Disunity.Editor {
 
         private void DrawSections(ExportSettings settings) {
             DrawDetails(settings);
-            DrawStartupSelector(settings);
+            DrawStartupSelector(preloadPicker, settings.PreloadAssemblies, settings.PreloadClass, settings.PreloadAssembly, (c, a) => {
+                settings.PreloadClass = c;
+                settings.PreloadAssembly = a;
+                preloadPicker.Picker.Close();
+                _window.Repaint();
+            }, "Preload class");
+            DrawStartupSelector(runtimePicker, settings.RuntimeAssemblies, settings.RuntimeClass, settings.RuntimeAssembly, (c, a) => {
+                settings.RuntimeClass = c;
+                settings.RuntimeAssembly = a;
+                runtimePicker.Picker.Close();
+                _window.Repaint();
+            }, "Runtime class");
             DrawExportOptions(settings);
         }
 
-        public bool Draw(ExportSettings settings) {
+        public override string Label() {
+            return "Export";
+        }
+
+        public override string Title() {
+            return "Mod Export";
+        }
+
+        public override void Draw() {
             var valid = true;
 
             try {
-                DrawSections(settings);
+                DrawSections(_settings);
             }
             catch (ExportValidationError e) {
                 EditorGUILayout.HelpBox(e.Message, MessageType.Warning);
                 valid = false;
             }
 
-            return valid;
+            if (valid && GUILayout.Button("Export")) {
+                Export.ExportMod(_settings);
+            }
+        }
+
+        public override string Help() {
+            return @"Specify your mod's basic details and export.
+
+Each mod <b>must</b>:
+  - Provide all basic info
+  - Include some content
+
+Once you've provided all basic mod details and added at least some content
+then the `Export` button will appear.";
         }
 
     }

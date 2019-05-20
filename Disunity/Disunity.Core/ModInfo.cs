@@ -18,8 +18,10 @@ namespace Disunity.Core {
         private string _unityVersion;
         private string[] _preloadAssemblies;
         private string[] _runtimeAssemblies;
-        private string _startupClass;
-        private string _startupAssembly;
+        private string _runtimeClass;
+        private string _runtimeAssembly;
+        private string _preloadClass;
+        private string _preloadAssembly;
 
         /// <summary>
         ///     Initialize a new ModInfo.
@@ -39,9 +41,11 @@ namespace Disunity.Core {
             string unityVersion,
             ContentType contentTypes,
             string[] preloadAssemblies,
-            string[] runtimeAssemblies, 
-            string startupClass, 
-            string startupAssembly) {
+            string[] runtimeAssemblies,
+            string preloadClass,
+            string preloadAssembly,
+            string runtimeClass,
+            string runtimeAssembly) {
 
             _author = author;
             _description = description;
@@ -51,8 +55,10 @@ namespace Disunity.Core {
             _unityVersion = unityVersion;
             _preloadAssemblies = preloadAssemblies;
             _runtimeAssemblies = runtimeAssemblies;
-            _startupClass = startupClass;
-            _startupAssembly = startupAssembly;
+            _runtimeClass = runtimeClass;
+            _runtimeAssembly = runtimeAssembly;
+            _preloadClass = preloadClass;
+            _preloadAssembly = preloadAssembly;
 
             _isEnabled = false;
         }
@@ -131,18 +137,36 @@ namespace Disunity.Core {
         ///     The version of Unity that was used to export this mod.
         /// </summary>
 
-        public string StartupClass {
-            get => _startupClass;
-            set => _startupClass = value;
+        public string RuntimeClass {
+            get => _runtimeClass;
+            set => _runtimeClass = value;
         }
 
         /// <summary>
         ///     The version of Unity that was used to export this mod.
         /// </summary>
 
-        public string StartupAssembly {
-            get => _startupAssembly;
-            set => _startupAssembly = value;
+        public string RuntimeAssembly {
+            get => _runtimeAssembly;
+            set => _runtimeAssembly = value;
+        }
+
+        /// <summary>
+        ///     The version of Unity that was used to export this mod.
+        /// </summary>
+
+        public string PreloadClass {
+            get => _preloadClass;
+            set => _preloadClass = value;
+        }
+
+        /// <summary>
+        ///     The version of Unity that was used to export this mod.
+        /// </summary>
+
+        public string PreloadAssembly {
+            get => _preloadAssembly;
+            set => _preloadAssembly = value;
         }
 
         /// <summary>
