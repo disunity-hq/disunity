@@ -30,10 +30,6 @@ explains how to use it.
 
 ";
 
-        public EditorSelector() {
-
-        }
-
         public void AddEditor(BaseEditor editor) {
             _editors.Add(editor);
         }
