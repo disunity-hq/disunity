@@ -79,22 +79,6 @@ namespace Disunity.Editor {
             return destinations;
         }
 
-        private void SetContentTypes() {
-            _settings.ContentTypes = 0;
-            if (_settings.PreloadAssemblies.Length > 0) {
-                _settings.ContentTypes |= ContentType.PreloadAssemblies;
-            }
-            if (_settings.RuntimeAssemblies.Length > 0) {
-                _settings.ContentTypes |= ContentType.RuntimeAssemblies;
-            }
-            if (_settings.Prefabs.Length > 0) {
-                _settings.ContentTypes |= ContentType.Prefabs;
-            }
-            if (_settings.Scenes.Length > 0) {
-                _settings.ContentTypes |= ContentType.Scenes;
-            }
-        }
-
         private List<string> ExportRuntimeAssemblies() {
             return ExportAssemblies(_settings.RuntimeAssemblies, "runtime");
         }
@@ -162,7 +146,7 @@ namespace Disunity.Editor {
             var runtimeAssemblies = ExportRuntimeAssemblies();
             ExportCopyAssets();
             ExportModAssets();
-            SetContentTypes();
+            _settings.UpdateContentTypes();
             SaveMetadata(preloadAssemblies, runtimeAssemblies);
             CopyToOutput();
         }

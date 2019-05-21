@@ -49,6 +49,25 @@ namespace Disunity.Editor {
 
         [field: SerializeField] public string PreloadAssembly { get; set; }
 
+        public void UpdateContentTypes() {
+            ContentTypes = 0;
+            if (PreloadAssemblies.Length > 0) {
+                ContentTypes |= ContentType.PreloadAssemblies;
+            }
+            if (RuntimeAssemblies.Length > 0) {
+                ContentTypes |= ContentType.RuntimeAssemblies;
+            }
+            if (Prefabs.Length > 0) {
+                ContentTypes |= ContentType.Prefabs;
+            }
+            if (Scenes.Length > 0) {
+                ContentTypes |= ContentType.Scenes;
+            }
+            if (Artifacts.Length > 0) {
+                ContentTypes |= ContentType.Artifacts;
+            }
+        }
+
     }
 
 }
