@@ -1,11 +1,18 @@
-﻿using UnityEditor;
-
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 namespace Disunity.Editor.Editors {
 
-    internal class ArtifactEditor : BaseAssetEditor {
+    internal class ArtifactEditor : BaseSettingsAssetEditor<Object> {
 
-        public ArtifactEditor(EditorWindow window, ExportSettings settings) : base(window) { }
+        protected override IEnumerable<Object> Setting {
+            get => _settings.Artifacts;
+            set => _settings.Artifacts = value.ToArray();
+        }
+
+        public ArtifactEditor(EditorWindow window, ExportSettings settings) : base(window, settings) { }
 
         public override string Label() {
             return "Artifacts";

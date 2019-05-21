@@ -1,12 +1,18 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-
+using UnityEngine;
 
 namespace Disunity.Editor.Editors {
 
-    internal class PrefabEditor : BaseAssetEditor {
+    internal class PrefabEditor : BaseSettingsAssetEditor<GameObject> {
 
-        public PrefabEditor(EditorWindow window) : base(window) { }
+        protected override IEnumerable<GameObject> Setting {
+            get => _settings.Prefabs;
+            set => _settings.Prefabs = value.ToArray();
+        }
+
+        public PrefabEditor(EditorWindow window, ExportSettings settings) : base(window, settings) { }
 
         public override string Label() {
             return "Prefabs";
@@ -30,13 +36,6 @@ for all sorts of things including settings. However, a limitation of Disunity
 for fields on a ScriptableObject. Normally, any custom C# class would work,
 but due to a limitation in how Unity serializes information, only basic types
 like strings, ints, floats, and basic arrays will work.";
-        }
-
-        public override string[] GetAssetPaths() {
-            return AssetDatabase
-                .FindAssets("t:GameObject t:ScriptableObject")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .ToArray();
         }
     }
 }

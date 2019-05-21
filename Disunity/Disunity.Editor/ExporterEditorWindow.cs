@@ -37,7 +37,7 @@ namespace Disunity.Editor {
             _runtimeAssemblyEditor = new RuntimeAssemblyEditor(this, _exportSettings.Instance);
             _preloadAssemblyEditor = new PreloadAssemblyEditor(this, _exportSettings.Instance);
             _artifactEditor = new ArtifactEditor(this, _exportSettings.Instance);
-            _prefabEditor = new PrefabEditor(this);
+            _prefabEditor = new PrefabEditor(this, _exportSettings.Instance);
             _sceneEditor = new SceneEditor(this, _exportSettings.Instance);
             _exportEditor = new ExportEditor(this, _exportSettings.Instance);
             _dependencyEditor = new DependencyEditor(this);

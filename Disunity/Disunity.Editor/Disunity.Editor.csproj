@@ -67,6 +67,7 @@
     <Compile Include="Editors\BaseSelectionEditor.cs" />
     <Compile Include="AsyncEditorTask.cs" />
     <Compile Include="Editors\BaseAssetEditor.cs" />
+    <Compile Include="Editors\BaseSettingsAssetEditor.cs" />
     <Compile Include="Fields\BasePickerField.cs" />
     <Compile Include="Fields\ClassPickerField.cs" />
     <Compile Include="Pickers\BasePicker.cs" />

@@ -1,12 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-
 
 namespace Disunity.Editor.Editors {
 
-    internal class SceneEditor : BaseAssetEditor {
+    internal class SceneEditor : BaseSettingsAssetEditor<SceneAsset> {
 
-        public SceneEditor(EditorWindow window, ExportSettings settings) : base(window) { }
+        protected override IEnumerable<SceneAsset> Setting {
+            get => _settings.Scenes;
+            set => _settings.Scenes = value.ToArray();
+        }
+
+        public SceneEditor(EditorWindow window, ExportSettings settings) : base(window, settings) { }
 
         public override string Label() {
             return "Scenes";
@@ -18,12 +23,6 @@ namespace Disunity.Editor.Editors {
 
         public override string Help() {
             return "Scenes can be exported to your mod here.";
-        }
-        public override string[] GetAssetPaths() {
-            return AssetDatabase
-                .FindAssets("t:Scene")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .ToArray();
         }
     }
 }
