@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Disunity.Core;
 using Disunity.Editor.Fields;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-using Object = UnityEngine.Object;
-
 
 namespace Disunity.Editor.Editors {
 
@@ -67,25 +65,13 @@ namespace Disunity.Editor.Editors {
         }
 
         private void DrawContentWarning(ExportSettings settings) {
-
-            settings.ContentTypes = 0;
-            if (settings.PreloadAssemblies.Length > 0)
-                settings.ContentTypes |= ContentType.PreloadAssemblies;
-            if (settings.RuntimeAssemblies.Length > 0)
-                settings.ContentTypes |= ContentType.RuntimeAssemblies;
-            if (settings.Prefabs.Length > 0)
-                settings.ContentTypes |= ContentType.Prefabs;
-            if (settings.Scenes.Length > 0)
-                settings.ContentTypes |= ContentType.Scenes;
-            if (settings.Artifacts.Length > 0)
-                settings.ContentTypes |= ContentType.Artifacts;
-
+            settings.UpdateContentTypes();
             if (settings.ContentTypes == 0) {
                 throw new ExportValidationError("You must include some content in your mod.");
             }
         }
 
-        private void DrawStartupSelector(ClassPickerField field, Object[] assemblies, string currentClass, string currentAssembly, Action<string, string> handler, string labelText) {
+        private void DrawStartupSelector(ClassPickerField field, AssemblyDefinitionAsset[] assemblies, string currentClass, string currentAssembly, Action<string, string> handler, string labelText) {
             if (assemblies.Length == 0) {
                 return;
             }

@@ -1,12 +1,19 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-
+using UnityEditorInternal;
+using UnityEngine;
 
 namespace Disunity.Editor.Editors {
 
-    internal class RuntimeAssemblyEditor : BaseAssetEditor {
+    internal class RuntimeAssemblyEditor : BaseSettingsAssetEditor<AssemblyDefinitionAsset> {
 
-        public RuntimeAssemblyEditor(EditorWindow window, ExportSettings settings) : base(window) { }
+        protected override IEnumerable<AssemblyDefinitionAsset> Setting {
+            get => _settings.RuntimeAssemblies;
+            set => _settings.RuntimeAssemblies = value.ToArray();
+        }
+
+        public RuntimeAssemblyEditor(EditorWindow window, ExportSettings settings) : base(window, settings) { }
 
         public override string Label() {
             return "Scripts";
@@ -32,13 +39,5 @@ Runtime assemblies are defined by a Unity Assembly Definition
 Asset. These can be created using the 
 <b>Assets -> Create -> Assembly Definition</b> menu.";
         }
-
-        public override string[] GetAssetPaths() {
-            return AssetDatabase
-                .FindAssets("t:AssemblyDefinitionAsset")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .ToArray();
-        }
-
     }
 }

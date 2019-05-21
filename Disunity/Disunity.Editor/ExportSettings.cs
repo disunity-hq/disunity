@@ -1,11 +1,11 @@
 ﻿using Disunity.Core;
+using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-
 
 namespace Disunity.Editor {
 
     public class ExportSettings : ScriptableObject {
-
         /// <summary>
         ///     The Mod's name.
         /// </summary>
@@ -29,13 +29,13 @@ namespace Disunity.Editor {
         /// <summary>
         ///     The directory to which the Mod will be exported.
         /// </summary>
-        [field: SerializeField] public Object[] PreloadAssemblies { get; set; } = { };
+        [field: SerializeField] public AssemblyDefinitionAsset[] PreloadAssemblies { get; set; } = { };
 
-        [field: SerializeField] public Object[] RuntimeAssemblies { get; set; } = { };
+        [field: SerializeField] public AssemblyDefinitionAsset[] RuntimeAssemblies { get; set; } = { };
 
         [field: SerializeField] public Object[] Artifacts { get; set; } = { };
-        [field: SerializeField] public Object[] Prefabs { get; set; } = { };
-        [field: SerializeField] public Object[] Scenes { get; set; } = { };
+        [field: SerializeField] public GameObject[] Prefabs { get; set; } = { };
+        [field: SerializeField] public SceneAsset[] Scenes { get; set; } = { };
 
         [field: SerializeField] public string OutputDirectory { get; set; }
 
@@ -48,6 +48,25 @@ namespace Disunity.Editor {
         [field: SerializeField] public string PreloadClass { get; set; }
 
         [field: SerializeField] public string PreloadAssembly { get; set; }
+
+        public void UpdateContentTypes() {
+            ContentTypes = 0;
+            if (PreloadAssemblies.Length > 0) {
+                ContentTypes |= ContentType.PreloadAssemblies;
+            }
+            if (RuntimeAssemblies.Length > 0) {
+                ContentTypes |= ContentType.RuntimeAssemblies;
+            }
+            if (Prefabs.Length > 0) {
+                ContentTypes |= ContentType.Prefabs;
+            }
+            if (Scenes.Length > 0) {
+                ContentTypes |= ContentType.Scenes;
+            }
+            if (Artifacts.Length > 0) {
+                ContentTypes |= ContentType.Artifacts;
+            }
+        }
 
     }
 

@@ -1,12 +1,19 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-
+using UnityEditorInternal;
+using UnityEngine;
 
 namespace Disunity.Editor.Editors {
 
-    internal class PreloadAssemblyEditor : BaseAssetEditor {
+    internal class PreloadAssemblyEditor : BaseSettingsAssetEditor<AssemblyDefinitionAsset> {
 
-        public PreloadAssemblyEditor(EditorWindow window, ExportSettings settings) : base(window) { }
+        protected override IEnumerable<AssemblyDefinitionAsset> Setting {
+            get => _settings.PreloadAssemblies;
+            set => _settings.PreloadAssemblies = value.ToArray();
+        }
+
+        public PreloadAssemblyEditor(EditorWindow window, ExportSettings settings) : base(window, settings) { }
 
         public override string Label() {
             return "Preload";
@@ -31,13 +38,6 @@ Preload assemblies are defined by a Unity Assembly Definition
 Asset. These can be created using the 
 <b>Assets -> Create -> Assembly Definition</b> menu.
 ";
-        }
-
-        public override string[] GetAssetPaths() {
-            return AssetDatabase
-                .FindAssets("t:AssemblyDefinitionAsset")
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .ToArray();
         }
     }
 }

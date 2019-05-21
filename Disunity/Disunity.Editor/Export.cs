@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Disunity.Core;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-using Object = System.Object;
-
 
 namespace Disunity.Editor {
 
@@ -52,7 +50,7 @@ namespace Disunity.Editor {
             Directory.CreateDirectory(_tempModDirectory);
         }
 
-        private List<string> ExportAssemblies(UnityEngine.Object[] assemblies, string folder) {
+        private List<string> ExportAssemblies(AssemblyDefinitionAsset[] assemblies, string folder) {
             var destinations = new List<string>();
             if (assemblies.Length == 0) return destinations;
             var destinationPath = Path.Combine(_tempModDirectory, folder);
@@ -77,22 +75,6 @@ namespace Disunity.Editor {
             }
 
             return destinations;
-        }
-
-        private void SetContentTypes() {
-            _settings.ContentTypes = 0;
-            if (_settings.PreloadAssemblies.Length > 0) {
-                _settings.ContentTypes |= ContentType.PreloadAssemblies;
-            }
-            if (_settings.RuntimeAssemblies.Length > 0) {
-                _settings.ContentTypes |= ContentType.RuntimeAssemblies;
-            }
-            if (_settings.Prefabs.Length > 0) {
-                _settings.ContentTypes |= ContentType.Prefabs;
-            }
-            if (_settings.Scenes.Length > 0) {
-                _settings.ContentTypes |= ContentType.Scenes;
-            }
         }
 
         private List<string> ExportRuntimeAssemblies() {
@@ -162,7 +144,7 @@ namespace Disunity.Editor {
             var runtimeAssemblies = ExportRuntimeAssemblies();
             ExportCopyAssets();
             ExportModAssets();
-            SetContentTypes();
+            _settings.UpdateContentTypes();
             SaveMetadata(preloadAssemblies, runtimeAssemblies);
             CopyToOutput();
         }
