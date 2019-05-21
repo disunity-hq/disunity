@@ -47,6 +47,7 @@ namespace Disunity.Editor {
             _editorSelector.AddEditor(_sceneEditor);
             _editorSelector.AddEditor(_preloadAssemblyEditor);
             _editorSelector.AddEditor(_dependencyEditor);
+            _editorSelector.AddEditor(_artifactEditor);
             _editorSelector.AddEditor(_exportEditor);
         }
 
