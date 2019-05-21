@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Disunity.Core;
 using Disunity.Editor.Fields;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-using Object = UnityEngine.Object;
-
 
 namespace Disunity.Editor.Editors {
 
@@ -73,7 +71,7 @@ namespace Disunity.Editor.Editors {
             }
         }
 
-        private void DrawStartupSelector(ClassPickerField field, Object[] assemblies, string currentClass, string currentAssembly, Action<string, string> handler, string labelText) {
+        private void DrawStartupSelector(ClassPickerField field, AssemblyDefinitionAsset[] assemblies, string currentClass, string currentAssembly, Action<string, string> handler, string labelText) {
             if (assemblies.Length == 0) {
                 return;
             }

@@ -1,11 +1,11 @@
 ﻿using Disunity.Core;
+using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-
 
 namespace Disunity.Editor {
 
     public class ExportSettings : ScriptableObject {
-
         /// <summary>
         ///     The Mod's name.
         /// </summary>
@@ -29,13 +29,13 @@ namespace Disunity.Editor {
         /// <summary>
         ///     The directory to which the Mod will be exported.
         /// </summary>
-        [field: SerializeField] public Object[] PreloadAssemblies { get; set; } = { };
+        [field: SerializeField] public AssemblyDefinitionAsset[] PreloadAssemblies { get; set; } = { };
 
-        [field: SerializeField] public Object[] RuntimeAssemblies { get; set; } = { };
+        [field: SerializeField] public AssemblyDefinitionAsset[] RuntimeAssemblies { get; set; } = { };
 
         [field: SerializeField] public Object[] Artifacts { get; set; } = { };
-        [field: SerializeField] public Object[] Prefabs { get; set; } = { };
-        [field: SerializeField] public Object[] Scenes { get; set; } = { };
+        [field: SerializeField] public GameObject[] Prefabs { get; set; } = { };
+        [field: SerializeField] public SceneAsset[] Scenes { get; set; } = { };
 
         [field: SerializeField] public string OutputDirectory { get; set; }
 

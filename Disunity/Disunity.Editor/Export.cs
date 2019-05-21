@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Disunity.Core;
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-using Object = System.Object;
-
 
 namespace Disunity.Editor {
 
@@ -52,7 +50,7 @@ namespace Disunity.Editor {
             Directory.CreateDirectory(_tempModDirectory);
         }
 
-        private List<string> ExportAssemblies(UnityEngine.Object[] assemblies, string folder) {
+        private List<string> ExportAssemblies(AssemblyDefinitionAsset[] assemblies, string folder) {
             var destinations = new List<string>();
             if (assemblies.Length == 0) return destinations;
             var destinationPath = Path.Combine(_tempModDirectory, folder);

@@ -10,9 +10,9 @@ namespace Disunity.Editor.Fields {
 
     public class ClassPickerField : BasePickerField<GenericEntry, FilteredPicker> {
 
-        protected Dictionary<string, Type> GetTypesFromAssemblies(Object[] options) {
+        protected Dictionary<string, Type> GetTypesFromAssemblies(AssemblyDefinitionAsset[] options) {
             var types = new Dictionary<string, Type>();
-            var assemblies = options.Select(o => ( (AssemblyDefinitionAsset)o ).name);
+            var assemblies = options.Select(o => o.name);
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
                 if (!assemblies.Contains(assembly.GetName().Name)) {
@@ -32,7 +32,7 @@ namespace Disunity.Editor.Fields {
             return new List<IEntry>(entries);
         }
 
-        public void OnGUI(string currentClass, string currentAssembly, Object[] assemblies, Action<string, string> handler) {
+        public void OnGUI(string currentClass, string currentAssembly, AssemblyDefinitionAsset[] assemblies, Action<string, string> handler) {
             var types = new Dictionary<string, Type>();
 
             List<IEntry> Generator() {
