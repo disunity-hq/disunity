@@ -1,34 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Disunity.Editor.Pickers;
+using Disunity.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
 
 
 namespace Disunity.Editor.Fields {
 
-    public class BasePickerField<TS, TP> where TS : class, IEntry where TP : BasePicker {
+    public abstract class BasePickerField {
 
-        public TS Selection { get; set; }
-        public TP Picker { get; protected set; }
+        public ExporterWindow Window { get; protected set; }
         public GUIStyle Style { get; set; }
-        public FilterSet Filters { get; protected set; }
+        public BasePicker Picker { get; protected set; }
+        public BasePickerWindow PickerWindow { get; protected set; }
 
-        public BasePickerField(GUIStyle style = null, FilterSet filters = null) {
-            Style = style;
-            Filters = filters;
+        protected abstract List<ListEntry> GenerateOptions();
+        public abstract string CurrentSelection();
+        public abstract void SelectionMade(ListEntry obj);
+
+        protected BasePickerField(ExporterWindow window, BasePicker picker = null, GUIStyle style = null) {
+            Window = window;
+            Picker = picker ?? DefaultPicker();
+
+            Picker.OptionGenerator = GenerateOptions;
+            Picker.SelectionHandler += SelectionMade;
+            Picker.SelectionHandler += entry => window.Repaint();
+        }
+
+        public virtual BasePicker DefaultPicker() {
+            return new BasePicker();
         }
 
         public virtual GUIStyle DefaultStyle() {
             return new GUIStyle("TextField") { fixedHeight = 16 };
         }
 
-        public virtual string GetSelectionLabel() {
-            return Selection.AsString;
-        }
-
         public virtual string GetLabel() {
-            return Selection == null ? "None selected." : GetSelectionLabel();
+            return CurrentSelection() ?? "None selected.";
         }
 
         public virtual bool GetButton() {
@@ -36,23 +44,17 @@ namespace Disunity.Editor.Fields {
             return GUILayout.Button(label, Style);
         }
 
-        public virtual void HandlePress(Func<List<IEntry>> generator, Action<BasePickerField<TS, TP>> handler) {
-            var entries = generator();
-            Picker = EditorWindow.GetWindow<TP>();
-            Picker.Set(entries);
-            Picker.OnSelection += (o, s) => {
-                Selection = (TS) s;
-                handler(this);
-            };
+        public virtual void HandlePress() {
+            PickerWindow = EditorWindow.GetWindow<BasePickerWindow>();
+            PickerWindow.Picker = Picker;
+            Picker.Refresh();
         }
 
-        public void OnGUI(Func<List<IEntry>> generator, Action<BasePickerField<TS, TP>> handler, GUIStyle style = null) {
-            Style = style ?? (Style ?? DefaultStyle());
+        public void OnGUI() {
+            Style = Style ?? DefaultStyle();
             if (GetButton()) {
-                HandlePress(generator, handler);
+                HandlePress();
             }
         }
-
     }
-
 }

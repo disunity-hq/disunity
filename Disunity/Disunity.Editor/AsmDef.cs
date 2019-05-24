@@ -1,4 +1,8 @@
-﻿namespace Disunity.Editor {
+﻿using System.IO;
+using UnityEngine;
+
+
+namespace Disunity.Editor {
 
     public class AsmDef {
 
@@ -10,6 +14,12 @@
         public bool overrideReferences;
         public string[] precompiledReferences;
         public string[] references;
+
+
+        public static AsmDef FromAssetPath(string path) {
+            var json = File.ReadAllText(path);
+            return JsonUtility.FromJson<AsmDef>(json);
+        }
 
     }
 

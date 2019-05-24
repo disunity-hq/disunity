@@ -2,35 +2,37 @@
 using System.Linq;
 using Disunity.Core;
 using Disunity.Editor.Fields;
+using Disunity.Editor.Pickers;
+using Disunity.Editor.Windows;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 
 namespace Disunity.Editor.Editors {
 
     internal class ExportEditor : BaseEditor {
 
-        private readonly ExportSettings _settings;
-        private readonly ClassPickerField preloadPicker;
-        private readonly ClassPickerField runtimePicker;
+        protected readonly ClassPickerField _preloadPickerField;
+        protected readonly ClassPickerField _runtimePickerField;
 
-        public ExportEditor(EditorWindow window, ExportSettings settings) : base(window) {
-            _settings = settings;
-            preloadPicker = new ClassPickerField();
-            runtimePicker = new ClassPickerField();
+        public ExportEditor(ExporterWindow window) : base(window) {
+            _preloadPickerField = new PreloadPickerField(window);
+            _runtimePickerField = new RuntimePickerField(window);
         }
 
-        private string GetShortString(string str) {
-            var maxWidth = (int) EditorGUIUtility.currentViewWidth - 252;
-            var cutoffIndex = Mathf.Max(0, str.Length - 7 - maxWidth / 7);
-            var shortString = str.Substring(cutoffIndex);
-            if (cutoffIndex > 0) {
-                shortString = "..." + shortString;
-            }
+        public override string Label() => "Export";
 
-            return shortString;
-        }
+        public override string Title() => "Mod Export";
+
+        public override string Help() =>
+            @"Specify your mod's basic details and export.
+
+Each mod <b>must</b>:
+  - Provide all basic info
+  - Include some content
+
+Once you've provided all basic mod details and added at least some content
+then the `Export` button will appear.";
 
         private void DrawSection(Action thunk) {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.ExpandWidth(true));
@@ -85,7 +87,7 @@ namespace Disunity.Editor.Editors {
             }
         }
 
-        private void DrawStartupSelector(ClassPickerField field, Object[] assemblies, string currentClass, string currentAssembly, Action<string, string> handler, string labelText) {
+        private void DrawStartupSelector(ClassPickerField field, string[] assemblies, string labelText) {
             if (assemblies.Length == 0) {
                 return;
             }
@@ -95,12 +97,11 @@ namespace Disunity.Editor.Editors {
 
                 EditorGUILayout.LabelField($"{labelText}:", GUILayout.Width(145));
 
-                field.OnGUI(currentClass, currentAssembly, assemblies, handler);
+                field.OnGUI();
 
-                if (field.Selection != null) {
+                if (field.CurrentSelection() != null) {
                     if (GUILayout.Button("X", GUILayout.Width(24), GUILayout.Height(14))) {
-                        field.Selection = null;
-                        handler(null, null);
+                        field.SelectionMade(new ListEntry() { Value = null });
                     }
                 }
 
@@ -111,7 +112,7 @@ namespace Disunity.Editor.Editors {
         private void DrawDirectorySelector(ExportSettings settings) {
             GUILayout.BeginHorizontal();
 
-            EditorGUILayout.TextField("Output Directory:", GetShortString(settings.OutputDirectory));
+            EditorGUILayout.TextField("Output Directory:", settings.OutputDirectory);
 
             if (GUILayout.Button("...", GUILayout.Width(30))) {
                 var selectedDirectory =
@@ -136,34 +137,16 @@ namespace Disunity.Editor.Editors {
 
         private void DrawSections(ExportSettings settings) {
             DrawDetails(settings);
-            DrawStartupSelector(preloadPicker, settings.PreloadAssemblies, settings.PreloadClass, settings.PreloadAssembly, (c, a) => {
-                settings.PreloadClass = c;
-                settings.PreloadAssembly = a;
-                preloadPicker.Picker.Close();
-                _window.Repaint();
-            }, "Preload class");
-            DrawStartupSelector(runtimePicker, settings.RuntimeAssemblies, settings.RuntimeClass, settings.RuntimeAssembly, (c, a) => {
-                settings.RuntimeClass = c;
-                settings.RuntimeAssembly = a;
-                runtimePicker.Picker.Close();
-                _window.Repaint();
-            }, "Runtime class");
+            DrawStartupSelector(_preloadPickerField, settings.PreloadAssemblies, "Preload class");
+            DrawStartupSelector(_runtimePickerField, settings.RuntimeAssemblies, "Runtime class");
             DrawExportOptions(settings);
-        }
-
-        public override string Label() {
-            return "Export";
-        }
-
-        public override string Title() {
-            return "Mod Export";
         }
 
         public override void Draw() {
             var valid = true;
 
             try {
-                DrawSections(_settings);
+                DrawSections(_window.Settings);
             }
             catch (ExportValidationError e) {
                 EditorGUILayout.HelpBox(e.Message, MessageType.Warning);
@@ -171,21 +154,9 @@ namespace Disunity.Editor.Editors {
             }
 
             if (valid && GUILayout.Button("Export")) {
-                Export.ExportMod(_settings);
+                Export.ExportMod(_window.Settings);
             }
         }
-
-        public override string Help() {
-            return @"Specify your mod's basic details and export.
-
-Each mod <b>must</b>:
-  - Provide all basic info
-  - Include some content
-
-Once you've provided all basic mod details and added at least some content
-then the `Export` button will appear.";
-        }
-
     }
 
 }

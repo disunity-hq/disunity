@@ -12,18 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: -629328125, guid: 6fee6684a98ac674e868f452f96ce038, type: 3}
   m_Name: ExportSettings
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: 
-  <Author>k__BackingField: 
-  <Description>k__BackingField: 
-  <Version>k__BackingField: 
+  <Name>k__BackingField: Example Mod
+  <Author>k__BackingField: Disunity Team
+  <Description>k__BackingField: An example Disunity mod.
+  <Version>k__BackingField: 0.0.1
   <PreloadAssemblies>k__BackingField: []
-  <RuntimeAssemblies>k__BackingField: []
+  <RuntimeAssemblies>k__BackingField:
+  - Assets/ExampleMod/ExampleMod.asmdef
   <Artifacts>k__BackingField: []
   <Prefabs>k__BackingField: []
   <Scenes>k__BackingField: []
-  <OutputDirectory>k__BackingField: 
-  <ContentTypes>k__BackingField: 0
-  <StartupClass>k__BackingField: 
-  <StartupAssembly>k__BackingField: 
-  <StartupScene>k__BackingField: 
-  <StartupPrefab>k__BackingField: {fileID: 0}
+  <OutputDirectory>k__BackingField: B:/Disunity/core/build
+  <ContentTypes>k__BackingField: 4
+  <RuntimeClass>k__BackingField: ExampleMod
+  <RuntimeAssembly>k__BackingField: 
+  <PreloadClass>k__BackingField: 
+  <PreloadAssembly>k__BackingField: 
+  <Dependencies>k__BackingField: []

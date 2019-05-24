@@ -1,40 +1,89 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Disunity.Editor.Components;
 using Disunity.Editor.Pickers;
-using UnityEditor;
+using Disunity.Editor.Windows;
+using static Disunity.Editor.StoreClient;
 
 
 namespace Disunity.Editor.Editors {
 
-    class DependencyEditor : BaseSelectionEditor<VersionEntry, DependencyPicker> {
+    internal class DependencyEditor : BaseSelectionEditor {
 
-        public DependencyEditor(EditorWindow window) : base(window) { }
-
-        public override string EntryAsString(VersionEntry selection) {
-            return selection == null ? "null" : selection.Value.full_name;
+        public class DependencyEntry : TreeEntry {
+            public Dependency Dependency { get; set; }
         }
 
-        public override void SelectionFiltered(ITreeEntry entry) {
-            entry.Parent.SetEnabledRecursive(false);
-            if (!entry.Parent.Parent.Children.Any(o => o.Enabled))
-                entry.Parent.Parent.SetEnabledRecursive(false);
+        public class OwnerListEntry : DependencyEntry {
+            public override string ToString() => Dependency.owner;
         }
 
-        private static List<OwnerEntry> GenerateGraph(List<StoreClient.Dependency> dependencies) {
-            var map = new Dictionary<string, OwnerEntry>();
+        public class ModEntry : DependencyEntry {
+            public override string ToString() => Dependency.name;
+        }
+
+        public class VersionEntry : TreeEntry {
+
+            public DependencyVersion Version { get; set; }
+            public override string ToString() => Version.version_number;
+
+        }
+
+        public DependencyEditor(ExporterWindow window, FilteredPicker picker = null, Lister lister = null) : base(window, picker, lister) { }
+        
+        public override string Label() => "Dependencies";
+
+        public override string Title() => "Mod Dependencies";
+
+        public override string Help() =>
+            @"Artifacts are unmanaged files copied into your mod folder.
+
+Artifacts are useful for things like README files and other non-Unity files. They'll
+be copied directly into the root of your mod directory.
+
+To access your mod artifacts from code, use the `Mod.Info.Path` attribute to obtain
+your mod's root path.";
+
+        public override void Init() {
+            _picker.Filters.Add(FilterOtherVersions);
+            base.Init();
+        }
+
+        public void FilterOtherVersions(List<ListEntry> entries) {
+            var selections = _window.Settings;
+
+            foreach (TreeEntry entry in entries) {
+                switch (entry) {
+                    case VersionEntry versionEntry:
+                        if (_window.Settings.Dependencies.Contains(versionEntry.Version.full_name)) {
+                            versionEntry.Parent.SetEnabledRecursive(false);
+                        }
+                        break;
+
+                    default:
+                        if (entry.Children != null)
+                            FilterOtherVersions(new List<ListEntry>(entry.Children));
+                        break;
+                }
+            }
+        }
+
+        private static List<OwnerListEntry> GenerateGraph(List<Dependency> dependencies) {
+            var map = new Dictionary<string, OwnerListEntry>();
             foreach (var dep in dependencies) {
                 var owner = dep.owner;
-                var ownerNode = map.ContainsKey(owner) ? map[owner] : new OwnerEntry() { value = dep };
+                var ownerNode = map.ContainsKey(owner) ? map[owner] : new OwnerListEntry() { Dependency = dep };
                 map[owner] = ownerNode;
 
                 var modNode = new ModEntry() {
-                    value = dep,
+                    Dependency = dep,
                     Expanded = false
                 };
 
                 foreach (var version in dep.versions) {
                     modNode.Add(new VersionEntry() {
-                        value = version,
+                        Version = version,
+                        Value = version.full_name,
                         Expanded = false
                     });
                 }
@@ -45,27 +94,23 @@ namespace Disunity.Editor.Editors {
             return map.Values.ToList();
         }
 
-
-        public override List<IEntry> Generator() {
-            return new List<IEntry>(GenerateGraph(StoreClient.FetchDependencies()));
+        public override List<ListEntry> GenerateOptions() {
+            var dependencies = FetchDependencies();
+            var graph = GenerateGraph(dependencies);
+            return new List<ListEntry>(graph);
         }
 
-        public override string Label() {
-            return "Dependencies";
+        public override string[] GetSelections() => _window.Settings.Dependencies;
+
+        public override void SelectionRemoved(string selection) {
+            _window.Settings.Dependencies = _window.Settings.Dependencies.Where(o => o != selection).ToArray();
         }
 
-        public override string Title() {
-            return "Mod Dependencies";
-        }
-
-        public override string Help() {
-            return @"Artifacts are unmanaged files copied into your mod folder.
-
-Artifacts are useful for things like README files and other non-Unity files. They'll
-be copied directly into the root of your mod directory.
-
-To access your mod artifacts from code, use the `Mod.Info.Path` attribute to obtain
-your mod's root path.";
+        public override void SelectionAdded(ListEntry selection) {
+            var list = _window.Settings.Dependencies.ToList();
+            var entry = selection as VersionEntry;
+            list.Add(entry.Value);
+            _window.Settings.Dependencies = list.ToArray();
         }
     }
 }

@@ -9,8 +9,8 @@ namespace Disunity.Core {
     /// </summary>
     public class ModInfo {
 
-        private bool _isEnabled;
         private string _name;
+        private bool _isEnabled;
         private ContentType _contentTypes;
         private string _author;
         private string _description;
@@ -22,17 +22,8 @@ namespace Disunity.Core {
         private string _runtimeAssembly;
         private string _preloadClass;
         private string _preloadAssembly;
+        private string[] _dependencies;
 
-        /// <summary>
-        ///     Initialize a new ModInfo.
-        /// </summary>
-        /// <param name="name">The Mod's name.</param>
-        /// <param name="author">The Mod's author.</param>
-        /// <param name="description">The Mod's description.</param>
-        /// <param name="platforms">The Mod's supported platforms.</param>
-        /// <param name="content">The Mod's available content types.</param>
-        /// <param name="version">The Mod's version</param>
-        /// <param name="unityVersion"> The version of Unity that the Mod was exported with.</param>
         public ModInfo(
             string name,
             string author,
@@ -45,7 +36,8 @@ namespace Disunity.Core {
             string preloadClass,
             string preloadAssembly,
             string runtimeClass,
-            string runtimeAssembly) {
+            string runtimeAssembly,
+            string[] dependencies) {
 
             _author = author;
             _description = description;
@@ -59,6 +51,7 @@ namespace Disunity.Core {
             _runtimeAssembly = runtimeAssembly;
             _preloadClass = preloadClass;
             _preloadAssembly = preloadAssembly;
+            _dependencies = dependencies;
 
             _isEnabled = false;
         }
@@ -115,10 +108,19 @@ namespace Disunity.Core {
         /// <summary>
         ///     The version of Unity that was used to export this mod.
         /// </summary>
-        
+
         public string UnityVersion {
             get => _unityVersion;
             set => _unityVersion = value;
+        }
+
+        /// <summary>
+        ///     Other mods this mod depends on.
+        /// </summary>
+
+        public string[] Dependencies {
+            get => _dependencies;
+            set => _dependencies = value;
         }
 
 

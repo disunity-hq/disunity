@@ -30,19 +30,14 @@ namespace Disunity.Editor {
         }
 
         private T GetInstance() {
-            Debug.Log("Getting export settings.");
-
-            if (_instance == null) {
-                Debug.Log("Instance was null, loading resource.");
-            }
-
             _instance = Resources.Load<T>(typeof(T).Name);
 
-            if (_instance == null) {
-                Debug.Log("Creating asset resource.");
-                _instance = ScriptableObject.CreateInstance<T>();
-                AssetUtility.CreateAsset(_instance);
+            if (_instance != null) {
+                return _instance;
             }
+
+            _instance = ScriptableObject.CreateInstance<T>();
+            AssetUtility.CreateAsset(_instance);
 
             return _instance;
         }

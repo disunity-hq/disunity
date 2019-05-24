@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Disunity.Editor {
 
     public class ExportSettings : ScriptableObject {
+        [field: SerializeField] public int SelectedEditor { get; set; }
 
         /// <summary>
         ///     The Mod's name.
@@ -29,13 +30,13 @@ namespace Disunity.Editor {
         /// <summary>
         ///     The directory to which the Mod will be exported.
         /// </summary>
-        [field: SerializeField] public Object[] PreloadAssemblies { get; set; } = { };
+        [field: SerializeField] public string[] PreloadAssemblies { get; set; } = { };
 
-        [field: SerializeField] public Object[] RuntimeAssemblies { get; set; } = { };
+        [field: SerializeField] public string[] RuntimeAssemblies { get; set; } = { };
 
-        [field: SerializeField] public Object[] Artifacts { get; set; } = { };
-        [field: SerializeField] public Object[] Prefabs { get; set; } = { };
-        [field: SerializeField] public Object[] Scenes { get; set; } = { };
+        [field: SerializeField] public string[] Artifacts { get; set; } = { };
+        [field: SerializeField] public string[] Prefabs { get; set; } = { };
+        [field: SerializeField] public string[] Scenes { get; set; } = { };
 
         [field: SerializeField] public string OutputDirectory { get; set; }
 
@@ -48,6 +49,8 @@ namespace Disunity.Editor {
         [field: SerializeField] public string PreloadClass { get; set; }
 
         [field: SerializeField] public string PreloadAssembly { get; set; }
+
+        [field: SerializeField] public string[] Dependencies { get; set; }
 
     }
 

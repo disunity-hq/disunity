@@ -1,136 +1,68 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Disunity.Editor.Components;
 using Disunity.Editor.Pickers;
+using Disunity.Editor.Windows;
 using UnityEditor;
-using UnityEngine;
 
 
 namespace Disunity.Editor.Editors {
-    abstract class BaseSelectionEditor<T, TP> : BaseEditor where T : class, IEntry where TP : FilteredPicker, new() {
+    abstract class BaseSelectionEditor : BaseEditor {
+        protected readonly FilteredPicker _picker;
+        protected readonly Lister _lister;
 
-        protected TP _pickerWindow;
-        protected T _currentSelection;
-        protected List<T> _currentSelections = new List<T>();
-        protected GUIStyle _style;
+        public abstract List<ListEntry> GenerateOptions();
+        public abstract string[] GetSelections();
+        public abstract void SelectionRemoved(string selection);
+        public abstract void SelectionAdded(ListEntry selection);
 
-        public abstract List<IEntry> Generator();
+        protected BaseSelectionEditor(ExporterWindow window, FilteredPicker picker = null, Lister lister = null) : base(window) {
+            _picker = picker ?? DefaultPicker();
+            _lister = lister ?? DefaultLister();
 
-        public virtual GUIStyle GetSelectorStyle() {
-            return new GUIStyle("TextField") { fixedHeight = 16 };
+            _lister.OnRemoved += SelectionRemoved;
+            _picker.OptionGenerator = GenerateOptions;
+            _picker.SelectionHandler = SelectionAdded;
+            _picker.Filters.Add(SelectionFilter);
+        }
+        public virtual FilteredPicker DefaultPicker() {
+            return new HierarchyPicker();
         }
 
-        public virtual string EntryAsString(T selection) {
-            return selection == null ? "null" : selection.AsString;
+        public virtual Lister DefaultLister() {
+            return new Lister();
         }
 
-        public virtual void DrawSelector() {
-            if (GUILayout.Button(_currentSelection == null ? "None selected" : EntryAsString(_currentSelection), _style)) {
-                _pickerWindow = EditorWindow.GetWindow<TP>();
-                _pickerWindow.Set(Generator(), true);
-                _pickerWindow.OnSelection += (s, o) => SelectionCallback(s, o as T);
-                _pickerWindow.Filters = new FilterSet() {_pickerWindow.SearchFilter, SelectionFilter };
-            }
-        }
+        protected void SelectionFilter(List<ListEntry> entries) {
+            var selections = GetSelections();
 
-        public virtual void DrawSelection(T selection) {
-            EditorGUILayout.LabelField(EntryAsString(selection));
-        }
+            foreach (var entry in entries) {
+                var value = entry.Value;
 
-        public virtual void SelectionCallback(object sender, T selection) {
-            _currentSelection = selection;
-            _window.Repaint();
-        }
-
-        protected virtual void HandleAddition(T addition) {
-            if (_pickerWindow != null) {
-                _pickerWindow.Sort();
-                _pickerWindow.Repaint();
-            }
-        }
-
-        protected virtual void HandleSubtraction(T subtraction) {
-            if (_pickerWindow != null) {
-                _pickerWindow.Sort();
-                _pickerWindow.Repaint();
-            }
-        }
-
-        private bool DrawAddButton() {
-            return GUILayout.Button("+", GUILayout.Width(24), GUILayout.Height(14));
-        }
-        private bool DrawRemoveButton() {
-            return GUILayout.Button("-", GUILayout.Width(24), GUILayout.Height(14));
-        }
-
-        private void DrawSelectorRow() {
-            EditorGUILayout.BeginHorizontal();
-
-            DrawSelector();
-
-            if (_currentSelection != null && DrawAddButton()) {
-                _currentSelections.Add(_currentSelection);
-                HandleAddition(_currentSelection);
-                _currentSelection = null;
-            }
-
-            EditorGUILayout.EndHorizontal();
-        }
-
-        private bool DrawSelectionRow(T selection) {
-            EditorGUILayout.BeginHorizontal();
-
-            DrawSelection(selection);
-
-            var removed = DrawRemoveButton();
-
-            EditorGUILayout.EndHorizontal();
-
-            return removed;
-        }
-
-        private void DrawSelections() {
-            T removed = null;
-
-            foreach (var selection in _currentSelections) {
-                if (DrawSelectionRow(selection)) {
-                    removed = selection;
+                if (selections.Contains(value)) {
+                    entry.Enabled = false;
                 }
-            }
 
-            if (removed != null) {
-                HandleSubtraction(removed);
-                _currentSelections.Remove(removed);
+                if (entry is TreeEntry hierarchyEntry && hierarchyEntry.Children != null) {
+                    SelectionFilter(new List<ListEntry>(hierarchyEntry.Children));
+                }
             }
         }
 
         public override void Draw() {
-            if (_style == null) {
-                _style = GetSelectorStyle();
-            }
+            using (new EditorGUILayout.VerticalScope()) {
 
-            DrawSelectorRow();
-            DrawSelections();
-        }
+                var selections = GetSelections();
+                if (selections.Length > 0)
+                    _lister.OnGUI(selections);
 
-        public virtual void SelectionFiltered(ITreeEntry entry) {
-            entry.SetEnabledRecursive(false);
-        }
-
-        public virtual void SelectionFilter(List<IEntry> entries) {
-            foreach (ITreeEntry entry in entries) {
-                if (entry.Enabled == false) continue;
-                if (entry.Children == null) {
-                    foreach (var used in _currentSelections) {
-                        if (used == entry) {
-                            SelectionFiltered(entry);
-                        }
-                    }
-
-                    continue;
-                } 
-                SelectionFilter(new List<IEntry>(entry.Children));
+                _picker.OnGUI();
             }
         }
 
-        protected BaseSelectionEditor(EditorWindow window) : base(window) {}
+        public override void Init() {
+            _picker.Refresh();
+        }
+
     }
 }

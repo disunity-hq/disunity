@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using Disunity.Editor.Pickers;
-using UnityEditorInternal;
-using Object = UnityEngine.Object;
+using Disunity.Editor.Windows;
+using UnityEngine;
 
 
 namespace Disunity.Editor.Fields {
 
-    public class ClassPickerField : BasePickerField<GenericEntry, FilteredPicker> {
+    public abstract class ClassPickerField : BasePickerField {
 
-        protected Dictionary<string, Type> GetTypesFromAssemblies(Object[] options) {
+        protected ClassPickerField(ExporterWindow window, BasePicker picker = null, GUIStyle style = null) : base(window, picker, style) { }
+
+        protected abstract string[] CandidateAssemblyPaths();
+
+        public override BasePicker DefaultPicker() {
+            return new FilteredPicker();
+        }
+
+        protected Dictionary<string, Type> GetTypesFromAssemblies(string[] options) {
             var types = new Dictionary<string, Type>();
-            var assemblies = options.Select(o => ( (AssemblyDefinitionAsset)o ).name);
 
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-                if (!assemblies.Contains(assembly.GetName().Name)) {
+                if (!options.Contains(assembly.GetName().Name)) {
                     continue;
                 }
 
@@ -27,28 +34,17 @@ namespace Disunity.Editor.Fields {
             return types;
         }
 
-        protected List<IEntry> GetEntries(string[] names) {
-            var entries = names.Select(o => new GenericEntry() { value = o });
-            return new List<IEntry>(entries);
+        protected List<ListEntry> GetEntries(string[] names) {
+            var entries = names.Select(o => new ListEntry() { Value = o, Enabled = true});
+            return new List<ListEntry>(entries);
         }
 
-        public void OnGUI(string currentClass, string currentAssembly, Object[] assemblies, Action<string, string> handler) {
-            var types = new Dictionary<string, Type>();
-
-            List<IEntry> Generator() {
-                types = GetTypesFromAssemblies(assemblies);
-                return GetEntries(types.Keys.ToArray());
-            }
-
-            void Handler(BasePickerField<GenericEntry, FilteredPicker> field) {
-                currentClass = field.Selection.AsString;
-                var behaviour = types[currentClass];
-                handler(behaviour.FullName, behaviour.Assembly.GetName().Name);
-            }
-
-            base.OnGUI(Generator, Handler);
+        protected override List<ListEntry> GenerateOptions() {
+            var paths = CandidateAssemblyPaths();
+            var names = paths.Select(o => AsmDef.FromAssetPath(o).name).ToArray();
+            var types = GetTypesFromAssemblies(names);
+            var entries = GetEntries(types.Keys.ToArray());
+            return new List<ListEntry>(entries);
         }
-
     }
-
 }

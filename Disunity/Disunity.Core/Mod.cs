@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 
 namespace Disunity.Core {
@@ -29,7 +28,7 @@ namespace Disunity.Core {
         ///     Initialize a new Mod with a path to a mod file.
         /// </summary>
         /// <param name="infoPath">The path to a mod file</param>
-        public Mod(string infoPath) {
+        protected Mod(string infoPath) {
             Info = ModInfo.Load(infoPath);
             InstallPath = Path.GetDirectoryName(infoPath);
         }

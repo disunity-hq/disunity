@@ -1,11 +1,11 @@
 using UnityEngine;
-using Disunity.Editor;
+using Disunity.Editor.Windows;
     
 class Builder 
 {
     static void PerformBuild()
     {
         Debug.Log("### BUILDING ###");
-        ExporterEditorWindow.ExportMod();
+        ExporterWindow.ExportMod();
     }
 }

@@ -22,7 +22,8 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Disunity.Editor.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -69,16 +70,17 @@
     <Compile Include="Editors\BaseAssetEditor.cs" />
     <Compile Include="Fields\BasePickerField.cs" />
     <Compile Include="Fields\ClassPickerField.cs" />
+    <Compile Include="Components\Lister.cs" />
+    <Compile Include="Fields\PreloadPickerField.cs" />
+    <Compile Include="Fields\RuntimePickerField.cs" />
     <Compile Include="Pickers\BasePicker.cs" />
-    <Compile Include="Pickers\AssetPicker.cs" />
-    <Compile Include="Pickers\ClassPicker.cs" />
+    <Compile Include="Windows\BasePickerWindow.cs" />
     <Compile Include="Pickers\FilteredPicker.cs" />
     <Compile Include="StoreClient.cs" />
     <Compile Include="JsonExtensions.cs" />
     <Compile Include="Editors\DependencyEditor.cs" />
-    <Compile Include="EditorSelector.cs" />
+    <Compile Include="Components\EditorSelector.cs" />
     <Compile Include="ExportSettings.cs" />
-    <Compile Include="Pickers\DependencyPicker.cs" />
     <Compile Include="Pickers\HierarchyPicker.cs" />
     <Compile Include="Editors\SceneEditor.cs" />
     <Compile Include="Editors\PrefabEditor.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="Editors\ExportEditor.cs" />
     <Compile Include="EditorScriptableSingleton.cs" />
     <Compile Include="Export.cs" />
-    <Compile Include="ExporterEditorWindow.cs" />
+    <Compile Include="Windows\ExporterWindow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using Disunity.Core;
 using UnityEditor;
 using UnityEngine;
-using Object = System.Object;
 
 
 namespace Disunity.Editor {
@@ -52,16 +50,14 @@ namespace Disunity.Editor {
             Directory.CreateDirectory(_tempModDirectory);
         }
 
-        private List<string> ExportAssemblies(UnityEngine.Object[] assemblies, string folder) {
+        private List<string> ExportAssemblies(string[] assemblies, string folder) {
             var destinations = new List<string>();
             if (assemblies.Length == 0) return destinations;
             var destinationPath = Path.Combine(_tempModDirectory, folder);
             Directory.CreateDirectory(destinationPath);
 
             foreach (var asset in assemblies) {
-                var path = AssetDatabase.GetAssetPath(asset);
-                var json = File.ReadAllText(path);
-                var asmDef = JsonUtility.FromJson<AsmDef>(json);
+                var asmDef = AsmDef.FromAssetPath(asset);
                 var assemblyName = $"{asmDef.name}.dll";
                 var modAsmPath = Path.Combine("Library", "ScriptAssemblies", assemblyName);
 
@@ -106,18 +102,17 @@ namespace Disunity.Editor {
         private void ExportCopyAssets() {
             Debug.Log("Exporting copy assets...");
             foreach (var asset in _settings.Artifacts) {
-                var path = AssetDatabase.GetAssetPath(asset);
-                var filename = Path.GetFileName(path);
+                var filename = Path.GetFileName(asset);
                 var destination = Path.Combine(_tempModDirectory, filename);
-                File.Copy(path, destination);
+                File.Copy(asset, destination);
             }
         }
 
         private void ExportModAssets() {
             var destination = Path.Combine(_tempModDirectory, "assetbundles");
             Directory.CreateDirectory(destination);
-            _settings.Prefabs.ToList().ForEach(s => SetAssetBundle(AssetDatabase.GetAssetPath((s))));
-            _settings.Scenes.ToList().ForEach(s => SetAssetBundle(AssetDatabase.GetAssetPath(s), "scenes"));
+            _settings.Prefabs.ToList().ForEach(s => SetAssetBundle(s));
+            _settings.Scenes.ToList().ForEach(s => SetAssetBundle(s, "scenes"));
             BuildPipeline.BuildAssetBundles(destination, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
         }
 
@@ -134,7 +129,8 @@ namespace Disunity.Editor {
                 _settings.PreloadClass,
                 _settings.PreloadAssembly,
                 _settings.RuntimeClass,
-                _settings.RuntimeAssembly);
+                _settings.RuntimeAssembly,
+                _settings.Dependencies);
 
             ModInfo.Save(Path.Combine(_tempModDirectory, _settings.Name + ".info"), modInfo);
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Disunity.Core;
 using UnityEditor;
 using UnityEngine;
@@ -6,20 +7,12 @@ using UnityEngine;
 
 namespace Disunity.Editor.Pickers {
 
-    public interface ITreeEntry : IEntry {
-        ITreeEntry Parent { get; set; }
-        List<ITreeEntry> Children { get; set; }
-        bool Expanded { get; set; }
-        void SetEnabledRecursive(bool enabled);
-        void Sort();
-    }
-
-    public class HierarchyEntry : GenericEntry, ITreeEntry {
-        public ITreeEntry Parent { get; set; }
-        public List<ITreeEntry> Children { get; set; }
+    public class TreeEntry : ListEntry {
+        public TreeEntry Parent { get; set; }
+        public List<TreeEntry> Children { get; set; }
         public bool Expanded { get; set; }
         public void SetEnabledRecursive(bool enabled) {
-            SetEnabled(enabled);
+            Enabled = enabled;
             if (Children != null) {
                 foreach (var child in Children) {
                     child.SetEnabledRecursive(enabled);
@@ -29,9 +22,9 @@ namespace Disunity.Editor.Pickers {
             }
         }
 
-        public void Add(ITreeEntry child) {
+        public void Add(TreeEntry child) {
             if (Children == null) {
-                Children = new List<ITreeEntry>();
+                Children = new List<TreeEntry>();
             }
 
             child.Parent = this;
@@ -48,46 +41,51 @@ namespace Disunity.Editor.Pickers {
         }
     }
 
-    abstract class HierarchyPicker : FilteredPicker {
+    internal class HierarchyPicker : FilteredPicker {
 
         public override void Sort() {
-            _entries.Sort();
-            foreach (ITreeEntry entry in _entries) {
+            Entries.Sort();
+            foreach (TreeEntry entry in Entries) {
                 entry.Sort();
             }
         }
 
-        protected void DrawParent(ITreeEntry entry) {
-            entry.Expanded = EditorGUILayout.Foldout(entry.Expanded, entry.AsString, true);
+        protected void DrawParent(TreeEntry listEntry) {
 
-            if (entry.Expanded) {
+            if (listEntry.Children == null || !listEntry.Children.Any(o => o.Enabled)) {
+                return;
+            }
+
+            listEntry.Expanded = EditorGUILayout.Foldout(listEntry.Expanded, listEntry.ToString(), true);
+
+            if (listEntry.Expanded) {
                 using (new EditorGUILayout.HorizontalScope()) {
                     GUILayout.Space(10);
                     using (new EditorGUILayout.VerticalScope()) {
-                        DrawEntries(new List<IEntry>(entry.Children));
+                        DrawEntries(new List<ListEntry>(listEntry.Children));
                     }
                 }
             }
         }
 
-        protected override void DrawEntry(IEntry entry) {
-            var treeEntry = (ITreeEntry)entry;
+        protected override bool DrawEntry(ListEntry entry) {
+            var treeEntry = (TreeEntry)entry;
 
             if (treeEntry.Children == null) {
-                base.DrawEntry(entry);
+                return base.DrawEntry(entry);
             }
-            else {
-                DrawParent(treeEntry);
-            }
+
+            DrawParent(treeEntry);
+            return false;
         }
 
-        public override void SearchFilter(List<IEntry> entries) {
-            foreach (ITreeEntry entry in entries) {
-                entry.SetEnabledRecursive(Filter.Length <= 2 || StringUtils.MatchesFilter(entry.AsString, Filter));
+        public override void SearchFilter(List<ListEntry> entries) {
+            foreach (TreeEntry entry in entries) {
+                entry.SetEnabledRecursive(Filter.Length <= 2 || StringUtils.MatchesFilter(entry.ToString(), Filter));
                 if (entry.Enabled) {
                     var parent = entry.Parent;
                     while (parent != null) {
-                        parent.SetEnabled(true);
+                        parent.Enabled = true;
                         parent = parent.Parent;
                     }
 
@@ -95,7 +93,7 @@ namespace Disunity.Editor.Pickers {
                 }
 
                 if (entry.Enabled == false && entry.Children != null) {
-                    var children = new List<IEntry>(entry.Children);
+                    var children = new List<ListEntry>(entry.Children);
                     SearchFilter(children);
                 }
             }

@@ -7,13 +7,17 @@ using UnityEngine;
 
 namespace Disunity.Editor.Pickers {
 
-    public class FilterSet : List<Action<List<IEntry>>> { }
+    public class FilterSet : List<Action<List<ListEntry>>> { }
 
     public class FilteredPicker : BasePicker {
         
-        public FilterSet Filters;
+        public FilterSet Filters = new FilterSet();
         public bool ShowFilter { get; set; }
         public string Filter { get; protected set; }
+
+        public FilteredPicker() {
+            InitializeFilters();
+        }
 
         protected void DrawFilter() {
             using (new EditorGUILayout.HorizontalScope()) {
@@ -24,7 +28,7 @@ namespace Disunity.Editor.Pickers {
 
         protected virtual void ApplyFilters() {
             foreach (var filter in Filters) {
-                filter(_entries);
+                filter(Entries);
             }
         }
 
@@ -33,9 +37,11 @@ namespace Disunity.Editor.Pickers {
             base.DrawContent();
         }
 
-        public virtual void SearchFilter(List<IEntry> entries) {
-            foreach (var entry in _entries) {
-                entry.SetEnabled(StringUtils.MatchesFilter(entry.AsString, Filter));
+        public virtual void SearchFilter(List<ListEntry> entries) {
+            if (Filter == null) return;
+
+            foreach (var entry in Entries) {
+                entry.Enabled = StringUtils.MatchesFilter(entry.ToString(), Filter);
             }
         }
 
@@ -43,13 +49,13 @@ namespace Disunity.Editor.Pickers {
             if (Filter == null) {
                 Filter = "";
             }
-            if (Filters == null) {
-                Filters = new FilterSet() { SearchFilter };
+
+            if (!Filters.Contains(SearchFilter)) {
+                Filters.Insert(0, SearchFilter);
             }
         }
 
-        protected void OnGUI() {
-            InitializeFilters();
+        public override void OnGUI() {
             ApplyFilters();
             base.OnGUI();
         }

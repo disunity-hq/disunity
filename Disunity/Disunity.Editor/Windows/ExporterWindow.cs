@@ -1,32 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+﻿using Disunity.Editor.Components;
 using Disunity.Editor.Editors;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 
 
-namespace Disunity.Editor {
+namespace Disunity.Editor.Windows {
 
-    public class ExporterEditorWindow : EditorWindow {
+    public class ExporterWindow : EditorWindow {
 
-        private ArtifactEditor _artifactEditor;
-        private RuntimeAssemblyEditor _runtimeAssemblyEditor;
-        private PreloadAssemblyEditor _preloadAssemblyEditor;
-        private PrefabEditor _prefabEditor;
-        private SceneEditor _sceneEditor;
         private EditorSelector _editorSelector;
-        private DependencyEditor _dependencyEditor;
-
-        private ExportEditor _exportEditor;
         private EditorScriptableSingleton<ExportSettings> _exportSettings;
 
-        private int _selectedTab;
+        public ExportSettings Settings => _exportSettings.Instance;
 
         [MenuItem("Disunity/Exporter")]
         public static void ShowWindow() {
-            var window = GetWindow<ExporterEditorWindow>();
+            var window = GetWindow<ExporterWindow>();
             window.titleContent = new GUIContent("Disunity Exporter");
             window.minSize = new Vector2(150, 150);
             window.Focus();
@@ -34,20 +23,15 @@ namespace Disunity.Editor {
 
         private void OnEnable() {
             _exportSettings = new EditorScriptableSingleton<ExportSettings>();
-            _runtimeAssemblyEditor = new RuntimeAssemblyEditor(this, _exportSettings.Instance);
-            _preloadAssemblyEditor = new PreloadAssemblyEditor(this, _exportSettings.Instance);
-            _artifactEditor = new ArtifactEditor(this, _exportSettings.Instance);
-            _prefabEditor = new PrefabEditor(this);
-            _sceneEditor = new SceneEditor(this, _exportSettings.Instance);
-            _exportEditor = new ExportEditor(this, _exportSettings.Instance);
-            _dependencyEditor = new DependencyEditor(this);
-            _editorSelector = new EditorSelector();
-            _editorSelector.AddEditor(_runtimeAssemblyEditor);
-            _editorSelector.AddEditor(_prefabEditor);
-            _editorSelector.AddEditor(_sceneEditor);
-            _editorSelector.AddEditor(_preloadAssemblyEditor);
-            _editorSelector.AddEditor(_dependencyEditor);
-            _editorSelector.AddEditor(_exportEditor);
+            _editorSelector = new EditorSelector(_exportSettings.Instance.SelectedEditor);
+
+            _editorSelector.Add(new PrefabEditor(this));
+            _editorSelector.Add(new SceneEditor(this));
+            _editorSelector.Add(new ArtifactEditor(this));
+            _editorSelector.Add(new PreloadAssemblyEditor(this));
+            _editorSelector.Add(new RuntimeAssemblyEditor(this));
+            _editorSelector.Add(new DependencyEditor(this));
+            _editorSelector.Add(new ExportEditor(this));
         }
 
         private void DrawHelpInfo() {
@@ -89,7 +73,7 @@ Check the documentation for more information.
         }
 
         private void OnGUI() {
-            _editorSelector.Draw();
+            _exportSettings.Instance.SelectedEditor = _editorSelector.Draw();
         }
 
         public static void ExportMod() {
