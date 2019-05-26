@@ -23,6 +23,7 @@ namespace Disunity.Core {
         private string _preloadClass;
         private string _preloadAssembly;
         private string[] _dependencies;
+        private string[] _artifacts;
 
         public ModInfo(
             string name,
@@ -37,7 +38,8 @@ namespace Disunity.Core {
             string preloadAssembly,
             string runtimeClass,
             string runtimeAssembly,
-            string[] dependencies) {
+            string[] dependencies,
+            string[] artifacts) {
 
             _author = author;
             _description = description;
@@ -52,6 +54,7 @@ namespace Disunity.Core {
             _preloadClass = preloadClass;
             _preloadAssembly = preloadAssembly;
             _dependencies = dependencies;
+            _artifacts = artifacts;
 
             _isEnabled = false;
         }
@@ -123,6 +126,14 @@ namespace Disunity.Core {
             set => _dependencies = value;
         }
 
+        /// <summary>
+        ///     Unmanaged files in the mod archive.
+        /// </summary>
+
+        public string[] Artifacts {
+            get => _artifacts;
+            set => _artifacts = value;
+        }
 
         public string[] PreloadAssemblies {
             get => _preloadAssemblies;

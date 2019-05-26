@@ -1,7 +1,10 @@
 ﻿using BepInEx.Logging;
+using Disunity.Core;
+using LogLevel = Disunity.Core.LogLevel;
+
 
 namespace Disunity.Runtime {
-    public class RuntimeLogger {
+    public class RuntimeLogger : ILogger {
 
         protected ManualLogSource _logger;
         public RuntimeLogger(string name) {
@@ -9,7 +12,7 @@ namespace Disunity.Runtime {
         }
 
         public void Log(LogLevel level, string message) {
-            _logger.Log(level, message);
+            _logger.Log((BepInEx.Logging.LogLevel) level, message);
         }
 
         public void LogDebug(string message) {

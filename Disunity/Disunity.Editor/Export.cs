@@ -75,6 +75,27 @@ namespace Disunity.Editor {
             return destinations;
         }
 
+        private string[] ExportArtifacts() {
+            var artifactFiles = new List<string>();
+            var artifactRoot = Path.Combine(_tempModDirectory, "artifacts");
+
+            if (!Directory.Exists(artifactRoot)) {
+                Directory.CreateDirectory(artifactRoot);
+            }
+
+            foreach (var path in _settings.Artifacts) {
+                var relativePath = path.Substring(7);
+                var filePath = Path.Combine("artifacts", relativePath);
+                var parentPath = Path.GetDirectoryName(filePath);
+                artifactFiles.Add(relativePath);
+                var fullPath = Path.Combine(_tempModDirectory, filePath);
+                Directory.CreateDirectory(Path.Combine(_tempModDirectory, parentPath));
+                File.Copy(path, fullPath);
+            }
+
+            return artifactFiles.ToArray();
+        }
+
         private void SetContentTypes() {
             _settings.ContentTypes = 0;
             if (_settings.PreloadAssemblies.Length > 0) {
@@ -99,15 +120,6 @@ namespace Disunity.Editor {
             return ExportAssemblies(_settings.PreloadAssemblies, "preload");
         }
 
-        private void ExportCopyAssets() {
-            Debug.Log("Exporting copy assets...");
-            foreach (var asset in _settings.Artifacts) {
-                var filename = Path.GetFileName(asset);
-                var destination = Path.Combine(_tempModDirectory, filename);
-                File.Copy(asset, destination);
-            }
-        }
-
         private void ExportModAssets() {
             var destination = Path.Combine(_tempModDirectory, "assetbundles");
             Directory.CreateDirectory(destination);
@@ -116,7 +128,7 @@ namespace Disunity.Editor {
             BuildPipeline.BuildAssetBundles(destination, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);
         }
 
-        private void SaveMetadata(List<string> preloadAssemblies, List<string> runtimeAssemblies) {
+        private void SaveMetadata(List<string> preloadAssemblies, List<string> runtimeAssemblies, string[] artifactFiles) {
             var modInfo = new ModInfo(
                 _settings.Name,
                 _settings.Author,
@@ -130,7 +142,8 @@ namespace Disunity.Editor {
                 _settings.PreloadAssembly,
                 _settings.RuntimeClass,
                 _settings.RuntimeAssembly,
-                _settings.Dependencies);
+                _settings.Dependencies,
+                artifactFiles);
 
             ModInfo.Save(Path.Combine(_tempModDirectory, _settings.Name + ".info"), modInfo);
         }
@@ -156,10 +169,10 @@ namespace Disunity.Editor {
             CreateTempDirectory();
             var preloadAssemblies = ExportPreloadAssemblies();
             var runtimeAssemblies = ExportRuntimeAssemblies();
-            ExportCopyAssets();
+            var artifactFiles = ExportArtifacts();
             ExportModAssets();
             SetContentTypes();
-            SaveMetadata(preloadAssemblies, runtimeAssemblies);
+            SaveMetadata(preloadAssemblies, runtimeAssemblies, artifactFiles);
             CopyToOutput();
         }
 

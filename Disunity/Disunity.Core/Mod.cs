@@ -1,13 +1,17 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace Disunity.Core {
 
-    /// <summary>
-    ///     Class that represents a Mod.
-    ///     A Mod lets you load scenes, prefabs and RuntimeAssemblies that have been exported.
-    /// </summary>
     public abstract class Mod {
+
+        private readonly List<string> _artifactFiles = new List<string>();
+
+        public Dictionary<string, string> Artifacts { get; } = new Dictionary<string, string>();
+        public ILogger Log { get; protected set; }
+
         /// <summary>
         /// Where the Mod is installed on disk.
         /// </summary>
@@ -32,5 +36,49 @@ namespace Disunity.Core {
             Info = ModInfo.Load(infoPath);
             InstallPath = Path.GetDirectoryName(infoPath);
         }
+
+        protected virtual bool CheckArtifacts(ContentType contentTypes) {
+            if (contentTypes.HasFlag((contentTypes & ContentType.Artifacts)) && Info.Artifacts.Length == 0) {
+                Log.LogError($"Mod advertises artifact files but none listed in metadata.");
+            }
+
+            var returnValue = true;
+
+            foreach (var path in Info.Artifacts) {
+                var fullPath = Path.Combine(InstallPath, "artifacts", path);
+
+                if (File.Exists(fullPath)) {
+                    _artifactFiles.Add(fullPath);
+                    continue;
+                }
+
+                Log.LogError($"Couldn't find artifact: {fullPath}");
+                returnValue = false;
+            }
+
+            return returnValue;
+        }
+
+        protected bool CheckResources() {
+            var contentTypes = (ContentType) Info.ContentTypes;
+            return CheckArtifacts(contentTypes);
+        }
+
+        protected virtual void LoadArtifacts() {
+            var artifactPath = Path.Combine(InstallPath, "artifacts/");
+
+            foreach (var fullPath in _artifactFiles) {
+                var relativePath = fullPath.Substring(artifactPath.Length);
+                Artifacts[relativePath] = fullPath;
+            }
+        }
+
+        protected void LoadResources() {
+            IsValid = CheckResources();
+            if (IsValid) {
+                LoadArtifacts();
+            }
+        }
+
     }
 }

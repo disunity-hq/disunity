@@ -37,7 +37,7 @@ namespace Disunity.Editor.Editors {
             return AssetDatabase.GetAllAssetPaths();
         }
 
-        public static AssetEntry AddTo(AssetEntry parent, string assetPath, string pathPart) {
+        public AssetEntry AddTo(AssetEntry parent, string assetPath, string pathPart) {
 
             if (parent.Children == null) {
                 parent.Children = new List<TreeEntry>();
@@ -53,7 +53,7 @@ namespace Disunity.Editor.Editors {
             return newEntry;
         }
 
-        public static List<AssetEntry> GenerateGraph(string[] assets) {
+        public List<AssetEntry> GenerateGraph(string[] assets) {
             var map = new Dictionary<string, AssetEntry>();
 
             foreach (var asset in assets) {

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: -629328125, guid: 6fee6684a98ac674e868f452f96ce038, type: 3}
   m_Name: ExportSettings
   m_EditorClassIdentifier: 
+  <SelectedEditor>k__BackingField: 7
   <Name>k__BackingField: Example Mod
   <Author>k__BackingField: Disunity Team
   <Description>k__BackingField: An example Disunity mod.
@@ -19,13 +20,18 @@ MonoBehaviour:
   <PreloadAssemblies>k__BackingField: []
   <RuntimeAssemblies>k__BackingField:
   - Assets/ExampleMod/ExampleMod.asmdef
-  <Artifacts>k__BackingField: []
-  <Prefabs>k__BackingField: []
+  <Artifacts>k__BackingField:
+  - Assets/ExampleMod/README.md
+  <Prefabs>k__BackingField:
+  - Assets/ExampleMod/ExampleUI.prefab
   <Scenes>k__BackingField: []
   <OutputDirectory>k__BackingField: B:/Disunity/core/build
-  <ContentTypes>k__BackingField: 4
+  <ContentTypes>k__BackingField: 44
   <RuntimeClass>k__BackingField: ExampleMod
-  <RuntimeAssembly>k__BackingField: 
+  <RuntimeAssembly>k__BackingField: ExampleMod
   <PreloadClass>k__BackingField: 
   <PreloadAssembly>k__BackingField: 
-  <Dependencies>k__BackingField: []
+  <Dependencies>k__BackingField:
+  - RyanPallesen-EnemyEdits-1.0.0
+  - RyanPallesen-NukeMines-1.0.0
+  - RyanPallesen-SizeManager-1.0.1

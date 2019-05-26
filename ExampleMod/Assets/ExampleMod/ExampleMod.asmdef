@@ -11,7 +11,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Disunity.Runtime.dll"
+        "Disunity.Runtime.dll",
+        "Disunity.Core.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": []

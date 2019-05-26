@@ -10,7 +10,6 @@ using Object = UnityEngine.Object;
 namespace Disunity.Runtime {
     public class RuntimeMod : Mod {
 
-        private readonly RuntimeLogger _log;
         private AssetBundleResource _assetsResource;
         private AssetBundleResource _scenesResource;
         private readonly List<string> _runtimeAssemblyFiles = new List<string>();
@@ -26,10 +25,12 @@ namespace Disunity.Runtime {
 
         public RuntimeMod(string infoPath) : base(infoPath) {
 
-            _log = new RuntimeLogger(Info.Name);
+            base.Log = new RuntimeLogger(Info.Name);
 
             LoadResources();
         }
+
+        public RuntimeLogger Log => (RuntimeLogger) base.Log;
 
         /// <summary>
         ///     Collection of names of RuntimeAssemblies included in this Mod.
@@ -56,7 +57,6 @@ namespace Disunity.Runtime {
         /// </summary>
         public ICollection<GameObject> Prefabs => new ReadOnlyCollection<GameObject>(_prefabs);
 
-        public RuntimeLogger Log => _log;
 
         public void InvokeOnStart() {
             OnStart?.Invoke(this, EventArgs.Empty);
@@ -75,8 +75,9 @@ namespace Disunity.Runtime {
         }
 
         private void LoadResources() {
+            base.LoadResources();
             InitAssetBundles();
-            IsValid = CheckResources();
+            IsValid = CheckResources() || IsValid;
             if (IsValid) {
                 LoadAssemblies();
                 LoadPrefabs();
@@ -89,7 +90,7 @@ namespace Disunity.Runtime {
                 return true;
             }
 
-            _log.LogError($"Couldn't load prefab bundle: {_assetsResource.Path}");
+            Log.LogError($"Couldn't load prefab bundle: {_assetsResource.Path}");
             return false;
         }
 
@@ -98,13 +99,13 @@ namespace Disunity.Runtime {
                 return true;
             }
 
-            _log.LogError($"Couldn't load scene bundle: {_scenesResource.Path}");
+            Log.LogError($"Couldn't load scene bundle: {_scenesResource.Path}");
             return false;
         }
 
         private bool CheckRuntimeAssemblies(ContentType contentTypes) {
             if (contentTypes.HasFlag(ContentType.RuntimeAssemblies) && Info.RuntimeAssemblies.Length == 0) {
-                _log.LogError($"Mod advertises runtime assemblies but none listed in metadata.");
+                Log.LogError($"Mod advertises runtime assemblies but none listed in metadata.");
                 return false;
             }
 
@@ -120,16 +121,17 @@ namespace Disunity.Runtime {
                     continue;
                 }
 
-                _log.LogError($"Couldn't find listed assembly: {path}");
+                Log.LogError($"Couldn't find listed assembly: {path}");
                 returnValue = false;
             }
 
             return returnValue;
         }
 
-        private bool CheckResources() {
+        protected bool CheckResources() {
             var contentTypes = (ContentType) Info.ContentTypes;
-            return CheckPrefabBundle(contentTypes) &&
+            return base.CheckResources() &&
+                   CheckPrefabBundle(contentTypes) &&
                    CheckSceneBundle(contentTypes) &&
                    CheckRuntimeAssemblies(contentTypes);
         }

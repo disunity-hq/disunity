@@ -47,6 +47,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogLevel.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="ModFinder.cs" />
     <Compile Include="ReadOnlyCollection.cs" />
     <Compile Include="Mod.cs" />
