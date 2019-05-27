@@ -1,5 +1,5 @@
 {
-    "name": "ExampleMod",
+    "name": "ExamplePreloader",
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [
@@ -11,8 +11,9 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Disunity.Runtime.dll",
-        "Disunity.Core.dll"
+        "Disunity.Preloader.dll",
+        "Disunity.Core.dll",
+        "Mono.Cecil.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": []

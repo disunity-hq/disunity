@@ -68,6 +68,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity\plugins\Disunity\$(TargetName).dll"
+echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity\patchers\Disunity\$(TargetName).dll"
 if not exist "$(SolutionDir)build\Disunity\mods" mkdir "$(SolutionDir)build\Disunity\mods"
 
 echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\$(TargetName).dll"

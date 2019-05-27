@@ -26,7 +26,7 @@ namespace Disunity.Core {
         ///     Is the mod valid? A Mod becomes invalid when it is no longer being managed by the ModManager,
         ///     when any of its resources is missing or can't be loaded.
         /// </summary>
-        public bool IsValid { get; protected set; }
+        public bool IsValid { get; protected set; } = true;
 
         /// <summary>
         ///     Initialize a new Mod with a path to a mod file.
@@ -38,8 +38,8 @@ namespace Disunity.Core {
         }
 
         protected virtual bool CheckArtifacts(ContentType contentTypes) {
-            if (contentTypes.HasFlag((contentTypes & ContentType.Artifacts)) && Info.Artifacts.Length == 0) {
-                Log.LogError($"Mod advertises artifact files but none listed in metadata.");
+            if (contentTypes.HasFlag(ContentType.Artifacts) && Info.Artifacts.Length == 0) {
+                Log.LogError($"Mod advertises artifact files but none listed in metadata. {(int)contentTypes}");
             }
 
             var returnValue = true;

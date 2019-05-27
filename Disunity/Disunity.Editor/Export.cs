@@ -110,6 +110,9 @@ namespace Disunity.Editor {
             if (_settings.Scenes.Length > 0) {
                 _settings.ContentTypes |= ContentType.Scenes;
             }
+            if (_settings.Artifacts.Length > 0) {
+                _settings.ContentTypes |= ContentType.Artifacts;
+            }
         }
 
         private List<string> ExportRuntimeAssemblies() {

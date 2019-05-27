@@ -1,0 +1,19 @@
+{
+    "name": "ExampleRuntime",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor",
+        "WindowsStandalone32",
+        "WindowsStandalone64"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Disunity.Runtime.dll",
+        "Disunity.Core.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

@@ -13,10 +13,9 @@ namespace Disunity.Runtime {
     public class BepinPlugin : BaseUnityPlugin {
 
         private readonly List<RuntimeMod> _instances = new List<RuntimeMod>();
-        private readonly RuntimeLogger _log = new RuntimeLogger("Disunity");
+        private readonly RuntimeLogger _log = new RuntimeLogger("Disunity Runtime");
 
         private void Awake() {
-            _log.LogInfo("RUNTIME stage starting...");
             var searchDirectory = Path.Combine(Paths.PluginPath, "../mods");
             ModFinder.Find(searchDirectory).ToList().ForEach(LoadMod);
         }
@@ -58,18 +57,18 @@ namespace Disunity.Runtime {
 
             var assembly = GetStartupAssembly(startupAssembly);
             if (assembly == null) {
-                _log.LogInfo($"Couldn't find startup assembly for {mod.Info.Name}: {startupAssembly}");
+                _log.LogInfo($"Couldn't find runtime startup assembly for {mod.Info.Name}: {startupAssembly}");
                 return;
             }
 
             var type = GetStartupClass(assembly, startupClass);
             if (type == null) {
-                _log.LogInfo($"Couldn't find startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
+                _log.LogInfo($"Couldn't find runtime startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
                 return;
             }
 
             InstantiateStartupClass(type, mod);
-            _log.LogInfo($"Loaded {mod.Info.Name}");
+            _log.LogInfo($"Loaded {mod.Info.Name} {mod.Info.Version} by {mod.Info.Author}");
         }
 
         private void LoadMod(string modInfoPath) {
