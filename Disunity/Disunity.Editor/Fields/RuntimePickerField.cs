@@ -10,7 +10,11 @@ namespace Disunity.Editor.Fields {
         public RuntimePickerField(ExporterWindow window, FilteredPicker picker = null, GUIStyle style = null) : base(window, picker, style) { }
 
         public override string CurrentSelection() {
-            return Window.Settings.RuntimeAssembly;
+            if (Window.Settings != null && Window.Settings.RuntimeAssembly != "" && Window.Settings.RuntimeClass != "") {
+                return $"{Window.Settings.RuntimeAssembly}.{Window.Settings.RuntimeClass}";
+            }
+
+            return "";
         }
 
         public override void SelectionMade(ListEntry entry) {
@@ -19,7 +23,7 @@ namespace Disunity.Editor.Fields {
                 Window.Settings.RuntimeClass = null;
             }
             else {
-                var parts = entry.Value.Split('.');
+                var parts = entry.Value.Split(new char[] { '.' }, 2);
                 Window.Settings.RuntimeAssembly = parts[0];
                 Window.Settings.RuntimeClass = parts[1];
             }
