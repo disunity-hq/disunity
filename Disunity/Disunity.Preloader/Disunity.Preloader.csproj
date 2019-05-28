@@ -74,7 +74,7 @@
 
 echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\$(TargetName).dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Editor\$(TargetName).dll"
+echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\$(TargetName).dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Mono.Cecil.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Dependencies\Mono.Cecil.dll"
 
