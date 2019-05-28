@@ -84,7 +84,10 @@
 
 echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\$(TargetName).dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\$(TargetName).dll"</PostBuildEvent>
+echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)ExampleMod\Assets\Disunity\$(TargetName).dll"
+
+echo f | xcopy /s /i /Y "$(SolutionDir)\Disunity\libs\BepInEx.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Dependencies\BepInEx.dll"
+echo f | xcopy /s /i /Y "$(SolutionDir)\Disunity\libs\BepInEx.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Dependencies\BepInEx.dll"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

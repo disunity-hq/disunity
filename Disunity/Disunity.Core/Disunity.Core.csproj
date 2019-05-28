@@ -77,17 +77,17 @@ echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Dis
 
 echo f | xcopy /s /i /Y "$(TargetDir)$(TargetName).dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\$(TargetName).dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Commons.Json.dll"
+echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Dependencies\Commons.Json.dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)build\Disunity\plugins\Disunity\Commons.Json.dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Commons.Json.dll"
+echo f | xcopy /s /i /Y "$(TargetDir)Commons.Json.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Dependencies\Commons.Json.dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Commons.Utils.dll"
+echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)ExampleMod\Assets\Disunity\Dependencies\Commons.Utils.dll"
 
 echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)build\Disunity\plugins\Disunity\Commons.Utils.dll"
 
-echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Commons.Utils.dll"</PostBuildEvent>
+echo f | xcopy /s /i /Y "$(TargetDir)Commons.Utils.dll" "$(SolutionDir)build\Disunity-Exporter\Assets\Disunity\Dependencies\Commons.Utils.dll"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
