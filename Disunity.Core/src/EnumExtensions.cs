@@ -16,8 +16,10 @@ namespace Disunity.Core {
         /// <returns>A fixed enum.</returns>
         public static int FixEnum(this Enum self) {
             var bits = 0;
+
             foreach (var enumValue in Enum.GetValues(self.GetType())) {
                 var checkBit = Convert.ToInt32(self) & (int) enumValue;
+
                 if (checkBit != 0) {
                     bits |= (int) enumValue;
                 }

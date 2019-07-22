@@ -1,5 +1,6 @@
 ﻿using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
+
 using UnityEngine;
 
 
@@ -7,7 +8,7 @@ namespace Disunity.Editor.Fields {
 
     public class PreloadPickerField : ClassPickerField {
 
-        public PreloadPickerField(ExporterWindow window, BasePicker picker = null, GUIStyle style = null) : base(window, picker, style) {  }
+        public PreloadPickerField(ExporterWindow window, BasePicker picker = null, GUIStyle style = null) : base(window, picker, style) { }
 
         public override string CurrentSelection() {
             if (Window.Settings != null && Window.Settings.PreloadAssembly != "" && Window.Settings.PreloadClass != "") {
@@ -31,5 +32,7 @@ namespace Disunity.Editor.Fields {
         protected override string[] CandidateAssemblyPaths() {
             return Window.Settings.PreloadAssemblies;
         }
+
     }
+
 }

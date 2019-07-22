@@ -5,19 +5,23 @@ using System.Reflection;
 
 
 namespace Disunity.Core {
+
     public static class TypeExtensions {
 
-
-        public static System.Type[] GetAllDerivedTypes(this System.AppDomain aAppDomain, System.Type aType) {
-            var result = new List<System.Type>();
+        public static Type[] GetAllDerivedTypes(this AppDomain aAppDomain, Type aType) {
+            var result = new List<Type>();
             var assemblies = aAppDomain.GetAssemblies();
+
             foreach (var assembly in assemblies) {
                 var types = assembly.GetTypes();
+
                 foreach (var type in types) {
-                    if (type.IsSubclassOf(aType))
+                    if (type.IsSubclassOf(aType)) {
                         result.Add(type);
+                    }
                 }
             }
+
             return result.ToArray();
         }
 
@@ -49,31 +53,38 @@ namespace Disunity.Core {
             if (type.IsArray) {
                 return GetSubclasses(type.GetElementType(), includeAbstract, assembly);
             }
+
             if (type.IsGenericTypeDefinition) {
                 return GetSubclassesGeneric(type, includeAbstract, assembly);
             }
 
-            if (assembly == null)
+            if (assembly == null) {
                 assembly = type.Assembly;
+            }
 
             return assembly
-                .GetTypes()
-                .Where(t => t.IsSubclassOf(type) && ( includeAbstract || !t.IsAbstract ));
+                   .GetTypes()
+                   .Where(t => t.IsSubclassOf(type) && (includeAbstract || !t.IsAbstract));
         }
 
         public static IEnumerable<Type> GetSubclassesGeneric(this Type type, bool includeAbstract = false, Assembly assembly = null) {
-            if (assembly == null)
+            if (assembly == null) {
                 assembly = type.Assembly;
+            }
 
             foreach (var otherType in assembly.GetTypes()) {
-                if (otherType.IsInterface || ( otherType.IsAbstract && !includeAbstract ))
+                if (otherType.IsInterface || otherType.IsAbstract && !includeAbstract) {
                     continue;
+                }
 
                 var t = otherType;
+
                 while (t != null) {
-                    if (t.IsGenericType)
+                    if (t.IsGenericType) {
                         t = t.GetGenericTypeDefinition();
-                    if (t.IsGenericTypeDefinition && ( t.IsSubclassOf(type) || ( t == type ) )) {
+                    }
+
+                    if (t.IsGenericTypeDefinition && (t.IsSubclassOf(type) || t == type)) {
                         yield return otherType;
                         t = null;
                     } else {
@@ -99,15 +110,21 @@ namespace Disunity.Core {
 
         public static FieldInfo GetFieldByPath(this Type sourceType, IEnumerable<string> path) {
             FieldInfo fieldInfo = null;
-            Type type = sourceType;
-            foreach (string name in path) {
+            var type = sourceType;
+
+            foreach (var name in path) {
                 fieldInfo = type.GetFieldByPath(name);
+
                 if (fieldInfo == null) {
                     break;
                 }
+
                 type = fieldInfo.FieldType;
             }
+
             return fieldInfo;
         }
+
     }
+
 }

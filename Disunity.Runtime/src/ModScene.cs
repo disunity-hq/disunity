@@ -1,4 +1,5 @@
 ﻿using Disunity.Core;
+
 using UnityEngine.SceneManagement;
 
 
@@ -9,7 +10,6 @@ namespace Disunity.Runtime {
     /// </summary>
     public class ModScene {
 
-        public string Name { get; private set; }
         /// <summary>
         ///     Initialize a new ModScene with a Scene name and a Mod
         /// </summary>
@@ -20,6 +20,8 @@ namespace Disunity.Runtime {
             Mod = mod;
             Scene = null;
         }
+
+        public string Name { get; private set; }
 
         /// <summary>
         ///     This ModScene's Scene.
@@ -63,5 +65,7 @@ namespace Disunity.Runtime {
         public T[] GetComponentsInScene<T>() {
             return Scene.Value.GetComponentsInScene<T>();
         }
+
     }
+
 }

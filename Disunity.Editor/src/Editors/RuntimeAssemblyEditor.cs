@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
 
@@ -12,13 +13,20 @@ namespace Disunity.Editor.Editors {
             _picker.Filters.Add(FilterPreloadAssemblies);
         }
 
-        public override string GetAssetFilter() => "t:AssemblyDefinitionAsset";
+        public override string GetAssetFilter() {
+            return "t:AssemblyDefinitionAsset";
+        }
 
-        public override string Label() => "Runtime";
+        public override string Label() {
+            return "Runtime";
+        }
 
-        public override string Title() => "Runtime Assemblies";
+        public override string Title() {
+            return "Runtime Assemblies";
+        }
 
-        public override string Help() => @"Add runtime assemblies here.
+        public override string Help() {
+            return @"Add runtime assemblies here.
 
 <b>Runtime Assemblies</b>
 
@@ -32,8 +40,11 @@ write will be included in a runtime assembly.
 Runtime assemblies are defined by a Unity Assembly Definition
 Asset. These can be created using the 
 <b>Assets -> Create -> Assembly Definition</b> menu.";
+        }
 
-        public override string[] GetSelections() => _window.Settings.RuntimeAssemblies;
+        public override string[] GetSelections() {
+            return _window.Settings.RuntimeAssemblies;
+        }
 
         public override void SelectionRemoved(string selection) {
             _window.Settings.RuntimeAssemblies = _window.Settings.RuntimeAssemblies.Where(o => o != selection).ToArray();
@@ -52,10 +63,12 @@ Asset. These can be created using the
                     entry.Enabled = false;
                 }
 
-                if (entry.Children != null)
+                if (entry.Children != null) {
                     FilterPreloadAssemblies(new List<ListEntry>(entry.Children));
+                }
             }
         }
 
     }
+
 }

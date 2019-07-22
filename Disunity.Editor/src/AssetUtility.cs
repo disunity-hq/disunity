@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using Disunity.Core;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
@@ -47,7 +50,7 @@ namespace Disunity.Editor {
             var directoryUri = new Uri(currentDirectory);
 
             var relativePath = Uri.UnescapeDataString(directoryUri.MakeRelativeUri(pathUri).ToString()
-                .Replace('/', Path.DirectorySeparatorChar));
+                                                                  .Replace('/', Path.DirectorySeparatorChar));
 
             return relativePath;
         }
@@ -111,7 +114,7 @@ namespace Disunity.Editor {
             var resourcesParentDirectory = GetDisunityDirectory();
 
             var resourcesDirectory = Directory
-                .GetDirectories(resourcesParentDirectory, "Resources", SearchOption.AllDirectories).FirstOrDefault();
+                                     .GetDirectories(resourcesParentDirectory, "Resources", SearchOption.AllDirectories).FirstOrDefault();
 
             if (string.IsNullOrEmpty(resourcesDirectory)) {
                 resourcesDirectory = Path.Combine(resourcesParentDirectory, "Resources");

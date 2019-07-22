@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
 
@@ -9,15 +10,25 @@ namespace Disunity.Editor.Editors {
 
         public SceneEditor(ExporterWindow window) : base(window) { }
 
-        public override string GetAssetFilter() => "t:Scene";
+        public override string GetAssetFilter() {
+            return "t:Scene";
+        }
 
-        public override string Label() => "Scenes";
+        public override string Label() {
+            return "Scenes";
+        }
 
-        public override string Title() => "Unity scenes";
+        public override string Title() {
+            return "Unity scenes";
+        }
 
-        public override string Help() => "Scenes can be exported to your mod here.";
+        public override string Help() {
+            return "Scenes can be exported to your mod here.";
+        }
 
-        public override string[] GetSelections() => _window.Settings.Scenes;
+        public override string[] GetSelections() {
+            return _window.Settings.Scenes;
+        }
 
         public override void SelectionRemoved(string selection) {
             _window.Settings.Scenes = _window.Settings.Scenes.Where(o => o != selection).ToArray();
@@ -31,4 +42,5 @@ namespace Disunity.Editor.Editors {
         }
 
     }
+
 }

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+
 using JetBrains.Annotations;
+
 using UnityEngine;
 
 
 namespace Disunity.Runtime {
 
     internal class AssetBundleResource {
-
-        public bool IsValid { get; private set; }
 
         public AssetBundleResource(string name, string path) {
             Path = path;
@@ -20,6 +20,8 @@ namespace Disunity.Runtime {
                 AssetBundle = AssetBundle.LoadFromFile(Path);
             }
         }
+
+        public bool IsValid { get; private set; }
 
         public string Path { get; }
 

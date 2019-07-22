@@ -1,8 +1,6 @@
-﻿namespace Disunity.Core
-{
+﻿namespace Disunity.Core {
 
-    public interface ILogger
-    {
+    public interface ILogger {
 
         void Log(LogLevel level, string message);
 

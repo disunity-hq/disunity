@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
@@ -16,6 +18,7 @@ namespace Disunity.Editor {
                     }
 
                     end?.Invoke();
+
                     if ((EditorApplication.CallbackFunction) Callback != null) {
                         EditorApplication.update -= Callback;
                     }
@@ -23,6 +26,7 @@ namespace Disunity.Editor {
                 catch (Exception ex) {
                     end?.Invoke();
                     Debug.LogException(ex);
+
                     if ((EditorApplication.CallbackFunction) Callback != null) {
                         EditorApplication.update -= Callback;
                     }
@@ -33,4 +37,5 @@ namespace Disunity.Editor {
         }
 
     }
+
 }

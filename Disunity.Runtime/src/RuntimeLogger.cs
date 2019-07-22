@@ -1,12 +1,16 @@
 ﻿using BepInEx.Logging;
+
 using Disunity.Core;
+
 using LogLevel = Disunity.Core.LogLevel;
 
 
 namespace Disunity.Runtime {
+
     public class RuntimeLogger : ILogger {
 
         protected ManualLogSource _logger;
+
         public RuntimeLogger(string name) {
             _logger = Logger.CreateLogSource(name);
         }
@@ -30,5 +34,7 @@ namespace Disunity.Runtime {
         public void LogError(string message) {
             _logger.LogError(message);
         }
+
     }
+
 }

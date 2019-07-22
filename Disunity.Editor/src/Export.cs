@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using Disunity.Core;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
@@ -52,7 +55,11 @@ namespace Disunity.Editor {
 
         private List<string> ExportAssemblies(string[] assemblies, string folder) {
             var destinations = new List<string>();
-            if (assemblies.Length == 0) return destinations;
+
+            if (assemblies.Length == 0) {
+                return destinations;
+            }
+
             var destinationPath = Path.Combine(_tempModDirectory, folder);
             Directory.CreateDirectory(destinationPath);
 
@@ -98,18 +105,23 @@ namespace Disunity.Editor {
 
         private void SetContentTypes() {
             _settings.ContentTypes = 0;
+
             if (_settings.PreloadAssemblies.Length > 0) {
                 _settings.ContentTypes |= ContentType.PreloadAssemblies;
             }
+
             if (_settings.RuntimeAssemblies.Length > 0) {
                 _settings.ContentTypes |= ContentType.RuntimeAssemblies;
             }
+
             if (_settings.Prefabs.Length > 0) {
                 _settings.ContentTypes |= ContentType.Prefabs;
             }
+
             if (_settings.Scenes.Length > 0) {
                 _settings.ContentTypes |= ContentType.Scenes;
             }
+
             if (_settings.Artifacts.Length > 0) {
                 _settings.ContentTypes |= ContentType.Artifacts;
             }

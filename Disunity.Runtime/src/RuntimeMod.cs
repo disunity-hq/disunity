@@ -2,26 +2,29 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+
 using Disunity.Core;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 using Object = UnityEngine.Object;
 
+
 namespace Disunity.Runtime {
+
     public class RuntimeMod : Mod {
+
+        private readonly List<string> _assetPaths = new List<string>();
+        private readonly List<GameObject> _prefabs = new List<GameObject>();
+        private readonly List<Assembly> _runtimeAssemblies = new List<Assembly>();
+        private readonly List<string> _runtimeAssemblyFiles = new List<string>();
+        private readonly List<string> _runtimeAssemblyNames = new List<string>();
+        private readonly List<string> _sceneNames = new List<string>();
+        private readonly List<ModScene> _scenes = new List<ModScene>();
 
         private AssetBundleResource _assetsResource;
         private AssetBundleResource _scenesResource;
-        private readonly List<string> _runtimeAssemblyFiles = new List<string>();
-        private readonly List<string> _runtimeAssemblyNames = new List<string>();
-        private readonly List<Assembly> _runtimeAssemblies = new List<Assembly>();
-        private readonly List<GameObject> _prefabs = new List<GameObject>();
-        private readonly List<ModScene> _scenes = new List<ModScene>();
-        private readonly List<string> _sceneNames = new List<string>();
-        private readonly List<string> _assetPaths = new List<string>();
-
-        public event EventHandler OnStart;
-        public event EventHandler OnUpdate;
 
         public RuntimeMod(string infoPath) : base(infoPath) {
 
@@ -57,6 +60,9 @@ namespace Disunity.Runtime {
         /// </summary>
         public ICollection<GameObject> Prefabs => new ReadOnlyCollection<GameObject>(_prefabs);
 
+        public event EventHandler OnStart;
+        public event EventHandler OnUpdate;
+
 
         public void InvokeOnStart() {
             OnStart?.Invoke(this, EventArgs.Empty);
@@ -67,8 +73,8 @@ namespace Disunity.Runtime {
         }
 
         private void InitAssetBundles() {
-            var assets = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".assets");
-            var scenes = System.IO.Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".scenes");
+            var assets = Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".assets");
+            var scenes = Path.Combine(InstallPath, "assetbundles", Info.Name.ToLower() + ".scenes");
 
             _assetsResource = new AssetBundleResource(Info.Name + " assets", assets);
             _scenesResource = new AssetBundleResource(Info.Name + " scenes", scenes);
@@ -78,6 +84,7 @@ namespace Disunity.Runtime {
             base.LoadResources();
             InitAssetBundles();
             IsValid = CheckResources() || IsValid;
+
             if (IsValid) {
                 LoadAssemblies();
                 LoadPrefabs();
@@ -117,7 +124,7 @@ namespace Disunity.Runtime {
 
                 if (File.Exists(fullPath)) {
                     _runtimeAssemblyFiles.Add(fullPath);
-                    _runtimeAssemblyNames.Add(System.IO.Path.GetFileName(fullPath));
+                    _runtimeAssemblyNames.Add(Path.GetFileName(fullPath));
                     continue;
                 }
 
@@ -130,6 +137,7 @@ namespace Disunity.Runtime {
 
         protected bool CheckResources() {
             var contentTypes = (ContentType) Info.ContentTypes;
+
             return base.CheckResources() &&
                    CheckPrefabBundle(contentTypes) &&
                    CheckSceneBundle(contentTypes) &&
@@ -187,7 +195,7 @@ namespace Disunity.Runtime {
         /// </summary>
         /// <typeparam name="T">The asset Type.</typeparam>
         /// <returns>AssetBundleRequest that can be used to get the asset.</returns>
-        public T[] GetAssets<T>() where T : UnityEngine.Object {
+        public T[] GetAssets<T>() where T : Object {
             if (_assetsResource.IsValid) {
                 return _assetsResource.AssetBundle.LoadAllAssets<T>();
             }
@@ -201,7 +209,7 @@ namespace Disunity.Runtime {
         /// <param name="name">The asset's name.</param>
         /// <typeparam name="T">The asset's Type</typeparam>
         /// <returns>AssetBundleRequest that can be used to get the asset.</returns>
-        public AssetBundleRequest GetAssetAsync<T>(string name) where T : UnityEngine.Object {
+        public AssetBundleRequest GetAssetAsync<T>(string name) where T : Object {
             if (_assetsResource.IsValid) {
                 return _assetsResource.AssetBundle.LoadAssetAsync<T>(name);
             }
@@ -214,7 +222,7 @@ namespace Disunity.Runtime {
         /// </summary>
         /// <typeparam name="T">The asset Type.</typeparam>
         /// <returns>AssetBundleRequest that can be used to get the assets.</returns>
-        public AssetBundleRequest GetAssetsAsync<T>() where T : UnityEngine.Object {
+        public AssetBundleRequest GetAssetsAsync<T>() where T : Object {
             if (_assetsResource.IsValid) {
                 return _assetsResource.AssetBundle.LoadAllAssetsAsync<T>();
             }
@@ -274,7 +282,8 @@ namespace Disunity.Runtime {
             foreach (var assembly in _runtimeAssemblies) {
                 try {
                     instances.AddRange(GetInstances<T>(assembly, args));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     Debug.LogException(e);
                 }
             }
@@ -300,16 +309,17 @@ namespace Disunity.Runtime {
 
                 if (type.IsSubclassOf(typeof(Component))) {
                     foreach (var component in GetComponents(type)) {
-                        instances.Add((T)(object)component);
+                        instances.Add((T) (object) component);
                     }
 
                     continue;
                 }
 
                 try {
-                    var instance = (T)Activator.CreateInstance(type, args);
+                    var instance = (T) Activator.CreateInstance(type, args);
                     instances.Add(instance);
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     if (e is MissingMethodException) {
                         Debug.Log(e.Message);
                     } else {
@@ -334,6 +344,7 @@ namespace Disunity.Runtime {
         //public override void UpdateConflicts(Mod other) {
         //    Debug.Log("[Disunity] Skipping collision check.");
         //}
+
     }
 
 }

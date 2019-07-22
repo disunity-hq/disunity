@@ -1,6 +1,8 @@
 ﻿using Disunity.Editor.Components;
 using Disunity.Editor.Editors;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
@@ -66,7 +68,7 @@ will be included in that assembly.
 Check the documentation for more information.
 ";
 
-            GUIStyle myStyle = GUI.skin.GetStyle("HelpBox");
+            var myStyle = GUI.skin.GetStyle("HelpBox");
             myStyle.richText = true;
 
             EditorGUILayout.TextArea(message, myStyle);

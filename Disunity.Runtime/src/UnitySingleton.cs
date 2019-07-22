@@ -37,8 +37,7 @@ namespace Disunity.Runtime {
             if (_instance == null) {
                 _instance = this as T;
                 DontDestroyOnLoad(gameObject);
-            }
-            else {
+            } else {
                 Destroy(gameObject);
             }
         }

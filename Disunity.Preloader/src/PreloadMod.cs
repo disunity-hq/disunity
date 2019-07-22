@@ -8,5 +8,7 @@ namespace Disunity.Preloader {
         public PreloadMod(string infoPath) : base(infoPath) {
             Log = new PreloadLogger(Info.Name);
         }
+
     }
+
 }

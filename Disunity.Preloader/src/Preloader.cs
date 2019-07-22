@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using BepInEx;
+
 using Disunity.Core;
+
 using Mono.Cecil;
+
 
 namespace Disunity.Preloader {
 
@@ -15,25 +19,27 @@ namespace Disunity.Preloader {
         private static readonly PreloadLogger _log = new PreloadLogger("Disunity Preload");
         private static Dictionary<string, List<Action<AssemblyDefinition>>> patchers = new Dictionary<string, List<Action<AssemblyDefinition>>>();
 
-        public static void RegisterPatcher(string assemblyName, Action<AssemblyDefinition> patcher) {
-            List<Action<AssemblyDefinition>> assemblyPatchers;
-            if (patchers.ContainsKey(assemblyName)) {
-                assemblyPatchers = patchers[assemblyName];
-            }
-            else {
-                assemblyPatchers = new List<Action<AssemblyDefinition>>();
-            }
-            assemblyPatchers.Add(patcher);
-            patchers[assemblyName] = assemblyPatchers;
-        }
-
         public static IEnumerable<string> TargetDLLs {
             get {
                 LoadMods();
+
                 foreach (var key in patchers.Keys) {
                     yield return $"{key}.dll";
                 }
             }
+        }
+
+        public static void RegisterPatcher(string assemblyName, Action<AssemblyDefinition> patcher) {
+            List<Action<AssemblyDefinition>> assemblyPatchers;
+
+            if (patchers.ContainsKey(assemblyName)) {
+                assemblyPatchers = patchers[assemblyName];
+            } else {
+                assemblyPatchers = new List<Action<AssemblyDefinition>>();
+            }
+
+            assemblyPatchers.Add(patcher);
+            patchers[assemblyName] = assemblyPatchers;
         }
 
         public static void Patch(ref AssemblyDefinition assembly) {
@@ -44,7 +50,8 @@ namespace Disunity.Preloader {
             foreach (var patcher in assemblyPatchers) {
                 try {
                     patcher(assembly);
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     _log.LogError($"Failed to run patch {patcher.Method.Name}. Error:\n{e}");
                 }
             }
@@ -75,12 +82,14 @@ namespace Disunity.Preloader {
             }
 
             var assembly = GetStartupAssembly(mod);
+
             if (assembly == null) {
                 _log.LogInfo($"Couldn't find preload startup assembly for {mod.Info.Name}: {startupAssembly}");
                 return;
             }
 
             var type = GetStartupClass(assembly, startupClass);
+
             if (type == null) {
                 _log.LogInfo($"Couldn't find preload startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
                 return;
@@ -109,4 +118,5 @@ namespace Disunity.Preloader {
         }
 
     }
+
 }

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+
 using Disunity.Core;
 using Disunity.Editor.Fields;
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
@@ -20,12 +23,16 @@ namespace Disunity.Editor.Editors {
             _runtimePickerField = new RuntimePickerField(window);
         }
 
-        public override string Label() => "Export";
+        public override string Label() {
+            return "Export";
+        }
 
-        public override string Title() => "Mod Export";
+        public override string Title() {
+            return "Mod Export";
+        }
 
-        public override string Help() =>
-            @"Specify your mod's basic details and export.
+        public override string Help() {
+            return @"Specify your mod's basic details and export.
 
 Each mod <b>must</b>:
   - Provide all basic info
@@ -33,6 +40,7 @@ Each mod <b>must</b>:
 
 Once you've provided all basic mod details and added at least some content
 then the `Export` button will appear.";
+        }
 
         private void DrawSection(Action thunk) {
             EditorGUILayout.BeginVertical(EditorStyles.helpBox, GUILayout.ExpandWidth(true));
@@ -71,16 +79,26 @@ then the `Export` button will appear.";
         private void DrawContentWarning(ExportSettings settings) {
 
             settings.ContentTypes = 0;
-            if (settings.PreloadAssemblies.Length > 0)
+
+            if (settings.PreloadAssemblies.Length > 0) {
                 settings.ContentTypes |= ContentType.PreloadAssemblies;
-            if (settings.RuntimeAssemblies.Length > 0)
+            }
+
+            if (settings.RuntimeAssemblies.Length > 0) {
                 settings.ContentTypes |= ContentType.RuntimeAssemblies;
-            if (settings.Prefabs.Length > 0)
+            }
+
+            if (settings.Prefabs.Length > 0) {
                 settings.ContentTypes |= ContentType.Prefabs;
-            if (settings.Scenes.Length > 0)
+            }
+
+            if (settings.Scenes.Length > 0) {
                 settings.ContentTypes |= ContentType.Scenes;
-            if (settings.Artifacts.Length > 0)
+            }
+
+            if (settings.Artifacts.Length > 0) {
                 settings.ContentTypes |= ContentType.Artifacts;
+            }
 
             if (settings.ContentTypes == 0) {
                 throw new ExportValidationError("You must include some content in your mod.");
@@ -101,7 +119,7 @@ then the `Export` button will appear.";
 
                 if (field.CurrentSelection() != null) {
                     if (GUILayout.Button("X", GUILayout.Width(24), GUILayout.Height(14))) {
-                        field.SelectionMade(new ListEntry() { Value = null });
+                        field.SelectionMade(new ListEntry() {Value = null});
                     }
                 }
 
@@ -117,6 +135,7 @@ then the `Export` button will appear.";
             if (GUILayout.Button("...", GUILayout.Width(30))) {
                 var selectedDirectory =
                     EditorUtility.SaveFolderPanel("Choose output directory", settings.OutputDirectory, "");
+
                 if (!string.IsNullOrEmpty(selectedDirectory)) {
                     settings.OutputDirectory = selectedDirectory;
                 }
@@ -130,9 +149,7 @@ then the `Export` button will appear.";
         }
 
         private void DrawExportOptions(ExportSettings settings) {
-            DrawSection(() => {
-                DrawDirectorySelector(settings);
-            });
+            DrawSection(() => { DrawDirectorySelector(settings); });
         }
 
         private void DrawSections(ExportSettings settings) {
@@ -157,6 +174,7 @@ then the `Export` button will appear.";
                 Export.ExportMod(_window.Settings);
             }
         }
+
     }
 
 }

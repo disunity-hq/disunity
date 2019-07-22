@@ -29,8 +29,7 @@ namespace Disunity.Core {
             Name = name;
         }
 
-        public TypeName() {
-        }
+        public TypeName() { }
 
     }
 

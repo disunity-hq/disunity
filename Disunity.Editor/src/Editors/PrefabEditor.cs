@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
 
@@ -9,14 +10,20 @@ namespace Disunity.Editor.Editors {
 
         public PrefabEditor(ExporterWindow window) : base(window) { }
 
-        public override string GetAssetFilter() => "t:GameObject t:ScriptableObject";
+        public override string GetAssetFilter() {
+            return "t:GameObject t:ScriptableObject";
+        }
 
-        public override string Label() => "Prefabs";
+        public override string Label() {
+            return "Prefabs";
+        }
 
-        public override string Title() => "Premade GameObject prefabs";
+        public override string Title() {
+            return "Premade GameObject prefabs";
+        }
 
-        public override string Help() =>
-            @"Prefabs and ScriptableObjects can be exported here.
+        public override string Help() {
+            return @"Prefabs and ScriptableObjects can be exported here.
 
 You can access your prefabs via the `Mod.Prefabs` attribute. ScriptableObjects
 work exactly the same way, except they can't be instantiated into the scene.
@@ -29,8 +36,11 @@ for all sorts of things including settings. However, a limitation of Disunity
 for fields on a ScriptableObject. Normally, any custom C# class would work,
 but due to a limitation in how Unity serializes information, only basic types
 like strings, ints, floats, and basic arrays will work.";
+        }
 
-        public override string[] GetSelections() => _window.Settings.Prefabs;
+        public override string[] GetSelections() {
+            return _window.Settings.Prefabs;
+        }
 
         public override void SelectionRemoved(string selection) {
             _window.Settings.Prefabs = _window.Settings.Prefabs.Where(o => o != selection).ToArray();
@@ -44,4 +54,5 @@ like strings, ints, floats, and basic arrays will work.";
         }
 
     }
+
 }

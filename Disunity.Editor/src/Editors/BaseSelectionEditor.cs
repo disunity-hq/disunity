@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Disunity.Editor.Components;
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
+
 using UnityEditor;
 
 
 namespace Disunity.Editor.Editors {
-    abstract class BaseSelectionEditor : BaseEditor {
-        protected readonly FilteredPicker _picker;
-        protected readonly Lister _lister;
 
-        public abstract List<ListEntry> GenerateOptions();
-        public abstract string[] GetSelections();
-        public abstract void SelectionRemoved(string selection);
-        public abstract void SelectionAdded(ListEntry selection);
+    internal abstract class BaseSelectionEditor : BaseEditor {
+
+        protected readonly Lister _lister;
+        protected readonly FilteredPicker _picker;
 
         protected BaseSelectionEditor(ExporterWindow window, FilteredPicker picker = null, Lister lister = null) : base(window) {
             _picker = picker ?? DefaultPicker();
@@ -25,6 +24,12 @@ namespace Disunity.Editor.Editors {
             _picker.SelectionHandler = SelectionAdded;
             _picker.Filters.Add(SelectionFilter);
         }
+
+        public abstract List<ListEntry> GenerateOptions();
+        public abstract string[] GetSelections();
+        public abstract void SelectionRemoved(string selection);
+        public abstract void SelectionAdded(ListEntry selection);
+
         public virtual FilteredPicker DefaultPicker() {
             return new HierarchyPicker();
         }
@@ -53,8 +58,10 @@ namespace Disunity.Editor.Editors {
             using (new EditorGUILayout.VerticalScope()) {
 
                 var selections = GetSelections();
-                if (selections.Length > 0)
+
+                if (selections.Length > 0) {
                     _lister.OnGUI(selections);
+                }
 
                 _picker.OnGUI();
             }
@@ -65,4 +72,5 @@ namespace Disunity.Editor.Editors {
         }
 
     }
+
 }

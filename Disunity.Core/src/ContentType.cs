@@ -8,11 +8,13 @@ namespace Disunity.Core {
     /// </summary>
     [Flags]
     public enum ContentType {
+
         PreloadAssemblies = 2,
         RuntimeAssemblies = 4,
         Prefabs = 8,
         Scenes = 16,
         Artifacts = 32,
+
     }
 
 }

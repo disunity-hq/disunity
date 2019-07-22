@@ -1,5 +1,6 @@
 ﻿using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
+
 using UnityEngine;
 
 
@@ -21,9 +22,8 @@ namespace Disunity.Editor.Fields {
             if (entry?.Value == null) {
                 Window.Settings.RuntimeAssembly = null;
                 Window.Settings.RuntimeClass = null;
-            }
-            else {
-                var parts = entry.Value.Split(new char[] { '.' }, 2);
+            } else {
+                var parts = entry.Value.Split(new char[] {'.'}, 2);
                 Window.Settings.RuntimeAssembly = parts[0];
                 Window.Settings.RuntimeClass = parts[1];
             }

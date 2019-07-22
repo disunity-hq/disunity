@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 using Object = UnityEngine.Object;
 
 
@@ -35,6 +37,7 @@ namespace Disunity.Runtime {
 
             foreach (var go in self.GetRootGameObjects()) {
                 var component = go.GetComponentInChildren<T>(true);
+
                 if (component != null) {
                     return component;
                 }
@@ -56,6 +59,7 @@ namespace Disunity.Runtime {
 
             foreach (var go in self.GetRootGameObjects()) {
                 var component = go.GetComponentInChildren(componentType, true);
+
                 if (component != null) {
                     return component;
                 }

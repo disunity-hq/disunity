@@ -1,37 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
 namespace Disunity.Editor.Pickers {
 
     public class ListEntry : IComparable {
+
         public string Value;
         public bool Enabled { get; set; }
-        public override string ToString() => Value;
 
         public int CompareTo(object obj) {
-            if (obj is ListEntry val)
-                return String.Compare(ToString(), val.ToString(), StringComparison.Ordinal);
+            if (obj is ListEntry val) {
+                return string.Compare(ToString(), val.ToString(), StringComparison.Ordinal);
+            }
+
             return -1;
         }
+
+        public override string ToString() {
+            return Value;
+        }
+
     }
 
     public class BasePicker {
+
+        protected static GUIStyle _selectedStyle;
+        protected static GUIStyle _unselectedStyle;
+        protected double _lastClickTime;
+
+        protected Vector2 _scrollPosition;
+
+        protected ListEntry _selected;
 
         public List<ListEntry> Entries;
 
         public Func<List<ListEntry>> OptionGenerator;
         public Action<ListEntry> SelectionHandler;
-
-        protected ListEntry _selected;
-
-        protected static GUIStyle _selectedStyle;
-        protected static GUIStyle _unselectedStyle;
-
-        protected Vector2 _scrollPosition;
-        protected double _lastClickTime;
 
         public bool NeedsDoubleClick { get; set; }
         public int EntriesShown { get; protected set; }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
+
 using UnityEngine;
 
 
@@ -35,7 +37,7 @@ namespace Disunity.Editor.Fields {
         }
 
         protected List<ListEntry> GetEntries(string[] names) {
-            var entries = names.Select(o => new ListEntry() { Value = o, Enabled = true});
+            var entries = names.Select(o => new ListEntry() {Value = o, Enabled = true});
             return new List<ListEntry>(entries);
         }
 
@@ -46,5 +48,7 @@ namespace Disunity.Editor.Fields {
             var entries = GetEntries(types.Keys.ToArray());
             return new List<ListEntry>(entries);
         }
+
     }
+
 }

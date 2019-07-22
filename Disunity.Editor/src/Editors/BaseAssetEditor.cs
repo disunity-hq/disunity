@@ -1,37 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Disunity.Editor.Components;
 using Disunity.Editor.Pickers;
 using Disunity.Editor.Windows;
+
 using UnityEditor;
 
 
 namespace Disunity.Editor.Editors {
 
     internal abstract class BaseAssetEditor : BaseSelectionEditor {
-        public class AssetEntry : TreeEntry {
-
-            public string PathPart { get; set; }
-
-            public override string ToString() {
-                return PathPart;
-            }
-
-        }
 
         protected BaseAssetEditor(ExporterWindow window, FilteredPicker picker = null, Lister lister = null) : base(window, picker, lister) { }
         protected BaseAssetEditor(ExporterWindow window) : base(window, null, null) { }
 
-        public virtual string GetAssetFilter() => null;
+        public virtual string GetAssetFilter() {
+            return null;
+        }
 
         public virtual string[] GetAssetPaths() {
             var assetFilter = GetAssetFilter();
 
             if (assetFilter != null) {
                 return AssetDatabase
-                    .FindAssets(assetFilter)
-                    .Select(AssetDatabase.GUIDToAssetPath)
-                    .ToArray();
+                       .FindAssets(assetFilter)
+                       .Select(AssetDatabase.GUIDToAssetPath)
+                       .ToArray();
             }
 
             return AssetDatabase.GetAllAssetPaths();
@@ -44,7 +39,9 @@ namespace Disunity.Editor.Editors {
             }
 
             foreach (AssetEntry child in parent.Children) {
-                if (child.PathPart == pathPart) return child;
+                if (child.PathPart == pathPart) {
+                    return child;
+                }
             }
 
             var newEntry = new AssetEntry() {PathPart = pathPart, Value = assetPath, Enabled = true};
@@ -82,6 +79,16 @@ namespace Disunity.Editor.Editors {
             var paths = GetAssetPaths().Where(o => o.StartsWith("Assets/")).ToArray();
             var graph = GenerateGraph(paths);
             return new List<ListEntry>(graph);
+        }
+
+        public class AssetEntry : TreeEntry {
+
+            public string PathPart { get; set; }
+
+            public override string ToString() {
+                return PathPart;
+            }
+
         }
 
     }

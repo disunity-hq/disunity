@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using BepInEx;
+
 using Disunity.Core;
-using Path = System.IO.Path;
 
 
 namespace Disunity.Runtime {
@@ -21,13 +23,13 @@ namespace Disunity.Runtime {
         }
 
         private void Start() {
-            foreach (RuntimeMod mod in _instances) {
+            foreach (var mod in _instances) {
                 mod.InvokeOnStart();
             }
         }
 
         private void Update() {
-            foreach (RuntimeMod mod in _instances) {
+            foreach (var mod in _instances) {
                 mod.InvokeOnUpdate();
             }
         }
@@ -56,12 +58,14 @@ namespace Disunity.Runtime {
             }
 
             var assembly = GetStartupAssembly(startupAssembly);
+
             if (assembly == null) {
                 _log.LogInfo($"Couldn't find runtime startup assembly for {mod.Info.Name}: {startupAssembly}");
                 return;
             }
 
             var type = GetStartupClass(assembly, startupClass);
+
             if (type == null) {
                 _log.LogInfo($"Couldn't find runtime startup class for {mod.Info.Name} in assembly {startupAssembly}: {startupClass}");
                 return;
@@ -74,9 +78,13 @@ namespace Disunity.Runtime {
         private void LoadMod(string modInfoPath) {
             var mod = new RuntimeMod(modInfoPath);
 
-            if (!mod.IsValid) return;
+            if (!mod.IsValid) {
+                return;
+            }
 
             BootMod(mod);
         }
+
     }
+
 }

@@ -8,6 +8,15 @@ namespace Disunity.Core {
 
         private readonly List<string> _artifactFiles = new List<string>();
 
+        /// <summary>
+        ///     Initialize a new Mod with a path to a mod file.
+        /// </summary>
+        /// <param name="infoPath">The path to a mod file</param>
+        protected Mod(string infoPath) {
+            Info = ModInfo.Load(infoPath);
+            InstallPath = Path.GetDirectoryName(infoPath);
+        }
+
         public Dictionary<string, string> Artifacts { get; } = new Dictionary<string, string>();
         public ILogger Log { get; protected set; }
 
@@ -27,18 +36,9 @@ namespace Disunity.Core {
         /// </summary>
         public bool IsValid { get; protected set; } = true;
 
-        /// <summary>
-        ///     Initialize a new Mod with a path to a mod file.
-        /// </summary>
-        /// <param name="infoPath">The path to a mod file</param>
-        protected Mod(string infoPath) {
-            Info = ModInfo.Load(infoPath);
-            InstallPath = Path.GetDirectoryName(infoPath);
-        }
-
         protected virtual bool CheckArtifacts(ContentType contentTypes) {
             if (contentTypes.HasFlag(ContentType.Artifacts) && Info.Artifacts.Length == 0) {
-                Log.LogError($"Mod advertises artifact files but none listed in metadata. {(int)contentTypes}");
+                Log.LogError($"Mod advertises artifact files but none listed in metadata. {(int) contentTypes}");
             }
 
             var returnValue = true;
@@ -74,10 +74,12 @@ namespace Disunity.Core {
 
         protected void LoadResources() {
             IsValid = CheckResources();
+
             if (IsValid) {
                 LoadArtifacts();
             }
         }
 
     }
+
 }

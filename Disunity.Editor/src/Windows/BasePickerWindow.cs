@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 using Disunity.Editor.Pickers;
+
 using UnityEditor;
 
 
@@ -10,7 +11,7 @@ namespace Disunity.Editor.Windows {
 
         public BasePicker Picker;
 
-        public virtual void Set(List<ListEntry> entries) { 
+        public virtual void Set(List<ListEntry> entries) {
             Picker?.SetEntries(entries);
         }
 
@@ -25,5 +26,7 @@ namespace Disunity.Editor.Windows {
         protected void OnGUI() {
             Picker.OnGUI();
         }
+
     }
+
 }

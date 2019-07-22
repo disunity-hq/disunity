@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using Disunity.Editor.Editors;
+
 using UnityEditor;
+
 using UnityEngine;
 
 
 namespace Disunity.Editor.Components {
 
     internal class EditorSelector {
-
-        private readonly List<BaseEditor> _editors = new List<BaseEditor>();
-
-        private int _selection;
-        private bool _showHelp;
 
         private const string Message = @"Full documentation is available at:
 
@@ -52,13 +50,18 @@ explains how to use it.
             }
         };
 
+        private readonly List<BaseEditor> _editors = new List<BaseEditor>();
+
+        private int _selection;
+        private bool _showHelp;
+
         public EditorSelector(int selectedEditor = 0) {
             _selection = selectedEditor;
         }
 
         protected void DrawContentTitle(string title, bool drawHelpButton = true) {
             using (new EditorGUILayout.HorizontalScope(_titleStyle)) {
-                GUILayout.Label($"{title}:", new GUIStyle() { fontSize = 14 });
+                GUILayout.Label($"{title}:", new GUIStyle() {fontSize = 14});
 
                 if (drawHelpButton) {
                     _showHelp = GUILayout.Toggle(_showHelp, "?", "Button", GUILayout.Width(16));
@@ -108,7 +111,9 @@ explains how to use it.
             }
         }
 
-        public void Add(BaseEditor editor) => _editors.Add(editor);
+        public void Add(BaseEditor editor) {
+            _editors.Add(editor);
+        }
 
         public int Draw() {
 

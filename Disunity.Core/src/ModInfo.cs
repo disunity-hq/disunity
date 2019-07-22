@@ -1,4 +1,5 @@
 ﻿using System.IO;
+
 using Commons.Json;
 
 
@@ -9,21 +10,22 @@ namespace Disunity.Core {
     /// </summary>
     public class ModInfo {
 
-        private string _name;
-        private bool _isEnabled;
-        private ContentType _contentTypes;
-        private string _author;
-        private string _description;
-        private string _version;
-        private string _unityVersion;
-        private string[] _preloadAssemblies;
-        private string[] _runtimeAssemblies;
-        private string _runtimeClass;
-        private string _runtimeAssembly;
-        private string _preloadClass;
-        private string _preloadAssembly;
-        private string[] _dependencies;
         private string[] _artifacts;
+        private string _author;
+        private ContentType _contentTypes;
+        private string[] _dependencies;
+        private string _description;
+        private bool _isEnabled;
+
+        private string _name;
+        private string[] _preloadAssemblies;
+        private string _preloadAssembly;
+        private string _preloadClass;
+        private string[] _runtimeAssemblies;
+        private string _runtimeAssembly;
+        private string _runtimeClass;
+        private string _unityVersion;
+        private string _version;
 
         public ModInfo(
             string name,
@@ -59,14 +61,12 @@ namespace Disunity.Core {
             _isEnabled = false;
         }
 
-        public ModInfo() {
-
-        }
+        public ModInfo() { }
 
         /// <summary>
         ///     Name
         /// </summary>
-        
+
         public string Name {
             get => _name;
             set => _name = value;
@@ -75,16 +75,16 @@ namespace Disunity.Core {
         /// <summary>
         ///     The Mod's available content types.
         /// </summary>
-        
+
         public int ContentTypes {
-            get => (int)_contentTypes;
-            set => _contentTypes = (ContentType)value;
+            get => (int) _contentTypes;
+            set => _contentTypes = (ContentType) value;
         }
 
         /// <summary>
         ///     Mod author.
         /// </summary>
-        
+
         public string Author {
             get => _author;
             set => _author = value;
@@ -93,7 +93,7 @@ namespace Disunity.Core {
         /// <summary>
         ///     Mod description.
         /// </summary>
-        
+
         public string Description {
             get => _description;
             set => _description = value;
@@ -102,7 +102,7 @@ namespace Disunity.Core {
         /// <summary>
         ///     Mod version.
         /// </summary>
-        
+
         public string Version {
             get => _version;
             set => _version = value;
