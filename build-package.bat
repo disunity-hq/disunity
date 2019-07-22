@@ -1,1 +1,0 @@
-Unity.exe -batchmode -nographics -projectPath ExampleMod -exportPackage "Assets" "%~dp0\build\examplemod.unitypackage" -quit

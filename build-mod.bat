@@ -1,1 +1,0 @@
-Unity.exe -batchmode -nographics -projectPath ExampleMod -disable-assembly-updater -executeMethod Builder.PerformBuild -quit
