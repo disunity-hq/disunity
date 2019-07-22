@@ -1,0 +1,5 @@
+source https://api.nuget.org/v3/index.json
+
+nuget Commons.Json >= 0.4.0.1347
+nuget Unity.Newtonsoft.Json >= 7.0.0
+nuget Mono.Cecil >= 0.10.4

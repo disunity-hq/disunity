@@ -1,7 +1,9 @@
-Disunity/Disunity.Core/obj/
-Disunity/Disunity.Editor/obj/
-Disunity/Disunity.Preloader/obj/
-Disunity/Disunity.Runtime/obj/
-Disunity/Disunity.Editor/bin/
-Disunity/Disunity.Preloader/bin/
-Disunity/Disunity.Runtime/bin/
+paket-files/
+
+.vs/
+.idea/
+*.DotSettings.user
+*.nupkg
+**/[Pp]ackages/*
+**/obj/
+**/bin/
