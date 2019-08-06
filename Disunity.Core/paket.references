@@ -1,1 +1,4 @@
 Commons.Json
+Newtonsoft.Json.Schema
+SemanticVersion
+System.IO.Compression
