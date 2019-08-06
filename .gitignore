@@ -7,3 +7,5 @@ paket-files/
 **/[Pp]ackages/*
 **/obj/
 **/bin/
+ExampleMod/Assets/Disunity/
+Build/
