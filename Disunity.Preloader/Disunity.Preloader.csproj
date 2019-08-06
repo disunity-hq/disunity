@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <PublishDir>$(OutDir)publish\</PublishDir>
+    <BuildDir>..\Build</BuildDir>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BepInEx, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -12,5 +14,21 @@
   <ItemGroup>
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Outputs Include="$(PublishDir)Disunity.Preloader.dll" />
+    <Deps Include="$(PublishDir)Mono.Cecil.dll" />
+  </ItemGroup>
+  <Target Name="Package" AfterTargets="Publish">
+    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(BuildDir)\Disunity\patchers\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Deps)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Deps)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\%(Filename)%(Extension)">
+    </Copy>
+  </Target>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

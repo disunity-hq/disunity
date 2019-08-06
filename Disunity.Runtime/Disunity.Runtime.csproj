@@ -1,25 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    <PublishDir>$(OutDir)publish\</PublishDir>
+    <BuildDir>..\Build</BuildDir>
+    <LibDir>..\libs\</LibDir>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BepInEx, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\libs\BepInEx.dll</HintPath>
+      <HintPath>$(LibDir)BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\libs\UnityEngine.dll</HintPath>
+      <HintPath>$(LibDir)UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\libs\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>$(LibDir)UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\libs\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(LibDir)UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Outputs Include="$(PublishDir)Disunity.Runtime.dll" />
+    <Deps Include="$(PublishDir)Unity.Newtonsoft.Json.dll" />
+    <Libs Include="$(LibDir)BepInEx.dll" />
+  </ItemGroup>
+  <Target Name="Package" AfterTargets="Publish">
+    <Copy SourceFiles="@(Deps)" DestinationFiles="$(BuildDir)\Disunity\core\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(BuildDir)\Disunity\plugins\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Deps)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Libs)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Deps)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Libs)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
+    </Copy>
+    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\%(Filename)%(Extension)">
+    </Copy>
+  </Target>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
