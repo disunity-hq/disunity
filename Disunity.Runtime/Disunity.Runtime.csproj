@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net462</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PublishDir>$(OutDir)publish\</PublishDir>
     <BuildDir>..\Build</BuildDir>
     <LibDir>..\libs\</LibDir>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BepInEx, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -25,8 +26,6 @@
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Outputs Include="$(PublishDir)Disunity.Runtime.dll" />
-    <Deps Include="$(PublishDir)Unity.Newtonsoft.Json.dll" />
     <Libs Include="$(LibDir)BepInEx.dll" />
   </ItemGroup>
   <Target Name="Package" AfterTargets="Publish">
