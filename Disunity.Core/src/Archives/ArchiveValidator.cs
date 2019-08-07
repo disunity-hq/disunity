@@ -9,7 +9,7 @@ namespace Disunity.Core.Archives {
 
     public static class ArchiveValidator {
 
-        private static void ValidateArtifacts(IArchive archive) {
+        public static void ValidateArtifacts(IArchive archive) {
             var errors = (from path in archive.Manifest.Artifacts
                           let fullPath = Path.Combine("artifacts", path)
                           let entry = archive.GetEntry(fullPath)
@@ -21,7 +21,7 @@ namespace Disunity.Core.Archives {
             }
         }
 
-        private static void Validate(IArchive archive) {
+        public static void Validate(IArchive archive) {
             ValidateArtifacts(archive);
         }
 
