@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="data\manifest.json" CopyToOutputDirectory="Always" />
+    <None Update="data\broken_manifest.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
+</Project>
