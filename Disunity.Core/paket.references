@@ -2,3 +2,5 @@ Commons.Json
 Newtonsoft.Json.Schema
 SemanticVersion
 System.IO.Compression
+Microsoft.CSharp
+System.Dynamic.Runtime
