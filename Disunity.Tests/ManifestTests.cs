@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Disunity.Core.Archives;
 
@@ -47,7 +48,7 @@ namespace Disunity.Store.Tests {
                 return false;
             }
 
-            foreach (var (key, value) in first) {
+            foreach (var (key, value) in first.Select(x => (x.Key, x.Value))) {
                 if (!second.TryGetValue(key, out var range)) {
                     log.WriteLine($"Missing key: {key}");
                     return false;
