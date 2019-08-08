@@ -17,14 +17,14 @@ namespace Disunity.Core.Archives.Exceptions {
 
     public class MissingEntryException : Exception {
 
-        private readonly IArchive _archive;
-        private readonly EntryType _entryType;
-        private readonly string _path;
+        public IArchive Archive { get; }
+        public EntryType EntryType { get; }
+        public string Path { get; }
 
         public MissingEntryException(IArchive archive, EntryType entryType, string path) {
-            _archive = archive;
-            _entryType = entryType;
-            _path = path;
+            Archive = archive;
+            EntryType = entryType;
+            Path = path;
 
         }
 
