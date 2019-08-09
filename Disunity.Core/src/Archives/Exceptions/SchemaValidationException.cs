@@ -7,7 +7,7 @@ using Newtonsoft.Json.Schema;
 
 namespace Disunity.Core.Archives.Exceptions {
 
-    public class SchemaValidationException : Exception {
+    public class SchemaValidationException : BaseDisunityException {
 
         public IEnumerable<ValidationError> Errors { get; }
 

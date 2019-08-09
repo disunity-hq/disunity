@@ -15,7 +15,7 @@ namespace Disunity.Core.Archives.Exceptions {
 
     }
 
-    public class MissingEntryException : Exception {
+    public class MissingEntryException : BaseDisunityException {
 
         public IArchive Archive { get; }
         public EntryType EntryType { get; }

@@ -3,7 +3,7 @@ using System;
 
 namespace Disunity.Core.Archives.Exceptions {
 
-    public class ManifestParseException : Exception {
+    public class ManifestParseException : BaseDisunityException {
 
         
 
