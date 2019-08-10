@@ -1,0 +1,43 @@
+{
+  "countable_quant_base": [
+    "too many",
+    "too few",
+    "#digit#",
+    "dozens of",
+    "millions of"
+  ],
+  
+  "uncountable_quant_base": [
+    "too much",
+    "too little",
+    "a bit of"
+  ],
+  
+  "general_quant": [
+    "all",
+    "enough",
+    "not enough",
+    "more",
+    "most",
+    "less", 
+    "no",
+    "some",
+    "any",
+    "plenty of"    
+  ],
+
+  "countable_quant": [
+    "#countable_quant_base#",
+    "#general_quant#"
+  ],
+
+  "uncountable_quant": [
+    "#uncountable_quant_base#",
+    "#general_quant#"
+  ],
+  
+  "quantifier": [
+    "#countable_quant#",
+    "#uncountable_quant"
+  ]
+}

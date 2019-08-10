@@ -1,0 +1,36 @@
+@page
+@model Disunity.Store.Pages.Admin.Orgs.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Org[0].DisplayName)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Org) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-org="@item.DisplayName">Edit</a> |
+                <a asp-page="./Details" asp-route-org="@item.DisplayName">Details</a> |
+                <a asp-page="./Delete" asp-route-org="@item.DisplayName">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,99 @@
+@page
+@model Disunity.Store.Pages.Admin.Users.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>UserIdentity</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.UserName" class="control-label"></label>
+                <input asp-for="UserIdentity.UserName" class="form-control"/>
+                <span asp-validation-for="UserIdentity.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.NormalizedUserName" class="control-label"></label>
+                <input asp-for="UserIdentity.NormalizedUserName" class="form-control"/>
+                <span asp-validation-for="UserIdentity.NormalizedUserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.Email" class="control-label"></label>
+                <input asp-for="UserIdentity.Email" class="form-control"/>
+                <span asp-validation-for="UserIdentity.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.NormalizedEmail" class="control-label"></label>
+                <input asp-for="UserIdentity.NormalizedEmail" class="form-control"/>
+                <span asp-validation-for="UserIdentity.NormalizedEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="UserIdentity.EmailConfirmed"/> @Html.DisplayNameFor(model => model.UserIdentity.EmailConfirmed))
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.PasswordHash" class="control-label"></label>
+                <input asp-for="UserIdentity.PasswordHash" class="form-control"/>
+                <span asp-validation-for="UserIdentity.PasswordHash" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.SecurityStamp" class="control-label"></label>
+                <input asp-for="UserIdentity.SecurityStamp" class="form-control"/>
+                <span asp-validation-for="UserIdentity.SecurityStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.ConcurrencyStamp" class="control-label"></label>
+                <input asp-for="UserIdentity.ConcurrencyStamp" class="form-control"/>
+                <span asp-validation-for="UserIdentity.ConcurrencyStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.PhoneNumber" class="control-label"></label>
+                <input asp-for="UserIdentity.PhoneNumber" class="form-control"/>
+                <span asp-validation-for="UserIdentity.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="UserIdentity.PhoneNumberConfirmed"/> @Html.DisplayNameFor(model => model.UserIdentity.PhoneNumberConfirmed))
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="UserIdentity.TwoFactorEnabled"/> @Html.DisplayNameFor(model => model.UserIdentity.TwoFactorEnabled))
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.LockoutEnd" class="control-label"></label>
+                <input asp-for="UserIdentity.LockoutEnd" class="form-control"/>
+                <span asp-validation-for="UserIdentity.LockoutEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="UserIdentity.LockoutEnabled"/> @Html.DisplayNameFor(model => model.UserIdentity.LockoutEnabled))
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserIdentity.AccessFailedCount" class="control-label"></label>
+                <input asp-for="UserIdentity.AccessFailedCount" class="form-control"/>
+                <span asp-validation-for="UserIdentity.AccessFailedCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

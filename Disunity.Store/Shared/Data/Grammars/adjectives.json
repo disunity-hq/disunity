@@ -1,0 +1,32 @@
+{
+  "positive_adjective": [
+    "accessible", "affordable", "adorable", "advanced", "ambitious", "appealing", "arousing", "artistic",
+    "balanced", "beautiful", "beneficial", "blissful", "bonafide", "calming", "captivating", "classic", 
+    "compelling", "competent", "deep", "delightful", "distinct", "diverse", "effective", "efficient", 
+    "emergent", "endearing", "engrossing", "enjoyable", "enthralling", "epic", "evocative", "excellent",
+    "faithful", "familiar", "fancy", "far-reaching", "first-class", "fitting", "flawless", "flexible",
+    "fluent", "focused", "foolproof", "forgiving", "fun", "generous", "genuine", "gifted", "glorious",
+    "godlike", "gorgeous", "gratifying", "handy", "helpful", "honest", "humorous", "ideal", "impressive",
+    "incredible", "ingenuous", "innovative", "integrated", "intelligent", "interactive", "interesting",
+    "lavish", "laudable", "leading", "legendary", "legit", "likable", "logical", "magical", "marvellous",
+    "masterful", "measured", "memorable", "meticulous", "mind-blowing", "modern", "modest", "moving",
+    "neat", "nice", "nifty", "noteworthy", "novel", "organized", "outstanding", "perfect", "pleasing",
+    "polished", "pretty", "proper", "provocative", "quality", "realistic", "reasonable", "reassuring",
+    "recognizable", "refined", "refreshing", "relaxing", "reliable", "remarkable", "satisfying",
+    "seamless", "sensational", "sexy", "sleek", "smooth", "spectacular", "splendid", "stable", "striking",
+    "stunning", "tailor-made", "tantalizing", "terrific", "thoughtful", "thrilling", "well-behaved",
+    "well-done", "well-made", "well-planned"],
+  
+  "negative_adjective": [
+    "inaccessible", "expensive", "ugly", "confusing", "lazy", "unappealing", "off-putting", "unbalanced",
+    "harmful", "dreadful", "fake", "irritating", "boring", "derivative", "discouraging", "incompetent",
+    "shallow", "excruciating", "ambiguous", "repetitive", "ineffective", "inefficient", "unsurprising",
+    "grating", "mind-numbing", "dull", "confusing", "basic", "rehashed", "unfamiliar", "simple", "obvious",
+    "second-rate", "unfitting", "flawed", "inflexible", "amateur", "unfocused", "janky", "unforgiving", "unfun",
+    "stingy", "stupid", "embarrassing", "hideous", "grindy", "useless", "unhelpful", "deceitful", "unfunny", 
+    "less than ideal", "unimpressive", "idiotic", "plagiarized", "dumb", "unlikable", "illogical",
+    "forgettable", "hasty", "repetitive", "daunting", "unstable", "unreliable", "jittery", "broken",
+    "sickening", "repulsive", "abhorrent", "shoddy", "buggy"
+  ],
+  "adjective": ["#positive_adjective#", "#negative_adjective#"]
+}

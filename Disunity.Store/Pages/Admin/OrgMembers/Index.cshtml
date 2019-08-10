@@ -1,0 +1,48 @@
+@page
+@model Disunity.Store.Pages.Admin.OrgMembers.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgMember[0].User)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgMember[0].Org)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrgMember[0].Role)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.OrgMember) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Org.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-orgid="@item.Org.DisplayName" asp-route-userid="@item.User.UserName">Edit</a> |
+                <a asp-page="./Details" asp-route-orgid="@item.Org.DisplayName" asp-route-userid="@item.User.UserName">Details</a> |
+                <a asp-page="./Delete" asp-route-orgid="@item.Org.DisplayName" asp-route-userid="@item.User.UserName">Delete</a> |
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

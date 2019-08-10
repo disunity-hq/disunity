@@ -1,0 +1,33 @@
+@model Disunity.Store.Entities.Target
+
+@addTagHelper *, Syncfusion.EJ2
+
+@{
+    var modPageParams = new Dictionary<string, string> {{"target", Model.Slug}};
+}
+
+<div class="col-xs-12 my-3">
+    <a class="nav-link p-0" asp-page="/Mods/Index" asp-all-route-data="@modPageParams">
+        <div class="e-card e-card-horizontal e-card-stacked target-list-row">
+            <div class="target-list-row-icon">
+                <img class="p-1" src="@Model?.Latest.IconUrl"/>
+            </div>
+            <div class="e-card-stacked justify-content-start">
+                <div class="e-card-header">
+                    <div class="e-card-header-caption">
+                        <div class="e-card-header-title target-list-row-title">
+                            @Model?.Latest.DisplayName
+                            <span class="badge badge-light">Version: @Model?.Latest.VersionNumber</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    @Model?.Latest.Description
+                </div>
+                <div class="e-card-actions">
+                    Compatible Mods: @Model?.Compatibilities.Count()
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

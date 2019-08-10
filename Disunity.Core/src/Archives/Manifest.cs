@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using Disunity.Core.Archives.Exceptions;
+using Disunity.Core.Exceptions;
 
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;

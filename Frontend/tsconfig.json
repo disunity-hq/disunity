@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./ts",
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "lib": ["es2015", "dom"],
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@vendor/*": ["vendor/*"]
+    },
+    "experimentalDecorators": true
+  },
+  "exclude": ["node_modules"]
+}

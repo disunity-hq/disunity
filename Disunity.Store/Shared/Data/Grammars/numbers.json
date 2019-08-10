@@ -1,0 +1,6 @@
+{
+  "digit": ["0","1", "2", "3", "4", "5", "6", "7", "8", "9"],
+  "double_digit": ["#digit##digit#"],
+  "triple_digit": ["#digit##digit##digit#"],
+  "quadruple_digit": ["#digit##digit##digit##digit#"]
+}

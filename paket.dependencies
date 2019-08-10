@@ -1,5 +1,6 @@
 source https://api.nuget.org/v3/index.json
 
+# core dependencies
 nuget Commons.Json >= 0.4.0.1347
 nuget Microsoft.CSharp >= 4.5.0
 nuget Microsoft.NET.Test.Sdk >= 15.9.0
@@ -12,3 +13,42 @@ nuget System.IO.Compression >= 4.3.0
 nuget Unity.Newtonsoft.Json >= 7.0.0
 nuget xunit >= 2.4.0
 nuget xunit.runner.visualstudio >= 2.4.0
+
+# store dependencies
+nuget AspNet.Security.OAuth.Discord >= 2.1.0
+nuget AspNet.Security.OAuth.GitHub >= 2.1.0
+nuget AutoBogus >= 2.5.0
+nuget AutoMapper
+nuget AutoMapper.Extensions.Microsoft.DependencyInjection
+nuget B2Net
+nuget Bogus >= 28.0.2
+nuget Microsoft.AspNetCore.App == 2.2.4
+nuget Microsoft.AspNetCore.Mvc.Versioning >= 3.1.2
+nuget Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
+nuget Microsoft.AspNetCore.Razor.Design >= 2.2.0
+nuget Microsoft.EntityFrameworkCore.Sqlite >= 2.2.1
+nuget Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3
+nuget Npgsql.EntityFrameworkCore.PostgreSQL >= 2.2.4
+nuget Npgsql.EntityFrameworkCore.PostgreSQL.Design >= 1.1.1
+nuget Overby.Extensions.AsyncBinaryReaderWriter >= 1.0.39
+nuget Slugify.Core 2.3.0
+nuget SmartBreadcrumbs >= 2.1.0
+nuget Swashbuckle.AspNetCore
+nuget Syncfusion.EJ2.AspNet.Core >= 17.1.0.53pak
+nuget Westwind.AspNetCore.Markdown 3.2.5
+
+git https://github.com/scottbot95/EFCoreHooks.git master build: "build.sh", OS: mono, Packages: /EFCoreHooks/nupkg
+git https://github.com/scottbot95/EFCoreHooks.git master build: "build.bat", OS: windows, Packages: /EFCoreHooks/nupkg
+nuget EFCoreHooks >= 0.1.0
+
+git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.sh", OS: mono, Packages: /BindingAttributes/nupkg
+git https://github.com/dustinlacewell/BindingAttributes.git master build: "build.bat", OS: windows, Packages: /BindingAttributes/nupkg
+nuget BindingAttributes
+
+git https://github.com/dustinlacewell/TopoSort.git master build: "build.sh", OS: mono, Packages: /TopoSort/nupkg
+git https://github.com/dustinlacewell/TopoSort.git master build: "build.bat", OS: windows, Packages: /TopoSort/nupkg
+nuget TopoSort
+
+git https://github.com/dustinlacewell/Tracery.git master build: "build.sh", OS: mono, Packages: /Tracery/nupkg
+git https://github.com/dustinlacewell/Tracery.git master build: "build.bat", OS: windows, Packages: /Tracery/nupkg
+nuget Tracery

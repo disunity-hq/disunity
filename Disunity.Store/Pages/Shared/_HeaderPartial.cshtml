@@ -1,0 +1,30 @@
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark border-bottom box-shadow">
+        <div class="container">
+            <a id="brand-logo" asp-area="" asp-page="/Index">
+                <img src="~/assets/logo_512x512.png" class="logo" alt="Logo"/>
+            </a>
+            <a class="navbar-brand" asp-area="" asp-page="/Index">Disunity.io</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <partial name="_LoginPartial"/>
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        @* TODO Make this a drop down for targets/mods *@
+                        <a class="nav-link" asp-page="/Targets/Index">Browse Targets</a>
+
+                    </li>
+                    @if(User.Identity.IsAuthenticated) 
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Mods/Upload">Upload a mod</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,30 @@
+@using Disunity.Store.Util
+@model Disunity.Store.Entities.Mod
+
+@addTagHelper *, Syncfusion.EJ2
+
+@{
+    var routeParams = Helpers.RouteParamsFromMod(Model);
+}
+
+<div class="col-xs-12 my-3">
+    <a class="nav-link p-0" asp-page="/Mods/Details" asp-all-route-data="@routeParams">
+
+        <div class="e-card e-card-horizontal e-card-stacked target-list-row">
+            <img src="@Model?.Latest.IconUrl" style="height: 100%;flex: 0;"/>
+            <div class="e-card-stacked justify-content-start">
+                <div class="e-card-header">
+                    <div class="e-card-header-caption">
+                        <div class="e-card-header-title target-list-row-title">
+                            @Model?.Latest.DisplayName
+                            <span class="badge badge-light">Version: @Model?.Latest.VersionNumber</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    @Model?.Latest.Description
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

@@ -1,0 +1,6 @@
+Microsoft.EntityFrameworkCore.Sqlite
+Microsoft.NET.Test.Sdk
+Moq
+xunit
+xunit.runner.visualstudio
+Microsoft.AspNetCore.App

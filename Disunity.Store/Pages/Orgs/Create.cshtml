@@ -1,0 +1,18 @@
+@page
+@model Disunity.Store.Pages.Orgs.Create
+
+@{
+    ViewData["Title"] = "Create an Organization";
+}
+
+<h1>Create an Organization</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="displayName">Display Name</label>
+        <input type="text" class="form-control" id="displayName" name="displayName" placeholder="Enter Display Name" aria-describedby="displayNameHelp"/>
+        <small id="displayNameHelp" class="form-text text-muted">A slug will be generated automatically</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

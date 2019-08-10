@@ -1,0 +1,29 @@
+.e-acrdn-header {
+  padding: 0.5em 1.5em !important;
+  background: lighten($blue, 8%) !important;
+
+  &:hover {
+    .e-acrdn-header-content {
+      color: $navbar-light-hover-color !important;
+      text-decoration: none !important;
+    }
+
+    .e-toggle-icon * {
+      color: $navbar-light-hover-color !important;
+    }
+  }
+
+  .e-acrdn-header-content {
+    color: white !important;
+    font-size: 2.3em !important;
+    font-weight: 500;
+  }
+  .e-toggle-icon {
+    color: white !important;
+
+    .e-expand-icon,
+    .e-tgl-collapse-icon {
+      line-height: 4.7 !important;
+    }
+  }
+}

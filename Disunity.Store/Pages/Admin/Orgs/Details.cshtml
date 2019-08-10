@@ -1,0 +1,18 @@
+@page "{org}"
+@model Disunity.Store.Pages.Admin.Orgs.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Org</h4>
+    <hr/>
+    @Html.DisplayFor(m => m.Org)
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Org.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

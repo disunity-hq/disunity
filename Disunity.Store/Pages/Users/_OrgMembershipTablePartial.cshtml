@@ -1,0 +1,30 @@
+@using Disunity.Store.Entities
+@model IEnumerable<Disunity.Store.Entities.OrgMember>
+
+
+<table class="table no-top-border">
+    <thead>
+    <tr>
+        <th scope="col">Organization</th>
+        <th scope="col">Role</th>
+        <th scope="col">
+            <a asp-page="/Orgs/Create">
+                <ejs-button id="createOrgButton" cssClass="e-success" iconCss="fas fa-plus"></ejs-button>
+            </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var membership in Model) {
+        <tr>
+            <td>@membership.Org.DisplayName</td>
+            <td>@membership.Role</td>
+            <td>
+                @if (membership.Role != OrgMemberRole.Owner) {
+                    <ejs-button id="@membership.User.UserName" cssClass="e-danger" iconCss="fas fa-minus"></ejs-button>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -1,0 +1,21 @@
+@import './classes.scss';
+// @import './consent.scss';
+@import './growler.scss';
+@import './background.scss';
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 20px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  height: 100%;
+}

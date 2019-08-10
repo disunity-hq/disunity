@@ -1,0 +1,27 @@
+@page
+@using Syncfusion.EJ2.Inputs
+@model Disunity.Store.Pages.Mods.Upload
+@addTagHelper *, Syncfusion.EJ2
+@addTagHelper *, Disunity.Store
+
+@{
+    var asyncSettings = new UploaderAsyncSettings {
+        SaveUrl = "/api/v1/mods/upload"
+    };
+    Layout = "/Pages/Shared/_Layout.cshtml";
+}
+
+@Html.AntiForgeryToken()
+
+<div>
+    <h1>Upload a mod archive:</h1>
+    <div id="uploader">
+        <input type="file" id="ArchiveUpload" />
+    </div>
+</div>
+
+<div id="error-report"></div>
+
+@section Scripts {
+    <page-script />
+}

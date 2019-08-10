@@ -1,0 +1,124 @@
+@page "/u/{ownerSlug:slug}/{modSlug:slug}/{versionNumber:semver?}"
+@model Disunity.Store.Pages.Mods.Details
+@addTagHelper *, Syncfusion.EJ2
+
+@{
+    var ownerRoute = new Dictionary<string, string>() {
+        {"userSlug", Model.ModVersion.Mod.Owner.Slug}
+    };
+
+    var pageArgs = new string[] {Model.OwnerSlug, Model.ModSlug, Model.ModVersion.VersionNumber};
+    var latestRouteData = new Dictionary<string, string>() {
+        {"ownerSlug", Model.OwnerSlug},
+        {"modSlug", Model.ModSlug},
+        {"versionNumber", Model.ModVersion.Mod.Latest.VersionNumber}
+    };
+}
+
+@section Growler {
+    @if (Model.ModVersion.IsActive != true) {
+        <div class="alert alert-danger">
+            This version is UNPUBLISHED. You may publish it when ready or delete it unti it has been published.
+        </div>
+    }
+    @if (Model.ModVersion != Model.ModVersion.Mod.Latest) {
+        <div class="alert alert-warning alert-dismissible">
+            <div>
+                You are viewing an old version of @(Model.ModVersion.Mod.Latest.DisplayName).
+            </div>
+
+            <a asp-page="/Mods/Details" asp-all-route-data="@latestRouteData">
+                <button type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">Latest</span>
+                </button>
+            </a>
+        </div>
+    }
+}
+
+<div class="d-flex flex-row mb-5 align-items-start">
+    <img src="@Model.ModVersion.IconUrl" class="pr-2"/>
+    <div class="flex-grow-1">
+        <h1 class="mb-3">
+            @Model.ModVersion.DisplayName
+            <small>
+                by <a asp-page="/Users/Details" asp-all-route-data="@ownerRoute">@Model.ModVersion.Mod.Owner.DisplayName</a>
+            </small>
+        </h1>
+
+        <div class="d-flex flex-row justify-content-between mb-1">
+            <div class="d-flex flex-row">
+                <span class="badge m-1 p-1" style="font-size:15px;">
+                    <span class="fas fa-download"></span> @Model.ModVersion.Mod.TotalDownloads
+                </span>
+                <span class="badge m-1 p-1" style="font-size:15px;">
+                    <span class="fas fa-heart" style="color:darkred"></span> @Model.ModVersion.Downloads
+                </span>
+            </div>
+            <span class="font-italic" style="color:grey">Updated: <time class="timeago" datetime="@Model.CreateAtString">@Model.CreateAtString</time></span>
+        </div>
+
+        <ejs-dropdownlist id="versionDropdown" index="@Model.ModVersionIndex" change="NavigateToVersion" dataSource="@(ViewData["ModVersions"])">
+            <e-dropdownlist-fields text="VersionNumber" value="Url"></e-dropdownlist-fields>
+        </ejs-dropdownlist>
+
+        <div class="d-flex flex-row mt-1">
+            <a href="/u/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber/download" class="flex-grow-1 d-flex flex-row m-1">
+                <ejs-button id="downloadButton" content="Download" isPrimary="false" cssClass="e-primary flex-grow-1"></ejs-button>
+            </a>
+            <a href="disunity://v1/install/@Model.OwnerSlug/@Model.ModSlug/@Model.ModVersion.VersionNumber" class="flex-grow-1 d-flex flex-row m-1">
+                <ejs-button id="installButton" content="Install" isPrimary="true" cssClass="e-primary flex-grow-1"></ejs-button>
+            </a>
+        </div>
+
+        @if (Model.ModVersion.IsActive != true) {
+            <div class="d-flex flex-row mt-1">
+                <ejs-button id="publishButton" content="Publish" isPrimary="true" iconCss="fas fa-upload" cssClass="e-success flex-grow-1 m-1"></ejs-button>
+                <ejs-button id="deleteButton" content="Delete" isPrimary="false" iconCss="fas fa-trash" cssClass="e-danger flex-grow-1 m-1"></ejs-button>
+            </div>
+        }
+        <div class="d-flex justify-content-center mt-3">
+            <span class="text-center" style="flex-basis: 90%">
+                @Model.ModVersion.Description
+            </span>
+        </div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="readmeBlock">
+        <markdown markdown="ModVersion.Readme"/>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dependentsBlock">
+        <partial name="_ModDependencyTable" model="@Model.Dependents"/>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="dependenciesBlock">
+        <partial name="_ModDependencyTable" model="@Model.Dependencies"/>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="versionsBlock">
+        <partial name="_ModVersionTablePartial" for="ModVersion.Mod.Versions"/>
+    </div>
+</div>
+
+<ejs-accordion id="ParentNested" expandMode="Multiple">
+    <e-accordion-accordionitems>
+        @* <e-accordion-accordionitem header="Details" expanded="false" content="#detailsBlock"></e-accordion-accordionitem> *@
+        <e-accordion-accordionitem header="Readme" expanded="true" content="#readmeBlock"></e-accordion-accordionitem>
+        <e-accordion-accordionitem header="Dependencies" expanded="false" content="#dependenciesBlock"></e-accordion-accordionitem>
+        <e-accordion-accordionitem header="Dependents" expanded="false" content="#dependentsBlock"></e-accordion-accordionitem>
+        <e-accordion-accordionitem header="Versions" expanded="false" content="#versionsBlock"></e-accordion-accordionitem>
+    </e-accordion-accordionitems>
+</ejs-accordion>
+
+@section Scripts {
+    <page-script init-script="true" params="@pageArgs"/>
+}

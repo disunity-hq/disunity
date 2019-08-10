@@ -1,0 +1,72 @@
+@page
+@model Disunity.Store.Pages.Admin.Mods.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].Owner)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].Latest.DisplayName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].IsDeprecated)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].IsPinned)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].Latest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mod[0].CreatedAt)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Mod) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latest.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeprecated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPinned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Latest.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedAt)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

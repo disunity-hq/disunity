@@ -1,0 +1,103 @@
+@page "{username}"
+@model Disunity.Store.Pages.Admin.Users.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>UserIdentity</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.NormalizedUserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.NormalizedUserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.NormalizedEmail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.NormalizedEmail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.EmailConfirmed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.EmailConfirmed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.PasswordHash)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.PasswordHash)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.SecurityStamp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.SecurityStamp)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.ConcurrencyStamp)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.ConcurrencyStamp)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.PhoneNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.PhoneNumberConfirmed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.PhoneNumberConfirmed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.TwoFactorEnabled)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.TwoFactorEnabled)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.LockoutEnd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.LockoutEnd)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.LockoutEnabled)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.LockoutEnabled)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserIdentity.AccessFailedCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserIdentity.AccessFailedCount)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.UserIdentity.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

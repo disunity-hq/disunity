@@ -1,0 +1,51 @@
+@page "/u/{userSlug:user}"
+@using Disunity.Store.Policies
+@using Microsoft.AspNetCore.Authorization
+@model Disunity.Store.Pages.Users.Details
+@inject IAuthorizationService AuthorizationService
+
+
+@{
+    ViewData["Title"] = Model.UserIdentity.ShadowOrg.DisplayName;
+    var modalData = new {placeholder = "Enter Org display name"};
+    var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update)).Succeeded;
+}
+
+<nav>
+    <div class="nav nav-pills" id="nav-tab" role="tablist">
+        <a data-toggle="tab" class="nav-item nav-link active" href="#mods" id="nav-mods-tab" role="tab" aria-controls="mods" aria-selected="true">Mods</a>
+        @if (Model.UserIdentity.ShadowOrg.ShowUsers == true) {
+            <a data-toggle="tab" class="nav-item nav-link" href="#users" id="nav-users-tab" role="tab" aria-controls="users" aria-selected="false">Users</a>
+        }
+        <a data-toggle="tab" class="nav-item nav-link" href="#orgs" id="nav-orgs-tab" role="tab" aria-controls="orgs" aria-selected="false">Orgs</a>
+    </div>
+</nav>
+
+<div class="tab-content lift-5em" id="nav-tabContent">
+    <h1>
+        <ejs-inplaceeditor id="element" type="Text"
+                           mode="Inline"
+                           name="DisplayName"
+                           disabled="@canEdit"
+                           value="@Model.UserIdentity.ShadowOrg.DisplayName"
+                           model="@modalData"
+                           url="/api/v1/orgs/@Model.UserIdentity.ShadowOrg.Slug"
+                           primaryKey="@Model.UserIdentity.ShadowOrg.Slug"
+                           adaptor="UrlAdaptor"
+                           data-underline="false">
+        </ejs-inplaceeditor>
+    </h1>
+
+    <div class="tab-pane fade show active" id="mods" role="tabpanel" aria-labelledby="nav-mods-tab">
+        <partial name="Mods/_ModListPartial" model="@Model.UserIdentity.ShadowOrg.Mods"/>
+    </div>
+    @if (Model.UserIdentity.ShadowOrg.ShowUsers == true) {
+        <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="nav-mods-tab">
+            <partial name="Orgs/_OrgDetailsPartial" model="@Model.UserIdentity.ShadowOrg"/>
+        </div>
+    }
+    <div class="tab-pane fade" id="orgs" role="tabpanel" aria-labelledby="nav-orgs-tab">
+        <partial name="Users/_OrgMembershipTablePartial" model="@Model.UserIdentity.Orgs"/>
+    </div>
+
+</div>

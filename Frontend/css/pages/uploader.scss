@@ -1,0 +1,18 @@
+#error-report {
+    table {
+        th {
+            padding: 1em;
+            border-bottom: 1px solid black;
+        }
+
+        td {
+            padding: 1em;
+            text-align: center;
+
+            &:last-child {
+                text-align: left;
+            }
+        }
+        
+    }
+}

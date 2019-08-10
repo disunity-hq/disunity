@@ -1,0 +1,17 @@
+@using Disunity.Store.Util
+@model IEnumerable<Disunity.Store.Entities.Mod>
+
+@if (Model == null || !Model.Any()) {
+    return;
+}
+
+
+<ul>
+    @foreach (var mod in Model) {
+        var routeParams = Helpers.RouteParamsFromMod(mod);
+
+        <li>
+            <a asp-page="/Mods/Details" asp-all-route-data="@routeParams">@mod.Latest.DisplayName</a>
+        </li>
+    }
+</ul>

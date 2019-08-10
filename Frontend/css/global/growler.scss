@@ -1,0 +1,15 @@
+#growler {
+  > .alert {
+    display: flex;
+    flex-direction: column;
+    padding-right: inherit;
+
+    button {
+      font-size: 1rem;
+      line-height: inherit;
+      position: relative;
+      align-self: flex-end;
+      padding: 0;
+    }
+  }
+}

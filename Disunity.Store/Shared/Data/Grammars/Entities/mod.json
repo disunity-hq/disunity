@@ -1,0 +1,84 @@
+{
+  "@import": [
+    "../all.json"
+  ],
+  "more_or_less": [
+    "more",
+    "less",
+    "no more"
+  ],
+  "prefix": [
+    "better",
+    "start with",
+    "improved",
+    "balanced",
+    "auto",
+    "stacking",
+    "RPG",
+    "mega"
+  ],
+  "postfix": [
+    "HUD",
+    "Lib",
+    "meter",
+    "swapper",
+    "notification",
+    "commands",
+    "cheats",
+    "mod",
+    "crits",
+    "heals",
+    "counters",
+    "API"
+  ],
+  "display_name": [
+    "#more_or_less# #weapon.s#",
+    "#more_or_less# #adjective# #noun.s#",
+    "#triple_digit# more #noun.s#",
+    "#prefix# #noun# #postfix#",
+    "enemies with #noun.s#",
+    "#noun#++"
+  ],
+  "desc_intro": [
+    "lets you",
+    "adds the ability to",
+    "makes it easier to",
+    "adds a HUD to",
+    "adds an option to",
+    "all new mechanics to"
+  ],
+  "desc_content": [
+    "#basic_verb# #noun.s# #preposition# #noun.s#"
+  ],
+  "description": [
+    "#desc_intro# #desc_content#"
+  ],
+  "headline_text": [
+    "Summary", "Overview", "Information", "How to Install", "How to use", "Special Thanks"
+  ],
+  "headline": [
+    "#headline_text#\n------\n\n"
+  ],
+  "sentence": [
+    "This mod was built with the latest version of Unity.",
+    "This mod works with any version of the game.",
+    "You will need the #display_name.title# mod in order to use this mod.",
+    "This mod works best with the #display_name.title#.",
+    "This mod was created by #name.title# with the help of #name.title# and #name.title#."
+  ],
+  "paragraph_text": [
+    "#sentence#\n\n",
+    "#sentence# #sentence#\n\n",
+    "#sentence# #sentence# #sentence#\n\n",
+    "#sentence# #sentence# #sentence# #sentence#\n\n"
+  ],
+  "paragraph": [
+    "#headline##paragraph_text#"
+  ],
+  "readme": [
+    "#paragraph#\n\n",
+    "#paragraph# #paragraph#\n\n",
+    "#paragraph# #paragraph# #paragraph#\n\n",
+    "#paragraph# #paragraph# #paragraph# #paragraph#\n\n"
+  ]
+}

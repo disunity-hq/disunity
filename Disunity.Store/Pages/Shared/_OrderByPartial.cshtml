@@ -1,0 +1,35 @@
+﻿@using Disunity.Store.Util
+@model Disunity.Store.Util.IOrderableModel
+
+<div class="e-btn-group d-flex flex-row flex-fill mr-1">
+    @if (Model.Order == Ordering.Desc)
+    {
+        <input type="radio" id="asc" name="order" value="asc" onchange="this.form.submit()" />
+        <label class="e-btn e-primary flex-grow-1" for="asc">Asc</label>
+        <input type="radio" id="desc" name="order" value="desc" onchange="this.form.submit()" checked />
+        <label class="e-btn e-primary flex-grow-1" for="desc">Desc</label>
+    }
+    else
+    {
+        <input type="radio" id="asc" name="order" value="asc" onchange="this.form.submit()" checked />
+        <label class="e-btn e-primary flex-grow-1" for="asc">Asc</label>
+        <input type="radio" id="desc" name="order" value="desc" onchange="this.form.submit()" />
+        <label class="e-btn e-primary flex-grow-1" for="desc">Desc</label>
+
+    }
+</div>
+
+<div class="e-btn-group d-flex flex-row flex-fill">
+    @foreach (var orderOption in Model.OrderByChoices)
+    {
+        @if (orderOption == Model.OrderBy)
+        {
+            <input type="radio" id="@orderOption" name="orderBy" value="@orderOption" checked onchange="this.form.submit()" />
+        }
+        else
+        {
+            <input type="radio" id="@orderOption" name="orderBy" value="@orderOption" onchange="this.form.submit()" />
+        }
+        <label class="e-btn e-primary flex-grow-1" for="@orderOption">@orderOption</label>
+    }
+</div>

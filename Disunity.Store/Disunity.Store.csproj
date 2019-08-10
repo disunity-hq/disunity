@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-Disunity.Store-838BBC79-3F86-4426-B42C-66E2D9D5F58D</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update="Shared\Data\Grammars\*.json" CopyToOutputDirectory="Always" />
+    <None Update="Shared\Data\Grammars\Entities\*.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.Local.template.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Update="appsettings.Local.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+    <Content Update="appsettings.Development.json">
+      <DependentUpon>appsettings.json</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Entities\TargetVersionDto.cs">
+      <DependentUpon>TargetVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\TargetDto.cs">
+      <DependentUpon>Target.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgMemberDto.cs">
+      <DependentUpon>OrgMember.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgDto.cs">
+      <DependentUpon>Org.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModVersionDto.cs">
+      <DependentUpon>ModVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModTargetCompatibilityDto.cs">
+      <DependentUpon>ModTargetCompatibility.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModDto.cs">
+      <DependentUpon>Mod.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModDependencyDto.cs">
+      <DependentUpon>ModDependency.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModProfile.cs">
+      <DependentUpon>Mod.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\TargetProfile.cs">
+      <DependentUpon>Target.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\UnityVersionProfile.cs">
+      <DependentUpon>UnityVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgProfile.cs">
+      <DependentUpon>Org.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModDependencyProfile.cs">
+      <DependentUpon>ModDependency.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModTargetCompatibilityProfile.cs">
+      <DependentUpon>ModTargetCompatibility.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\ModVersionProfile.cs">
+      <DependentUpon>ModVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\OrgMemberProfile.cs">
+      <DependentUpon>OrgMember.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\TargetVersionProfile.cs">
+      <DependentUpon>TargetVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\DisunityVersionDto.cs">
+      <DependentUpon>DisunityVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Update="Entities\DisunityVersionProfile.cs">
+      <DependentUpon>DisunityVersion.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
+</Project>

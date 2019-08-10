@@ -1,0 +1,27 @@
+@page
+@model Disunity.Store.Pages.Admin.IndexModel
+
+@{
+    var template = "<a href=${href}><div>${text}</div></a>";
+
+    ViewData["Title"] = "Admin Area";
+    ViewData["Sections"] = new object[] {
+        new {href = Url.Page("./Users/Index"), text = "Users"},
+        new {href = Url.Page("./Orgs/Index"), text = "Orgs"},
+        new {href = Url.Page("./OrgMembers/Index"), text = "OrgMembers"},
+        new {href = Url.Page("./Mods/Index"), text = "Mods"},
+        new {href = Url.Page("./ModVersions/Index"), text = "ModVersions"},
+    };
+}
+
+
+<div class="section">
+    <h1>Admin Area</h1>
+    <ejs-listview id="List"
+                  dataSource="ViewBag.Sections"
+                  template="@template"
+                  headerTitle="Select an entity:"
+                  showHeader="true">
+        <e-listview-fieldsettings text="name"></e-listview-fieldsettings>
+    </ejs-listview>
+</div>

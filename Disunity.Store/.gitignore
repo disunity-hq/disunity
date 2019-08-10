@@ -1,0 +1,12 @@
+# CShapr build dir
+obj/
+bin/
+
+# local settings file
+appsettings.Local.json
+
+# useless autogened file
+ScaffoldingReadme.txt
+
+# npm install files
+node_modules/

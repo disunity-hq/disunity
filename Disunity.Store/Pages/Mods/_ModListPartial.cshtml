@@ -1,0 +1,7 @@
+@model IEnumerable<Disunity.Store.Entities.Mod>
+
+<div>
+    @foreach (var mod in @Model) {
+        <partial name="Mods/_ModListItemPartial" model="@mod"/>
+    }
+</div>

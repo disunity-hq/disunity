@@ -1,0 +1,17 @@
+@using Disunity.Store.Entities
+@using Disunity.Store.Policies
+@using Microsoft.AspNetCore.Authorization
+@model Disunity.Store.Entities.Org
+@inject IAuthorizationService AuthorizationService
+
+@{
+    var canEdit = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.Update)).Succeeded;
+    var canManageUsers = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMembers)).Succeeded;
+    var canManageRoles = (await AuthorizationService.AuthorizeAsync(User, Model, Operation.ManageMemberRoles)).Succeeded;
+    var modalData = new {placeholder = "Enter Org display name"};
+    var scriptParams = new object[] {Model.Slug, canManageUsers, canManageRoles};
+}
+
+<div id="usersTable"></div>
+
+<page-script path="users/details" params="@scriptParams"/>

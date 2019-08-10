@@ -1,0 +1,25 @@
+@page
+@model Disunity.Store.Pages.Targets.Index
+
+@{
+    ViewData["Title"] = "All Targets";
+    IDictionary<string, object> submit = new Dictionary<string, object>();
+    submit.Add("type", "submit");
+}
+
+<h1>All Targets</h1>
+
+
+<form class="container row-spacing-1">
+    <div class="row align-items-center">
+        <div class="col-12 col-md-8 pl-0 d-flex flex-row align-items-center my-1">
+            <span class="flex-fill"><ejs-textbox id="title" placeholder="Search by Target Title" value="@Model.Title"></ejs-textbox></span>
+            <ejs-button id="filter" cssClass="e-primary mx-1" content="Filter" htmlAttributes="submit"></ejs-button>
+        </div>
+        <div class="col-12 col-md-4 pr-0 d-flex flex-row align-items-center my-1">
+            <partial name="_OrderByPartial" model="@Model" />
+        </div>
+    </div>
+</form>
+
+<partial name="_TargetListPartial" for="Targets" />

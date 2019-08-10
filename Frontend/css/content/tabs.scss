@@ -1,0 +1,30 @@
+@import "../variables.scss";
+
+main {
+  .nav {
+    flex-direction: row-reverse;
+    margin-bottom: 2em;
+
+    .nav-item {
+      font-size: 1.5em;
+      color: $primary;
+
+      &:not(:first-child) {
+        margin-right: 1em;
+      }
+
+      &[aria-selected="false"]:hover {
+        background-color: lighten($primary, 30%);
+      }
+    }
+
+    .active {
+      color: $white !important;
+      background-color: $primary !important;
+    }
+  }
+
+  .lift-5em {
+    margin-top: -5em !important;
+  }
+}

@@ -1,0 +1,43 @@
+@using Disunity.Store.Util
+@model IEnumerable<Disunity.Store.Entities.ModVersion>
+
+@if (Model == null || !Model.Any()) {
+    return;
+}
+
+<table class="table no-top-border">
+    <thead class="table-light">
+    <tr>
+        <th scope="col">Upload Date</th>
+        <th scope="col">Version Number</th>
+        <th scope="col">Downloads</th>
+        <th scope="col">Download Link</th>
+        <th scope="col">Install</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var version in Model) {
+        var routeParams = Helpers.RouteParamsFromModVersion(version);
+
+        <tr>
+            <td>@version.CreatedAt.ToString("d")</td>
+            <th scope="row">
+                <a asp-page="/Mods/Details" asp-all-route-data="@routeParams">
+                    @version.VersionNumber
+                </a>
+            </th>
+            <td>@version.Downloads</td>
+            <td>
+                <a href="/u/@version.Mod.Owner.Slug/@version.Mod.Slug/@version.VersionNumber/download">
+                    @(version.Mod.Owner.Slug)-@(version.Mod.Slug)-@(version.VersionNumber).zip
+                </a>
+            </td>
+            <td>
+                <a href="disunity://v1/install/@version.Mod.Owner.Slug/@version.Mod.Slug/@version.VersionNumber">
+                    <ejs-button id="installButton@(version.Id)" content="Install" isPrimary="true" cssClass="e-primary"></ejs-button>
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

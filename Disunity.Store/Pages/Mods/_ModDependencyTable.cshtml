@@ -1,0 +1,88 @@
+@using Disunity.Store.Entities
+@using Disunity.Store.Util
+@model DependencyList
+
+
+@if (Model == null || !Model.Dependencies.Any()) {
+    <span>None!</span>
+    return;
+}
+
+<table class="table no-top-border">
+    <thead class="table-light">
+    <tr>
+        <th scope="col">Type</th>
+        @if (Model.ShowDependent) {
+            <th scope="col">Dependent</th>
+        }
+        @if (Model.ShowDependency) {
+            <th scope="col">Dependency</th>
+        }
+        <th scope="col">Min Version</th>
+        <th scope="col">Max Version</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var modDependency in Model.Dependencies) {
+        var dependency = modDependency.Dependency;
+        var dependent = modDependency.Dependent;
+        var dependencyParams = Helpers.RouteParamsFromMod(dependency);
+        var dependentParams = Helpers.RouteParamsFromModVersion(dependent);
+        var minVersionParams = Helpers.RouteParamsFromModVersion(modDependency.MinVersion);
+        var maxVersionParams = Helpers.RouteParamsFromModVersion(modDependency.MaxVersion);
+
+        <tr>
+            <td>
+                @switch (modDependency.DependencyType) {
+                    case ModDependencyType.Dependency:
+                        <span class="fas fa-asterisk"></span>
+                        break;
+                    case ModDependencyType.OptionalDependency:
+                        <span class="fas fa-question"></span>
+                        break;
+                    case ModDependencyType.Incompatible:
+                        <span class="fas fa-times"></span>
+                        break;
+                }
+            </td>
+            @if (Model.ShowDependent) {
+                <td>
+                    <a asp-page="/Mods/Details" asp-all-route-data="@dependentParams">
+                        @dependent.DisplayName
+                    </a>
+                </td>
+            }
+            @if (Model.ShowDependency) {
+                <td>
+                    <a asp-page="/Mods/Details" asp-all-route-data="@dependencyParams">
+                        @(modDependency.MaxVersion?.DisplayName ?? dependency?.Latest?.DisplayName ?? "No name")
+                    </a>
+                </td>
+            }
+            <td>
+                @if (modDependency.MinVersion != null) {
+                    <a asp-page="/Mods/Details" asp-all-route-data="@minVersionParams">@modDependency.MinVersion.VersionNumber</a>
+                } else {
+                    <span>None</span>
+                }
+            </td>
+            <td>
+                @if (modDependency.MaxVersion != null) {
+                    <a asp-page="/Mods/Details" asp-all-route-data="@maxVersionParams">@modDependency.MaxVersion.VersionNumber</a>
+                } else {
+                    <span>None</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="99">
+            <span class="fas fa-asterisk"></span> = Required Mod
+            <span class="fas fa-question"></span> = Optional Mod
+            <span class="fas fa-times"></span> = Incompatible Mod
+        </td>
+    </tr>
+    </tfoot>
+</table>

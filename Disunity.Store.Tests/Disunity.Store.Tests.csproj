@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EFCoreHooks" Version="0.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Disunity.Store\Disunity.Store.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="data\manifest.json" CopyToOutputDirectory="Always" />
+    <None Update="data\broken_manifest.json" CopyToOutputDirectory="Always" />
+    <None Include="..\Disunity.Store\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\Disunity.Store\appsettings.Development.json" CopyToOutputDirectory="Always" />
+    <Content Include="..\Disunity.Store\Shared\Data\**\*.json">
+      <Link>Shared\Data\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
+</Project>

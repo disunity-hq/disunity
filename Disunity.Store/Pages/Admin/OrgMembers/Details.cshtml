@@ -1,0 +1,37 @@
+@page
+@model Disunity.Store.Pages.Admin.OrgMembers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>OrgMember</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrgMember.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrgMember.User.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrgMember.Org)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrgMember.Org.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OrgMember.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OrgMember.Role)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-orgid="@Model.OrgMember.OrgId" asp-route-userid="@Model.OrgMember.UserId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

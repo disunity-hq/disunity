@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+
+<partial name="_HeadPartial"/>
+
+<body>
+<div class="bg-image"></div>
+<div id="wrapper">
+
+    <partial name="_HeaderPartial"/>
+
+    <div class="container" id="content">
+        <div id="gutter">
+            @RenderSection("Gutter", false)
+            @if (ViewData["ShowBreadcrumbs"] is bool showBreadcrumbs && showBreadcrumbs) {
+                <breadcrumb></breadcrumb>
+            }
+        </div>
+
+        <div id="growler">
+            <partial name="_CookieConsentPartial"/>
+            @RenderSection("Growler", false)
+        </div>
+
+        <main role="main" class="mb-5">
+            @RenderBody()
+        </main>
+    </div>
+
+    <partial name="_FooterPartial"/>
+
+</div>
+
+<page-script path="main" init-script="false"/>
+
+@RenderSection("Scripts", false)
+
+<!-- Syncfusion Essential JS 2 Scripts -->
+<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
+<ejs-scripts></ejs-scripts>
+
+
+</body>
+</html>

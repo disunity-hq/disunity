@@ -1,0 +1,9 @@
+﻿@page "/t/{targetSlug}/{versionNumber?}"
+@model Disunity.Store.Pages.Targets.DetailsModel
+@{
+    ViewData["Title"] = Model.TargetVersion.DisplayName;
+}
+
+<h1>@Model.TargetVersion.DisplayName</h1>
+
+<p>@Model.TargetSlug</p>

@@ -1,0 +1,44 @@
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+}
+
+.alert-info {
+  border-color: lighten($info, 20%);
+}
+
+.table.no-top-border {
+  > *:first-child {
+    > tr:first-child {
+      > th,
+      > td {
+        border-top-width: 0px;
+      }
+    }
+  }
+}
+
+.table {
+  tr.pt-0 {
+    > td,
+    > th {
+      padding-top: 0;
+    }
+  }
+
+  .small-cell {
+    width: 1px;
+    white-space: nowrap;
+  }
+}
+
+.nav-link.active {
+  color: $blue !important;
+}

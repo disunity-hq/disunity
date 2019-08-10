@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using System.Linq;
 
-using Disunity.Core.Archives.Exceptions;
+using Disunity.Core.Exceptions;
 
 
 namespace Disunity.Core.Archives {
 
     public static class ArchiveValidator {
-        
+
         public static void ValidateArtifacts(IArchive archive) {
             var errors = (from path in archive.Manifest.Artifacts
                           let fullPath = Path.Combine("artifacts", path)

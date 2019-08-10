@@ -1,0 +1,10 @@
+@page "/u/{orgSlug:org}"
+@model Disunity.Store.Pages.Orgs.Details
+
+@{
+    ViewData["Title"] = "Org details";
+}
+
+<partial name="Orgs/_OrgDetailsPartial" model="@Model.Org"/>
+
+<partial name="Mods/_ModListPartial" model="@Model.Org.Mods"/>

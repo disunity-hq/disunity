@@ -1,0 +1,62 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["build", "${workspaceFolder}/Disunity.Store.csproj"],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "publish",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["publish", "${workspaceFolder}/Disunity.Store.csproj"],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "watch",
+      "command": "dotnet",
+      "type": "process",
+      "args": ["watch", "run", "${workspaceFolder}/Disunity.Store.csproj"],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "New Migration",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["ef", "migrations", "add", "${input:migration}"],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Remove Migration",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["ef", "migrations", "remove"],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Migrate",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["ef", "database", "update"],
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Migrate To",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["ef", "database", "update", "${input:migration}"],
+      "problemMatcher": "$tsc"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migration",
+      "description": "Migration Name:",
+      "type": "promptString",
+      "default": ""
+    }
+  ]
+}

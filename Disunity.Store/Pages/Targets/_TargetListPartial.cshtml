@@ -1,0 +1,7 @@
+@model IEnumerable<Disunity.Store.Entities.Target>
+
+<div>
+    @foreach (var target in @Model) {
+        <partial name="Targets/_TargetListItemPartial" model="@target"/>
+    }
+</div>

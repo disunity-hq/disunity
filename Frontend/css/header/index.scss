@@ -1,0 +1,39 @@
+@import './breadcrumb.scss';
+
+
+header {
+    nav {
+        background-color: $disunity !important;
+
+
+        #brand-logo {
+            img {
+                border-radius: 45%;
+                border-width: 2px;
+                border-color: white;
+                border-style: solid;
+                height: 48px;
+                width: 48px;
+                margin-right: 18px;
+            }
+        }
+
+        .navbar-brand {
+            white-space: normal;
+            text-align: center;
+            word-break: break-all;
+
+            &:hover {
+                color: $navbar-light-hover-color !important;
+            }
+        }
+
+        .navbar-nav {
+            .nav-item {
+                button {
+                    line-height: 1.4em;
+                }
+            }
+        }
+    }
+}

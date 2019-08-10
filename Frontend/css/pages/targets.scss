@@ -1,0 +1,18 @@
+$target-row-height: 120px;
+
+.target-list-row {
+  height: $target-row-height;
+
+  .target-list-row-title {
+    font-size: 2em !important;
+  }
+
+  .target-list-row-icon {
+    flex: 0;
+    img {
+      height: $target-row-height;
+      width: $target-row-height;
+      object-fit: contain;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "@import": [
+    "adjectives.json",
+    "conjunctions.json",
+    "nouns.json",
+    "numbers.json",
+    "prepositions.json",
+    "sports.json",
+    "male-names.json",
+    "female-names.json",
+    "quantifiers.json",
+    "tlds.json",
+    "verbs.json"
+  ],
+
+  "name": ["#male_name#", "#female_name#"]
+  
+}

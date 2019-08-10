@@ -1,0 +1,82 @@
+{
+  "@import": ["../all.json"],
+  "version": ["2", "II", "3", "III", "Redux"],
+  "year": ["20#double_digit#"],
+  "item_base": [
+    "#noun#",
+    "#noun#",
+    "#noun.a#",
+    "the #countable_noun#",
+    "#quantified_countable.s#",
+    "#quantified_uncountable#"
+  ],
+  "item": [
+    "#item_base#",
+    "#adjective# #item_base#"
+  ],
+  "possessive": [
+    "#name#'s #item#",
+    "#item# of #concrete_noun.a#",
+    "#item# of the #concrete_noun#",
+    "#item# #preposition# #concrete_noun.a#"
+  ],
+  "object": [
+    "#item#",
+    "#item#",
+    "#item#",
+    "#item#",
+    "#possessive#"
+  ],
+  "post_title": ["", "", "#year#", "#version#"],
+  "pre_title": ["", "#adjective", "#adjective"],
+  "sports_title": [
+    "#pre_title# #sport# #post_title#",
+    "#name#'s #pre_title# #sport# #post_title#"
+  ],
+  "display_name": [
+    "#sports_title#",
+    "#object#",
+    "#preposition# #object#",
+    "#object# #conjunction# #object#",
+    "#pre_title# #object# #post_title#",
+    "#pre_title# #object# #post_title#",
+    "#basic_verb# #preposition# #object#",
+    "#basic_verb# #preposition# #basic_verb#"
+  ],
+  "author_suffix": [
+    "studios", "games", "interactive", ""
+  ],
+  "author": [
+    "#name#", 
+    "#name# and #name#", 
+    "#name# #author_suffix#", 
+    "#object# #author_suffix#",
+    "#basic_verb# #author_suffix#",
+    "#adjective# #author_suffix#"
+  ],
+  "game_type": [
+    "puzzle", "fighting", "action", "shooter", "strategy", "realtime", "multiplayer"
+  ],
+  "referent": [
+    "game", "hit", "mystery", "classic", "masterpiece", "offering"
+  ],
+  "imperative": [
+    "play", "enjoy", "crush", "join in", "beat"
+  ],
+  "impression": [
+    "love", "hate", "remember", "never put down", "never stop playing", "never win"
+  ],
+  "description": [
+    "#imperative.capitalize# #positive_adjective.a# game for the ages!",
+    "#imperative.capitalize# #positive_adjective.a# game by #author.title#",
+    "#imperative.captialize# this new #game_type# #referent# you'll #impression#!",
+    "The #positive_adjective# hit by #author.title#",
+    "#object.capitalize# loves #object#",
+    "Are you ready to #basic_verb# #object#",
+    "Solve the mystery of the #object#!",
+    "Kill #object#",
+    "Can you find the #object#?",
+    "Where's #name#?",
+    "Collect all the #countable_noun.s#"
+  ]
+}
