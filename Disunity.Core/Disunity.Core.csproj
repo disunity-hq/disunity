@@ -8,9 +8,6 @@
     <BuildDir>$(SolutionDir)\Build</BuildDir>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Remove="Commons.Json" />
-  </ItemGroup>
   <Target Name="Package" AfterTargets="Publish">
     <RemoveDir Directories="$(BuildDir)" />
     <Copy SourceFiles="@(Deps)" DestinationFiles="$(BuildDir)\Disunity\core\%(Filename)%(Extension)">
