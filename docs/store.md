@@ -1,11 +1,13 @@
 # Disunity.Store
 
-The Disunity mod store is an ASP.Net Core site which offers:
+The `Disunity.Store` consists of the following parts:
 
-- A website for browsing and uploading mods
-- An API
+- A web-service and web-API both driven by ASP.Net Core
+- A static frontend driven built with Typescript and Vue.js
 
-The store frontend is implemented separately in the `Frontend/` project.
+The `Disunity.Store` project contains the ASP.Net side of things.
+
+The store's frontend is located separately in the `Frontend/` project.
 
 ## Setup guide for development
  * (Windows only see [below](#setup-for-windows-users)): Run `pip install docker-windows-volume-watcher`
