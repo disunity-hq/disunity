@@ -1,12 +1,12 @@
 
 all:
-	docker-compose run -w /app/Disunity.Store dotnet $(args)
+	docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml run -w /app/Disunity.Store dotnet $(args)
 
 build:
-	docker-compose build
+	docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml build
 
 up: build
-	docker-compose up db cache frontend web
+	docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml up db cache frontend web
 
 ef:
 	dotnet ef --project Disunity.Store $(args)
@@ -18,11 +18,11 @@ initdb:
 	dotnet ef --project Disunity.Store migrations add Initial -o Entities/Migrations
 
 dropdb:
-	docker rm -f store_db_1
+	docker rm --project-directory $(shell pwd) -f store_db_1
 	docker volume rm store_db-data
 
 test:
-	docker-compose run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Store.Tests/start.sh dotnet
+	docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Store.Tests/start.sh dotnet
 
 watcher:
 	docker-volume-watcher -v --debounce 0.1 disunitystore_* ${CURDIR}/*

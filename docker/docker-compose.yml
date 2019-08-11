@@ -5,7 +5,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/Dockerfile
       target: frontend
     volumes:
       - ./Frontend/ts:/Source/ts
@@ -15,7 +15,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/Dockerfile
     restart: always
     environment:
       ASPNETCORE_ENVIRONMENT: Development
@@ -50,7 +50,7 @@ services:
   dotnet:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/Dockerfile
       target: build
     entrypoint: dotnet
     environment:
@@ -58,8 +58,6 @@ services:
       ConnectionStrings__DefaultConnection: ${DATABASE_URL}
     volumes:
       - ./:/app
-
-
 
 volumes:
   db-data:
