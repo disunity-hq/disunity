@@ -8,6 +8,7 @@ paket-files/
 **/[Pp]ackages/*
 **/obj/
 **/bin/
+**/out/
 ExampleMod/Assets/Disunity/
 Build/
 **/nupkg/
