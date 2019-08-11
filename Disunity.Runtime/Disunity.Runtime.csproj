@@ -4,8 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PublishDir>$(OutDir)publish\</PublishDir>
-    <BuildDir>..\Build</BuildDir>
-    <LibDir>..\libs\</LibDir>
+    <BuildDir>$(SolutionDir)\Build</BuildDir>
+    <LibDir>$(SolutionDir)\libs\</LibDir>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>

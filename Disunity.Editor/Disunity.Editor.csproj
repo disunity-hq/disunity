@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PublishDir>$(OutDir)publish\</PublishDir>
-    <BuildDir>..\Build</BuildDir>
+    <BuildDir>$(SolutionDir)\Build</BuildDir>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
