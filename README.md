@@ -1,8 +1,8 @@
 # Disunity
 
-<h2 align="center">A fullstack toolchain for modding Unity games.<h2>
+<h3 align="center">A fullstack toolchain for modding Unity games.<h3>
 <p align="center">
-  <img style="border-radius: 50px" width="512" height="512" src="./Frontend/assets/logo_512x512.png">
+  <img style="border-radius: 50px" width="256" height="256" src="./Frontend/assets/logo_512x512.png">
 </p>
 
 ## Repository overview
