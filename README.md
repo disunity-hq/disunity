@@ -1,9 +1,9 @@
 # Disunity
 
-Disunity is a fullstack toolchain for modding Unity games.
-
-![Disunity Logo](./Frontend/assets/logo_512x512.png "Disunity logo")
-
+<h2 align="center">A fullstack toolchain for modding Unity games.<h2>
+<p align="center">
+  <img style="border-radius: 50px" width="512" height="512" src="./Frontend/assets/logo_512x512.png">
+</p>
 
 ## Repository overview
 
