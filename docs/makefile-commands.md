@@ -58,6 +58,7 @@ These commands are for working with the store. A number of the commands are for 
 - `store-run` Run the store locally
 - `store-build` Build the Docker images required for running the store in Docker
 - `store-up` Run the store and other supporting components in Docker.
+- `store-up-quick` Will only rebuild the web container before running everything in Docker.
 - `store-db [ARGS=""]` Interact with the store's EntityFramework Core DB backend
 - `store-db-migrate [ARGS=""]` Manage the store's EF Core migrations
 - `store-db-init` Create the initial migrations for the store.

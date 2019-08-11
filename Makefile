@@ -113,6 +113,10 @@ store-build:
 store-up: store-build
 	$(COMPOSE) up db cache frontend web
 
+store-up-quick:
+	$(COMPOSE) build web
+	$(COMPOSE) up db cache frontend web
+
 store-db:
 	dotnet ef --project Disunity.Store $(ARGS)
 
