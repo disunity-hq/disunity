@@ -8,6 +8,7 @@ CLI = Disunity.Cli/Disunity.Cli.csproj
 STORE = Disunity.Store/Disunity.Store.csproj
 
 # makefile boilerplate
+DIR := ${CURDIR}
 COMPOSE = docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml
 
 OSFLAG :=
@@ -48,28 +49,28 @@ update-deps:
 # Build commands
 
 build:
-	dotnet build $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(ARGS)
 
 build-core:
-	dotnet build $(CORE) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(CORE) $(ARGS)
 
 build-editor:
-	dotnet build $(EDITOR) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(EDITOR) $(ARGS)
 
 build-preloader:
-	dotnet build $(PRELOADER) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(PRELOADER) $(ARGS)
 
 build-runtime:
-	dotnet build $(RUNTIME) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(RUNTIME) $(ARGS)
 
 build-management:
-	dotnet build $(MANAGEMENT) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(MANAGEMENT) $(ARGS)
 
 build-cli:
-	dotnet build $(CLI) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(CLI) $(ARGS)
 
 build-store:
-	dotnet build $(STORE) $(ARGS)
+	dotnet build -p:SolutionDir=$(DIR) $(STORE) $(ARGS)
 
 
 # Clean commands
@@ -81,7 +82,7 @@ clean:
 # Release commands
 
 release:
-	dotnet publish $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) $(ARGS)
 	./release.sh
 
 
