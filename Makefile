@@ -9,7 +9,7 @@ STORE = Disunity.Store/Disunity.Store.csproj
 
 # makefile boilerplate
 DIR := ${CURDIR}
-COMPOSE = docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml
+COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 
 OSFLAG :=
 ifeq ($(OS),Windows_NT)
