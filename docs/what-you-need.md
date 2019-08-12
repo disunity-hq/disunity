@@ -90,3 +90,7 @@ You should now be able to run the `make` command:
 > make                                                                                                                                   /
 make: *** No targets specified and no makefile found.  Stop.
 ```
+
+Alternatively, if you have Chocolatey, just install like so:
+
+    choco install make
