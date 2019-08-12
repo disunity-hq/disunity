@@ -31,6 +31,7 @@ WORKDIR /app
 COPY .paket/ ./.paket/
 COPY paket.dependencies ./
 COPY paket.lock ./
+COPY common.props ./
 COPY Disunity.Core/Disunity.Core.csproj ./Disunity.Core/
 COPY Disunity.Store/Disunity.Store.csproj ./Disunity.Store/
 COPY Disunity.Core/paket.references ./Disunity.Core/
@@ -46,7 +47,7 @@ COPY Disunity.Store ./Disunity.Store/
 RUN ls -la .
 WORKDIR /app/Disunity.Store
 RUN ls -la .
-RUN dotnet publish -c Release -o out Disunity.Store.csproj
+RUN dotnet publish -p:SolutionDir=$(pwd) -c Release -o out Disunity.Store.csproj
 
 
 ##
