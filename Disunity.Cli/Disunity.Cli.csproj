@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Disunity.Core\Disunity.Management.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Disunity.Management\Disunity.Management.csproj" />
   </ItemGroup>
   <Import Project="..\common.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />

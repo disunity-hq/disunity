@@ -9,16 +9,16 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="BepInEx, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(LibDir)BepInEx.dll</HintPath>
+      <HintPath>$(SolutionDir)\libs\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(LibDir)UnityEngine.dll</HintPath>
+      <HintPath>$(SolutionDir)\libs\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(LibDir)UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>$(SolutionDir)\libs\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(LibDir)UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(SolutionDir)\libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="..\common.props" />
