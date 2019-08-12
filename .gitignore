@@ -11,5 +11,5 @@ paket-files/
 **/out/
 **/publish/
 ExampleMod/Assets/Disunity/
-Build/
+Release/
 **/nupkg/
