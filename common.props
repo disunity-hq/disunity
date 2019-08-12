@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <PublishDir>publish</PublishDir>
+    <BuildDir>$(SolutionDir)\Build</BuildDir>
+    <LibDir>$(SolutionDir)\libs</LibDir>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+</Project>

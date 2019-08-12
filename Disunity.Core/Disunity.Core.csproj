@@ -2,26 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <PublishDir>$(OutDir)publish\</PublishDir>
-    <BuildDir>$(SolutionDir)\Build</BuildDir>
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
-  <Target Name="Package" AfterTargets="Publish">
-    <RemoveDir Directories="$(BuildDir)" />
-    <Copy SourceFiles="@(Deps)" DestinationFiles="$(BuildDir)\Disunity\core\%(Filename)%(Extension)">
-    </Copy>
-    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(BuildDir)\Disunity\core\%(Filename)%(Extension)">
-    </Copy>
-    <Copy SourceFiles="@(Deps)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
-    </Copy>
-    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(BuildDir)\Disunity-Exporter\Assets\Disunity\%(Filename)%(Extension)">
-    </Copy>
-    <Copy SourceFiles="@(Deps)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\Dependencies\%(Filename)%(Extension)">
-    </Copy>
-    <Copy SourceFiles="@(Outputs)" DestinationFiles="$(SolutionDir)\ExampleMod\Assets\Disunity\%(Filename)%(Extension)">
-    </Copy>
-  </Target>
+  <Import Project="..\common.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
