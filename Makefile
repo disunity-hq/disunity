@@ -1,3 +1,13 @@
+# project paths
+CORE = Disunity.Core/Disunity.Core.csproj
+EDITOR = Disunity.Editor/Disunity.Editor.csproj
+PRELOADER = Disunity.Preloader/Disunity.Preloader.csproj
+RUNTIME = Disunity.Runtime/Disunity.Runtime.csproj
+MANAGEMENT = Disunity.Management/Disunity.Management.csproj
+CLI = Disunity.Cli/Disunity.Cli.csproj
+STORE = Disunity.Store/Disunity.Store.csproj
+
+# makefile boilerplate
 COMPOSE = docker-compose --project-directory $(shell pwd) -f docker/docker-compose.yml
 
 OSFLAG :=
@@ -25,7 +35,6 @@ PAKET := $(strip $(PAKET))
 
 # Paket commands
 
-
 paket:
 	$(PAKET) $(ARGS)
 
@@ -35,17 +44,8 @@ install-deps:
 update-deps:
 	$(PAKET) update $(ARGS)
 
-CORE = Disunity.Core/Disunity.Core.csproj
-EDITOR = Disunity.Editor/Disunity.Editor.csproj
-PRELOADER = Disunity.Preloader/Disunity.Preloader.csproj
-RUNTIME = Disunity.Runtime/Disunity.Runtime.csproj
-MANAGEMENT = Disunity.Management/Disunity.Management.csproj
-CLI = Disunity.Cli/Disunity.Cli.csproj
-STORE = Disunity.Store/Disunity.Store.csproj
-
 
 # Build commands
-
 
 build:
 	dotnet build $(ARGS)
@@ -72,36 +72,14 @@ build-store:
 	dotnet build $(STORE) $(ARGS)
 
 
-# Publish commands
+# Release commands
 
-
-publish:
+release:
 	dotnet publish $(ARGS)
-
-publish-core:
-	dotnet publish $(CORE) $(ARGS)
-
-publish-editor:
-	dotnet publish $(EDITOR) $(ARGS)
-
-publish-preloader:
-	dotnet publish $(PRELOADER) $(ARGS)
-
-publish-runtime:
-	dotnet publish $(RUNTIME) $(ARGS)
-
-publish-management:
-	dotnet publish $(MANAGEMENT) $(ARGS)
-
-publish-cli:
-	dotnet publish $(CLI) $(ARGS)
-
-publish-store:
-	dotnet publish $(STORE) $(ARGS)
+	./release.sh
 
 
 # Store commands
-
 
 store-run:
 # TODO need some way to set the db ip
