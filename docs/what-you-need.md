@@ -70,3 +70,23 @@ Server:
   OS/Arch:      linux/amd64
   Experimental: false
 ```
+
+## Make
+
+The project Makefile is basically the primary way to interact with the projects while developing. You can install it by downloading a Windows Make port here:
+
+https://sourceforge.net/projects/ezwinports/files/make-4.2.1-without-guile-w32-bin.zip/download
+
+To install:
+
+- Extract the zip somewhere.
+- Find your `Git\mingw64\` for your Git Bash install.
+- **Tell Windows to NOT overwrite any files in the next step**
+- Merge the `Git\mingw64\` folder from the zip with your install.
+
+You should now be able to run the `make` command:
+
+```
+> make                                                                                                                                   /
+make: *** No targets specified and no makefile found.  Stop.
+```
