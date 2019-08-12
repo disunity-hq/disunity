@@ -72,6 +72,12 @@ build-store:
 	dotnet build $(STORE) $(ARGS)
 
 
+# Clean commands
+
+clean:
+	rm -fr **/obj **/bin **/publish **/nupkg
+
+
 # Release commands
 
 release:

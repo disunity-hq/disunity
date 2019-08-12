@@ -36,20 +36,16 @@ The following commands build the Disunity projects.
 - `build-cli [ARGS=""]` Build `Disunity.Cli`
 - `build-store [ARGS=""]` Build `Disunity.Store`
 
+## Clean commands
 
-## Publish commands
+- `clean` Remove all `bin/`, `obj/` and `publish/` directories.
 
-The following commands publish the Disunity projects. Publishing produces a `Build/` directory in the repository root containing the built projects ready for distribution.
 
-- `publish [ARGS=""]` Publish all of the projects.
-- `publish-core [ARGS=""]` Publish `Disunity.Core`
-- `publish-editor [ARGS=""]` Publish `Disunity.Editor`
-- `publish-preloader [ARGS=""]` Publish `Disunity.Preloader`
-- `publish-runtime [ARGS=""]` Publish `Disunity.Runtime`
-- `publish-management [ARGS=""]` Publish `Disunity.Management`
-- `publish-cli [ARGS=""]` Publish `Disunity.Cli`
-- `publish-store [ARGS=""]` Publish `Disunity.Store`
+## Release commands
 
+The following commands publish a release of the Disunity projects. Publishing produces a `Release/` directory in the repository root containing the built projects ready for distribution.
+
+- `release` Publish a Disunity release.
 
 ## Store commands
 
