@@ -9,6 +9,7 @@ paket-files/
 **/obj/
 **/bin/
 **/out/
+**/publish/
 ExampleMod/Assets/Disunity/
 Build/
 **/nupkg/
