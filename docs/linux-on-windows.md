@@ -13,7 +13,7 @@ WSL2 introduces full kernel support which pushes the quality of the Linux enviro
 
 WSL2 is currently **only available via the Windows Insider program**. This means that you'll need to enable the Insider Program on your machine, and upgrade your Windows build.
 
-The build required is at least `1903` and is only available on the `Fast Track` of the Insider Program.
+The build required is at least `18917` and is only available on the `Fast Track` of the Insider Program.
 
 #### Microsoft Identity
 
