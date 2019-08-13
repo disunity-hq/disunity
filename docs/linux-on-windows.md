@@ -79,3 +79,78 @@ Verify that Ubuntu was updated to WSL2:
 wsl -l -v
 ```
 
+#### Fixing Networking
+
+If you find that networking within Ubuntu is borked, then try the following.
+
+##### Routing your WSL IP
+
+Open `cmd` and run:
+
+```
+ipconfig
+```
+
+Find the section for the WSL adapter and note the IP address. In this case it is `192.168.240.1`:
+
+```
+Ethernet adapter vEthernet (**WSL**):
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::1c1:eb0b:ebe2:2e01%30
+   IPv4 Address. . . . . . . . . . . : **192.168.240.1**
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . :
+```
+
+From within Ubuntu:
+
+```
+sudo ifconfig eth0 netmask 255.255.240.0
+sudo ip route add default via YOUR_WSL_IP_ADDRESS
+```
+
+##### Setting DNS Nameservers
+
+If you are still having troubles, see if you're able to ping IP addresses:
+
+```
+ping 8.8.8.8
+```
+
+But not domain names:
+
+```
+ping google.com
+````
+
+If you're able to ping `8.8.8.8` but not `google.com` then DNS is screwy. A quick fix is to edit `/etc/resolv.conf` to point to the Google nameservers.
+
+Open `/etc/resolv.conf`:
+
+```
+sudo nano /etc/resolv.conf
+```
+
+Edit to read:
+
+```
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+```
+
+Press `Ctrl-o` then `Enter` to save.
+
+Press `Ctrl-x` to quit.
+
+Try to ping `google.com`
+
+```
+ping google.com
+```
+
+##### Run some random code off the internet
+
+If all else fails, try this PowerShell script:
+
+https://gist.github.com/andrewvc/fe22397c554ac3e6255681bfc864e62e
