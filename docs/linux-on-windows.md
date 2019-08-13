@@ -79,6 +79,14 @@ Verify that Ubuntu was updated to WSL2:
 wsl -l -v
 ```
 
+#### Updating Ubuntu
+
+Open Ubuntu from the Start Menu and run the following:
+
+```
+sudo apt update && sudo apt upgrade
+```
+
 #### Fixing Networking
 
 If you find that networking within Ubuntu is borked, then try the following.
