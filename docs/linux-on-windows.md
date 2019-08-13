@@ -162,3 +162,75 @@ ping google.com
 If all else fails, try this PowerShell script:
 
 https://gist.github.com/andrewvc/fe22397c554ac3e6255681bfc864e62e
+
+
+## LxRunOffline
+
+`LxRunOffline` is a Windows commandline utility for managing WSL environments. With it, you can have multiple Ubuntu environments for example. It also supports things like duplicating environments and other neat things.
+
+### Installing LxRunOffline
+
+The easiest way to install LxRunOffline and do all the other steps in this section is to run `init.bat` from the Disunity repo.
+
+Alternatively install LxRunOffline with Chocolatey:
+
+```
+sudo choco install lxrunoffline
+```
+
+### Installing a Linux Distro
+
+Visit the following link and download Ubuntu:
+
+https://lxrunoffline.apphb.com/download/Ubuntu/Bionic
+
+Then you can create an environment from the distribution:
+
+```
+LxRunOffline install -n ANameYouPick -d where/to/install -f path/to/downloaded/distro
+```
+
+### Starting an Environment
+
+Use the following command to start an environment:
+
+```
+LxRunOffline.exe run -w -n SomeName
+```
+
+You can create a symlink for easily running an environment:
+
+```
+LxRunOffline.exe s -n SomeName -f where/to/install/SomeName.lnk
+```
+
+### Duplicating an Environment
+
+LxRunOffline makes it super easy to duplicate an environment:
+
+```
+LxRunOffline.exe d -n SomeSourceName -d where/to/install -N SomeNewName
+```
+
+### Creating a template
+
+It can be useful to create a template environment from which you duplicate other environments as needed.
+
+Start by following the steps above to create a new Ubuntu environment. Unlike WSL environments created by the Windows Store, the only user created is root.
+
+#### Creating a non-root user
+
+```
+adduser disunity
+usermod -a -G adm,cdrom,sudo,dip,plugdev
+```
+
+#### Set user as default login
+
+By default, the environment will login as root. To login as your own user by default run the following command:
+
+```
+LxRunOffline.exe su -n SomeName -v 1000
+```
+
+You can now copy this environment as many times as you'd like.
