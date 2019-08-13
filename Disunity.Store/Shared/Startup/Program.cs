@@ -24,6 +24,7 @@ namespace Disunity.Store.Startup
                               config.AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true);
                               config.AddEnvironmentVariables();
                           })
+                          .UseUrls("http://0.0.0.0:80")
                           .ConfigureLogging(f => f.AddConsole().AddDebug())
                           .UseStartup<Startup>();
         }

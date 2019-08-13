@@ -23,7 +23,7 @@ services:
       AdminUser__Email: ${ADMINUSER_EMAIL}
       AdminUser__Password: ${ADMINUSER_PASSWORD}
     ports:
-      - 127.0.0.1:8000:80
+      - 0.0.0.0:8000:80
     depends_on:
       - db
       - cache
