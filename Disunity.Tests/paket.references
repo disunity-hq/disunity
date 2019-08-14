@@ -1,4 +1,5 @@
 Microsoft.NET.Test.Sdk
 Moq
+System.IO.Abstractions.TestingHelpers
 xunit
 xunit.runner.visualstudio

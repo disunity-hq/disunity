@@ -14,6 +14,9 @@ nuget Unity.Newtonsoft.Json >= 7.0.0
 nuget xunit >= 2.4.0
 nuget xunit.runner.visualstudio >= 2.4.0
 
+# management dependencies
+nuget System.IO.Abstractions >= 6.0.21
+
 # store dependencies
 nuget AspNet.Security.OAuth.Discord >= 2.1.0
 nuget AspNet.Security.OAuth.GitHub >= 2.1.0
@@ -36,6 +39,9 @@ nuget SmartBreadcrumbs >= 2.1.0
 nuget Swashbuckle.AspNetCore
 nuget Syncfusion.EJ2.AspNet.Core >= 17.1.0.53pak
 nuget Westwind.AspNetCore.Markdown 3.2.5
+
+# test dependencies
+nuget System.IO.Abstractions.TestingHelpers >= 6.0.21
 
 git https://github.com/scottbot95/EFCoreHooks.git master build: "build.sh", OS: mono, Packages: /EFCoreHooks/nupkg
 git https://github.com/scottbot95/EFCoreHooks.git master build: "build.bat", OS: windows, Packages: /EFCoreHooks/nupkg
