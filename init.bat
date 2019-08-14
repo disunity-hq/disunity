@@ -10,7 +10,7 @@ IF %ERRORLEVEL% NEQ 0 (
 )
 
 IF NOT EXIST C:\tools\lxrunoffline\LxRunOffline.exe (
-    choco install lxrunoffline
+    choco install -y lxrunoffline
 ) ELSE (
     @echo LxRunOffline already installed. Skipping.
 )
