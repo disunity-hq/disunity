@@ -5,6 +5,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 
 using Disunity.Management;
+using Disunity.Management.Util;
 
 using Moq;
 
@@ -16,14 +17,6 @@ using Xunit;
 namespace Disunity.Tests.Management {
 
     public class TargetFactoryFixture {
-
-        public TargetFactory TargetFactory { get; }
-
-        public IList<Target> Targets { get; }
-
-        public IFileSystem MockFileSystem { get; }
-        
-        public IProfileFactory MockProfileFactory { get; }
 
         public TargetFactoryFixture() {
             Targets = new[] {
@@ -47,10 +40,23 @@ namespace Disunity.Tests.Management {
 
             MockProfileFactory = Mock.Of<IProfileFactory>();
 
-            TargetFactory = new TargetFactory(MockFileSystem, MockProfileFactory) {
+            var mockSymbolicLink = Mock.Of<ISymbolicLink>();
+
+            Mock.Get(MockProfileFactory).Setup(f => f.CreateExactPath(It.IsAny<string>(), "Default"))
+                .Returns((string a, string b) => new Profile{Path = a,DisplayName = b});
+
+            TargetFactory = new TargetFactory(MockFileSystem, MockProfileFactory, mockSymbolicLink) {
                 ManagedRoot = @"C:\test\managed"
             };
         }
+
+        public TargetFactory TargetFactory { get; }
+
+        public IList<Target> Targets { get; }
+
+        public IFileSystem MockFileSystem { get; }
+
+        public IProfileFactory MockProfileFactory { get; }
 
         private static string GetTargetInfoPath(string directory) {
             return Path.Combine(directory, "target-info.json");
@@ -70,27 +76,11 @@ namespace Disunity.Tests.Management {
 
     public class TargetFactoryTests : IClassFixture<TargetFactoryFixture> {
 
-        private readonly TargetFactoryFixture _fixture;
-
         public TargetFactoryTests(TargetFactoryFixture fixture) {
             _fixture = fixture;
         }
 
-        [Fact]
-        public void CanLoadFromFile() {
-            var expectedTarget = _fixture.Targets[0];
-
-            var actual = _fixture.TargetFactory.FromFile(@"C:\test\managed\risk-of-rain-2\target-info.json");
-            actual.ManagedPath = expectedTarget.ManagedPath;
-
-            Assert.Equal(expectedTarget, actual);
-        }
-
-        [Fact]
-        public void FromFileReturnsNullWhenFileIsNonExistent() {
-            var actual = _fixture.TargetFactory.FromFile(@"C:\does\not\exist");
-            Assert.Null(actual);
-        }
+        private readonly TargetFactoryFixture _fixture;
 
         [Fact]
         public void CanLoadAllFromDirectory() {
@@ -104,7 +94,17 @@ namespace Disunity.Tests.Management {
 
             actual.AssertItemsEqual(expectedTargets);
         }
-        
+
+        [Fact]
+        public void CanLoadFromFile() {
+            var expectedTarget = _fixture.Targets[0];
+
+            var actual = _fixture.TargetFactory.FromFile(@"C:\test\managed\risk-of-rain-2\target-info.json");
+            actual.ManagedPath = expectedTarget.ManagedPath;
+
+            Assert.Equal(expectedTarget, actual);
+        }
+
         [Fact]
         public void CanStartTrackingTarget() {
             var expectedTarget = new Target {
@@ -120,24 +120,15 @@ namespace Disunity.Tests.Management {
             Assert.Equal(expectedTarget, actual);
 
             var defaultProfilePath = _fixture.MockFileSystem.Path.Combine(expectedTarget.ManagedPath, "profiles", "default");
-            
+
             Mock.Get(_fixture.MockProfileFactory).Verify(f => f.CreateExactPath(defaultProfilePath, "Default"), Times.Once());
             
+        }
 
-//            var activeProfilePath = _fixture.FileSystem.Path.Combine(expectedTarget.ManagedPath, "profiles", "active");
-//
-//            var expectedFiles = new[] {
-//                activeProfilePath,
-//                @"C:\test\managed\Cuphead\profiles\default\meta.json",
-//            };
-//
-//            foreach (var file in expectedFiles) {
-//                Util.AssertFileExists(_fixture.FileSystem, file);
-//            }
-//
-//
-//            Assert.True((_fixture.FileSystem.File.GetAttributes(expectedFiles[0]) & FileAttributes.ReparsePoint) != 0,
-//                        $"Expected {expectedFiles[0]} to be a symlink to {expectedFiles[1]}");
+        [Fact]
+        public void FromFileReturnsNullWhenFileIsNonExistent() {
+            var actual = _fixture.TargetFactory.FromFile(@"C:\does\not\exist");
+            Assert.Null(actual);
         }
 
     }

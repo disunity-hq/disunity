@@ -1,4 +1,7 @@
 using System.IO;
+using System.IO.Abstractions;
+
+using Disunity.Management.Util;
 
 using Newtonsoft.Json;
 
@@ -19,6 +22,17 @@ namespace Disunity.Management {
 
         [JsonIgnore]
         public string ExecutablePath => Path.Combine(TargetPath, ExecutableName);
+
+        public void SetActiveProfile(IFileSystem fileSystem, ISymbolicLink symbolicLink, Profile profile) {
+            var activeProfilePath = fileSystem.Path.Combine(ManagedPath, "profiles", "active");
+
+            // remove old link if it exists
+            if (fileSystem.File.Exists(activeProfilePath)) {
+                fileSystem.File.Delete(activeProfilePath);
+            }
+            
+            symbolicLink.CreateDirectoryLink(activeProfilePath, profile.Path);
+        }
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj)) {

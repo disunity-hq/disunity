@@ -17,15 +17,17 @@ namespace Disunity.Management {
 
         private readonly IFileSystem _fileSystem;
         private readonly IProfileFactory _profileFactory;
+        private readonly ISymbolicLink _symbolicLink;
 
         public string ManagedRoot { get; set; }
 
-        public TargetFactory(IFileSystem fileSystem, IProfileFactory profileFactory) {
+        public TargetFactory(IFileSystem fileSystem, IProfileFactory profileFactory, ISymbolicLink symbolicLink) {
             _fileSystem = fileSystem;
             _profileFactory = profileFactory;
+            _symbolicLink = symbolicLink;
         }
 
-        public TargetFactory(): this(new FileSystem(), new ProfileFactory()) {}
+        public TargetFactory(ISymbolicLink symbolicLink): this(new FileSystem(), new ProfileFactory(), symbolicLink) {}
 
         public Target FromFile(string path) {
             if (!_fileSystem.File.Exists(path)) return null;
@@ -59,11 +61,12 @@ namespace Disunity.Management {
 
             var defaultProfilePath = _fileSystem.Path.Combine(target.ManagedPath, "profiles", "default");
             var defaultProfile = _profileFactory.CreateExactPath(defaultProfilePath,"Default");
-
-            // TODO create default profile and active symlink here
+            
+            target.SetActiveProfile(_fileSystem,_symbolicLink, defaultProfile);
 
             return target;
         }
+
 
     }
 
