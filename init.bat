@@ -12,28 +12,31 @@ IF %ERRORLEVEL% NEQ 0 (
 IF NOT EXIST C:\tools\lxrunoffline\LxRunOffline.exe (
     choco install lxrunoffline
 ) ELSE (
-    @echo LxRunOffline alread installed. Skipping.
+    @echo LxRunOffline already installed. Skipping.
 )
 
-IF NOT EXIST C:\ubuntu-bionic-core-cloudimg-amd64-root.tar.gz (
-    bitsadmin.exe /transfer "DownloadUbuntu" https://lxrunoffline.apphb.com/download/Ubuntu/Bionic C:\ubuntu-bionic-core-cloudimg-amd64-root.tar.gz
+IF NOT EXIST %1\wsl mkdir %1\wsl
+
+IF NOT EXIST %1\wsl\ubuntu-bionic.tar.gz (
+    bitsadmin.exe /transfer "DownloadUbuntu" https://lxrunoffline.apphb.com/download/Ubuntu/Bionic "%1\wsl\ubuntu-bionic.tar.gz"
 ) ELSE (
     @echo Ubuntu distribution already downloaded. Skipping.
 )
 
-IF NOT EXIST C:\wsl\DisunityTemplate\ (
-    C:\tools\lxrunoffline\LxRunOffline.exe install -n DisunityTemplate -d C:\wsl\DisunityTemplate -f C:\ubuntu-bionic-core-cloudimg-amd64-root.tar.gz
+IF NOT EXIST %1\wsl\DisunityTemplate\ (
+    C:\tools\lxrunoffline\LxRunOffline.exe install -n DisunityTemplate -d %1\wsl\DisunityTemplate -f %1\wsl\ubuntu-bionic.tar.gz
 ) ELSE (
     @echo DisunityTemplate environment exists. Skipping.
 )
 
-IF NOT EXIST C:\wsl\DisunityTemplate.lnk (
-    C:\tools\lxrunoffline\LxRunOffline.exe s -n DisunityTemplate -f C:\wsl\DisunityTemplate.lnk
+IF NOT EXIST %1\wsl\DisunityTemplate.lnk (
+    C:\tools\lxrunoffline\LxRunOffline.exe s -n DisunityTemplate -f %1\wsl\DisunityTemplate.lnk
 ) ELSE (
     @echo DisunityTemplate.lnk exists. Skipping.
 )
 
 C:\tools\lxrunoffline\LxRunOffline.exe su -n DisunityTemplate -v 0
+C:\tools\lxrunoffline\LxRunOffline.exe run -n DisunityTemplate -c "apt update && apt install -y sudo iputils-ping"
 C:\tools\lxrunoffline\LxRunOffline.exe run -n DisunityTemplate -c "adduser disunity"
 C:\tools\lxrunoffline\LxRunOffline.exe run -n DisunityTemplate -c "usermod -a -G adm,cdrom,sudo,dip,plugdev disunity"
 C:\tools\lxrunoffline\LxRunOffline.exe su -n DisunityTemplate -v 1000
