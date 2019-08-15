@@ -44,9 +44,7 @@ COPY --from=frontend /Build/. ../Frontend/dist
 # copy everything else and build app
 COPY Disunity.Core ./Disunity.Core/
 COPY Disunity.Store ./Disunity.Store/
-RUN ls -la .
 WORKDIR /app/Disunity.Store
-RUN ls -la .
 RUN dotnet publish -p:SolutionDir=$(pwd) -c Release -o out Disunity.Store.csproj
 
 
