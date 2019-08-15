@@ -1,4 +1,4 @@
-namespace Disunity.Store.Entities {
+namespace Disunity.Client.v1.Models {
 
     public class ModTargetCompatibilityDto {
 

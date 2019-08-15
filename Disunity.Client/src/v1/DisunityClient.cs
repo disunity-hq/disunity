@@ -12,12 +12,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Disunity.Store.Entities;
+using Disunity.Client.v1.Models;
 
 using Newtonsoft.Json;
 
 
-namespace Disunity.Client {
+namespace Disunity.Client.v1 {
 
     [GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     public class DisunityClient : IDisunityClient

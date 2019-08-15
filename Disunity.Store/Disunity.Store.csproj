@@ -26,30 +26,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Entities\TargetVersionDto.cs">
-      <DependentUpon>TargetVersion.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\TargetDto.cs">
-      <DependentUpon>Target.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\OrgMemberDto.cs">
-      <DependentUpon>OrgMember.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\OrgDto.cs">
-      <DependentUpon>Org.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\ModVersionDto.cs">
-      <DependentUpon>ModVersion.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\ModTargetCompatibilityDto.cs">
-      <DependentUpon>ModTargetCompatibility.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\ModDto.cs">
-      <DependentUpon>Mod.cs</DependentUpon>
-    </Compile>
-    <Compile Update="Entities\ModDependencyDto.cs">
-      <DependentUpon>ModDependency.cs</DependentUpon>
-    </Compile>
     <Compile Update="Entities\ModProfile.cs">
       <DependentUpon>Mod.cs</DependentUpon>
     </Compile>
@@ -77,14 +53,12 @@
     <Compile Update="Entities\TargetVersionProfile.cs">
       <DependentUpon>TargetVersion.cs</DependentUpon>
     </Compile>
-    <Compile Update="Entities\DisunityVersionDto.cs">
-      <DependentUpon>DisunityVersion.cs</DependentUpon>
-    </Compile>
     <Compile Update="Entities\DisunityVersionProfile.cs">
       <DependentUpon>DisunityVersion.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Disunity.Client\Disunity.Client.csproj" />
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />

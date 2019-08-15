@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Pages.Mods;

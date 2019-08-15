@@ -1,3 +1,4 @@
+using Disunity.Client.v1.Models;
 using Disunity.Store.Entities;
 
 using Microsoft.AspNetCore.Authorization;

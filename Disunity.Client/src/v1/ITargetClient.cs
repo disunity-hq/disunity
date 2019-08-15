@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Disunity.Store.Entities;
+using TargetDto = Disunity.Client.v1.Models.TargetDto;
+using TargetVersionDto = Disunity.Client.v1.Models.TargetVersionDto;
 
 
-namespace Disunity.Client {
+namespace Disunity.Client.v1 {
 
     [GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
     public interface ITargetClient

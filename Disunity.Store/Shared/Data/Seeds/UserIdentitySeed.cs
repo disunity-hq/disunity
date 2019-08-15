@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Data.Services;
 using Disunity.Store.Entities;
 

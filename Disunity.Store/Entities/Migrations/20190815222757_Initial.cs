@@ -1,4 +1,5 @@
 ﻿using System;
+using Disunity.Client.v1.Models;
 using Disunity.Store.Entities;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;

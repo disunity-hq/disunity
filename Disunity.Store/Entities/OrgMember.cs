@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Data;
 
 using EFCoreHooks.Attributes;
@@ -11,15 +12,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 
 namespace Disunity.Store.Entities {
-
-    public enum OrgMemberRole {
-
-        Owner,
-        Admin,
-        Member
-
-    }
-
+    
     public class OrgMember {
 
         [Required] public string UserId { get; set; }

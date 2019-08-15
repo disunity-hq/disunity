@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Reflection;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Entities;
 
 using EFCoreHooks;

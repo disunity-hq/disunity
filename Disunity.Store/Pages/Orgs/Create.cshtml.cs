@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
 

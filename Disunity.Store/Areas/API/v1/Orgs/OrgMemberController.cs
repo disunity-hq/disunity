@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Data;
 using Disunity.Store.Entities;
 using Disunity.Store.Errors;

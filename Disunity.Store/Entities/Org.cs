@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
+using Disunity.Client.v1.Models;
 using Disunity.Store.Data;
 using Disunity.Store.Data.Services;
 
