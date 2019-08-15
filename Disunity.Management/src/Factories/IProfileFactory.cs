@@ -1,4 +1,9 @@
-namespace Disunity.Management {
+using System.Threading.Tasks;
+
+using Disunity.Management.Models;
+
+
+namespace Disunity.Management.Factories {
 
     public interface IProfileFactory {
 
@@ -10,7 +15,7 @@ namespace Disunity.Management {
         /// </remarks>
         /// <param name="path">The profile directory to load the meta data from</param>
         /// <returns>The meta data for the specified profile, or null</returns>
-        Profile Load(string path);
+        Task<Profile> Load(string path);
 
         /// <summary>
         /// Create a new profile within the specified root path
@@ -23,7 +28,7 @@ namespace Disunity.Management {
         /// <param name="displayName"></param>
         /// <returns></returns>
         /// /// <seealso cref="CreateExactPath"/>
-        Profile Create(string path, string displayName);
+        Task<Profile> Create(string path, string displayName);
         
         /// <summary>
         /// Create a new profile with the exact path <see cref="path"/>.
@@ -35,7 +40,7 @@ namespace Disunity.Management {
         /// <param name="displayName"></param>
         /// <returns></returns>
         /// <seealso cref="Create"/>
-        Profile CreateExactPath(string path, string displayName);
+        Task<Profile> CreateExactPath(string path, string displayName);
 
     }
 

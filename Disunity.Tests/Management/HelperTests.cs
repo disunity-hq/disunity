@@ -1,6 +1,7 @@
 using System.IO;
 
 using Disunity.Management;
+using Disunity.Management.Models;
 using Disunity.Management.Util;
 
 using Xunit;

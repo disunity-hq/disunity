@@ -3,7 +3,7 @@ using System.IO.Abstractions;
 using Newtonsoft.Json;
 
 
-namespace Disunity.Management {
+namespace Disunity.Management.Models {
 
     public class Profile {
 

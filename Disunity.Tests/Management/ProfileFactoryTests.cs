@@ -4,8 +4,11 @@ using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Disunity.Management;
+using Disunity.Management.Factories;
+using Disunity.Management.Models;
 
 using Newtonsoft.Json;
 
@@ -46,34 +49,34 @@ namespace Disunity.Tests.Management {
         }
 
         [Fact]
-        public void CanLoadProfileFromFile() {
+        public async void CanLoadProfileFromFile() {
             var expected = new Profile {
                 Path = @"c:\disunity\managed\risk-of-rain-2\profiles\default",
                 DisplayName = "Default"
             };
 
-            var actual = _fixture.ProfileFactory.Load(@"c:\disunity\managed\risk-of-rain-2\profiles\default");
+            var actual = await  _fixture.ProfileFactory.Load(@"c:\disunity\managed\risk-of-rain-2\profiles\default");
 
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void CanCreateProfileDirectory_GeneratedDirectoryName() {
+        public async void CanCreateProfileDirectory_GeneratedDirectoryName() {
             const string displayName = "Test Profile w\\ith $trange n@ame";
-            var created = _fixture.ProfileFactory.Create(@"c:\disunity\managed\risk-of-rain-2\profiles", displayName);
+            var created = await _fixture.ProfileFactory.Create(@"c:\disunity\managed\risk-of-rain-2\profiles", displayName);
 
-            AssertProfileCreated(created, displayName);
+            await AssertProfileCreated(created, displayName);
         }
 
         [Fact]
-        public void CanCreateProfileDirectory_SpecificDirectoryName() {
+        public async void CanCreateProfileDirectory_SpecificDirectoryName() {
             const string displayName = "Test Profile w\\ith $trange n@ame";
-            var created = _fixture.ProfileFactory.CreateExactPath(@"c:\disunity\managed\risk-of-rain-2\profiles\strange", displayName);
+            var created = await _fixture.ProfileFactory.CreateExactPath(@"c:\disunity\managed\risk-of-rain-2\profiles\strange", displayName);
 
-            AssertProfileCreated(created, displayName);
+            await AssertProfileCreated(created, displayName);
         }
 
-        private void AssertProfileCreated(Profile created, string displayName) {
+        private async Task AssertProfileCreated(Profile created, string displayName) {
             Assert.NotNull(created);
             Assert.Equal(displayName, created.DisplayName);
             Assert.False(string.IsNullOrEmpty(created.Path), "Expected path to have a value");
@@ -82,7 +85,7 @@ namespace Disunity.Tests.Management {
             Util.AssertFileExists(_fixture.FileSystem, metaFilePath);
 
             var profilePath = _fixture.FileSystem.Path.GetDirectoryName(metaFilePath);
-            var loadedProfile = _fixture.ProfileFactory.Load(profilePath);
+            var loadedProfile = await _fixture.ProfileFactory.Load(profilePath);
 
             Assert.Equal(created, loadedProfile);
         }

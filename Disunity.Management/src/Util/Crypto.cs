@@ -3,6 +3,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
+using Disunity.Management.Models;
+
 
 namespace Disunity.Management.Util {
 

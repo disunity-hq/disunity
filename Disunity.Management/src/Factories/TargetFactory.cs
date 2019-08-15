@@ -1,17 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+using System.Threading.Tasks;
 
+using Disunity.Management.Models;
 using Disunity.Management.Util;
 
 using Newtonsoft.Json;
 
 
-namespace Disunity.Management {
+namespace Disunity.Management.Factories {
 
     public class TargetFactory : ITargetFactory {
 
@@ -29,26 +28,29 @@ namespace Disunity.Management {
 
         public TargetFactory(ISymbolicLink symbolicLink): this(new FileSystem(), new ProfileFactory(), symbolicLink) {}
 
-        public Target FromFile(string path) {
+        public async Task<Target> FromFile(string path) {
             if (!_fileSystem.File.Exists(path)) return null;
 
             using (var file = _fileSystem.File.OpenText(path)) {
                 var serializer = new JsonSerializer();
-                var target = serializer.Deserialize(file, typeof(Target)) as Target;
+                var target = await Task.Run(() => serializer.Deserialize(file, typeof(Target)) as Target);
 
                 return target;
             }
         }
 
-        public List<Target> LoadAllFromPath(string path) {
+        public async Task<List<Target>> LoadAllFromPath(string path) {
             var targets = from directory in _fileSystem.Directory.EnumerateDirectories(path)
                            select Path.Combine(directory, "target-info.json") into jsonPath
                            where _fileSystem.File.Exists(jsonPath)
                            select FromFile(jsonPath);
-            return targets.ToList();
+            
+            
+            
+            return (await Task.WhenAll(targets)).ToList();
         }
 
-        public Target CreateManagedTarget(string executablePath, string displayName, string slug) {
+        public async Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug) {
             var target = new Target {
                 DisplayName = displayName,
                 ExecutableName = Path.GetFileName(executablePath),
@@ -60,7 +62,7 @@ namespace Disunity.Management {
             target.ManagedPath = Path.Combine(ManagedRoot, targetDir);
 
             var defaultProfilePath = _fileSystem.Path.Combine(target.ManagedPath, "profiles", "default");
-            var defaultProfile = _profileFactory.CreateExactPath(defaultProfilePath,"Default");
+            var defaultProfile = await _profileFactory.CreateExactPath(defaultProfilePath,"Default");
             
             target.SetActiveProfile(_fileSystem,_symbolicLink, defaultProfile);
 

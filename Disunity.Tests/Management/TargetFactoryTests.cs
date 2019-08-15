@@ -3,8 +3,11 @@ using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Disunity.Management;
+using Disunity.Management.Factories;
+using Disunity.Management.Models;
 using Disunity.Management.Util;
 
 using Moq;
@@ -43,7 +46,7 @@ namespace Disunity.Tests.Management {
             var mockSymbolicLink = Mock.Of<ISymbolicLink>();
 
             Mock.Get(MockProfileFactory).Setup(f => f.CreateExactPath(It.IsAny<string>(), "Default"))
-                .Returns((string a, string b) => new Profile{Path = a,DisplayName = b});
+                .Returns((string a, string b) => Task.FromResult(new Profile{Path = a,DisplayName = b}));
 
             TargetFactory = new TargetFactory(MockFileSystem, MockProfileFactory, mockSymbolicLink) {
                 ManagedRoot = @"C:\test\managed"
@@ -83,10 +86,10 @@ namespace Disunity.Tests.Management {
         private readonly TargetFactoryFixture _fixture;
 
         [Fact]
-        public void CanLoadAllFromDirectory() {
+        public async void CanLoadAllFromDirectory() {
             var expectedTargets = new List<Target> {_fixture.Targets[0], _fixture.Targets[1]};
 
-            var actual = _fixture.TargetFactory.LoadAllFromPath(@"C:\test\managed");
+            var actual = await _fixture.TargetFactory.LoadAllFromPath(@"C:\test\managed");
 
             for (var i = 0; i < expectedTargets.Count; i++) {
                 actual[i].ManagedPath = expectedTargets[i].ManagedPath;
@@ -96,17 +99,17 @@ namespace Disunity.Tests.Management {
         }
 
         [Fact]
-        public void CanLoadFromFile() {
+        public async void CanLoadFromFile() {
             var expectedTarget = _fixture.Targets[0];
 
-            var actual = _fixture.TargetFactory.FromFile(@"C:\test\managed\risk-of-rain-2\target-info.json");
+            var actual = await _fixture.TargetFactory.FromFile(@"C:\test\managed\risk-of-rain-2\target-info.json");
             actual.ManagedPath = expectedTarget.ManagedPath;
 
             Assert.Equal(expectedTarget, actual);
         }
 
         [Fact]
-        public void CanStartTrackingTarget() {
+        public async void CanStartTrackingTarget() {
             var expectedTarget = new Target {
                 DisplayName = "Cuphead",
                 ExecutableName = "Cuphead.exe",
@@ -115,7 +118,7 @@ namespace Disunity.Tests.Management {
                 Slug = "cuphead"
             };
 
-            var actual = _fixture.TargetFactory.CreateManagedTarget(expectedTarget.ExecutablePath, expectedTarget.DisplayName, expectedTarget.Slug);
+            var actual = await _fixture.TargetFactory.CreateManagedTarget(expectedTarget.ExecutablePath, expectedTarget.DisplayName, expectedTarget.Slug);
 
             Assert.Equal(expectedTarget, actual);
 
@@ -126,8 +129,8 @@ namespace Disunity.Tests.Management {
         }
 
         [Fact]
-        public void FromFileReturnsNullWhenFileIsNonExistent() {
-            var actual = _fixture.TargetFactory.FromFile(@"C:\does\not\exist");
+        public async void FromFileReturnsNullWhenFileIsNonExistent() {
+            var actual = await _fixture.TargetFactory.FromFile(@"C:\does\not\exist");
             Assert.Null(actual);
         }
 

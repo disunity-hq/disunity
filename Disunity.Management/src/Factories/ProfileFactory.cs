@@ -1,11 +1,14 @@
 using System;
 using System.IO;
 using System.IO.Abstractions;
+using System.Threading.Tasks;
+
+using Disunity.Management.Models;
 
 using Newtonsoft.Json;
 
 
-namespace Disunity.Management {
+namespace Disunity.Management.Factories {
 
     public class ProfileFactory : IProfileFactory {
 
@@ -17,7 +20,7 @@ namespace Disunity.Management {
 
         public ProfileFactory() : this(new FileSystem()) { }
 
-        public Profile Load(string path) {
+        public async Task<Profile> Load(string path) {
             if (path == null) return null;
 
             var metaFilePath = GetProfileMetaFilePath(path);
@@ -25,7 +28,7 @@ namespace Disunity.Management {
             if (!_fileSystem.File.Exists(metaFilePath)) return null;
 
             using (var file = _fileSystem.File.OpenText(metaFilePath)) {
-                var text = file.ReadToEnd();
+                var text = await file.ReadToEndAsync();
                 file.BaseStream.Seek(0, SeekOrigin.Begin);
                 var serializer = new JsonSerializer();
                 var profile = serializer.Deserialize(file, typeof(Profile)) as Profile;
@@ -39,7 +42,7 @@ namespace Disunity.Management {
             }
         }
 
-        public Profile Create(string path, string displayName) {
+        public async Task<Profile> Create(string path, string displayName) {
             var profileDirName = Guid.NewGuid().ToString().Substring(0, 8);
 
             var profilePath = _fileSystem.Path.Combine(path, profileDirName);
@@ -49,31 +52,31 @@ namespace Disunity.Management {
                 DisplayName = displayName
             };
             
-            CreateMetaFile(profile);
+            await CreateMetaFile(profile);
 
             return profile;
         }
 
-        public Profile CreateExactPath(string path, string displayName) {
+        public async Task<Profile> CreateExactPath(string path, string displayName) {
             var profile = new Profile {
                 Path = path,
                 DisplayName = displayName
             };
             
-            CreateMetaFile(profile);
+            await CreateMetaFile(profile);
 
             return profile;
         }
 
-        private void CreateMetaFile(Profile profile) {
+        private async Task CreateMetaFile(Profile profile) {
             _fileSystem.Directory.CreateDirectory(profile.Path);
 
             var metaFilePath = GetProfileMetaFilePath(profile.Path); 
             var json = JsonConvert.SerializeObject(profile, Formatting.Indented);
 
             using (var file = _fileSystem.File.CreateText(metaFilePath)) {
-                file.Write(json);
-                file.Flush();
+                await file.WriteAsync(json);
+                await file.FlushAsync();
             }
         }
 

@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Disunity.Management.Models;
 
 
-namespace Disunity.Management {
+namespace Disunity.Management.Factories {
 
     public interface ITargetFactory {
 
@@ -10,7 +13,7 @@ namespace Disunity.Management {
         /// </summary>
         /// <param name="path">The path to the <code>target-info.json</code></param>
         /// <returns>A parsed <see cref="Target"/> or <code>null</code> if the file doesn't exist</returns>
-        Target FromFile(string path);
+        Task<Target> FromFile(string path);
 
         /// <summary>
         /// Find and parse all managed target directories within <see cref="path"/>
@@ -29,7 +32,7 @@ namespace Disunity.Management {
         /// </remarks>
         /// <param name="path">The directory to search in</param>
         /// <returns>A <see cref="List{Target}"/> of all the found <see cref="Target"/>s.</returns>
-        List<Target> LoadAllFromPath(string path);
+        Task<List<Target>> LoadAllFromPath(string path);
 
         /// <summary>
         /// Setup a managed target directory and create the corresponding <see cref="Target"/>
@@ -38,7 +41,7 @@ namespace Disunity.Management {
         /// <param name="displayName"></param>
         /// <param name="slug"></param>
         /// <returns></returns>
-        Target CreateManagedTarget(string executablePath, string displayName, string slug);
+        Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug);
 
     }
 
