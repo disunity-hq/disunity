@@ -1,3 +1,5 @@
+using System.IO.Abstractions;
+
 using Newtonsoft.Json;
 
 
@@ -34,6 +36,10 @@ namespace Disunity.Management {
             unchecked {
                 return ((DisplayName != null ? DisplayName.GetHashCode() : 0) * 397) ^ (Path != null ? Path.GetHashCode() : 0);
             }
+        }
+
+        public void Delete(IFileSystem fileSystem) {
+            fileSystem.Directory.Delete(Path, true);
         }
 
     }

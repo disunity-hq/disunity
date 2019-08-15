@@ -65,6 +65,10 @@ namespace Disunity.Management {
             }
         }
 
+        public void Delete(IFileSystem fileSystem) {
+            fileSystem.Directory.Delete(ManagedPath, true);
+        }
+
     }
 
 }

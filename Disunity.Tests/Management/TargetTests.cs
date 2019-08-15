@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 
@@ -6,6 +7,8 @@ using Disunity.Management;
 using Disunity.Management.Util;
 
 using Moq;
+
+using Newtonsoft.Json;
 
 using Xunit;
 
@@ -30,10 +33,12 @@ namespace Disunity.Tests.Management {
                 TargetPath = @"C:\Program Files\Risk of Rain 2"
             };
 
-            var defaultProfilePath = new MockFileSystem().Path.Combine(Target.ManagedPath, "profiles", "default");
+            var targetMetaPath = Path.Combine(Target.ManagedPath, "target-info.json");
+            var defaultProfilePath = Path.Combine(Target.ManagedPath, "profiles", "default");
 
             MockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
-                [defaultProfilePath] = new MockDirectoryData()
+                [defaultProfilePath] = new MockDirectoryData(),
+                [targetMetaPath] = new MockFileData(JsonConvert.SerializeObject(Target))
             });
 
             DefaultProfile = new Profile {
@@ -73,6 +78,15 @@ namespace Disunity.Tests.Management {
             _fixture.Target.SetActiveProfile(_fixture.MockFileSystem, _fixture.MockSymbolicLink, _fixture.DefaultProfile);
             
             Util.AssertFileNotExists(_fixture.MockFileSystem, activeProfilePath);
+        }
+        
+        [Fact]
+        public void CanDeleteTarget() {
+            Util.AssertDirectoryExists(_fixture.MockFileSystem, _fixture.Target.ManagedPath);
+
+            _fixture.Target.Delete(_fixture.MockFileSystem);
+            
+            Util.AssertDirectoryNotExists(_fixture.MockFileSystem, _fixture.Target.ManagedPath);
         }
 
     }
