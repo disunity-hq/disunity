@@ -19,7 +19,7 @@ IF NOT EXIST C:\tools\lxrunoffline\LxRunOffline.exe (
         goto :eof
     )
 
-    C:\tools\lxrunoffline\LxRunOffline.exe d -n DisunityTemplate -d %1\wsl\%2 -N %2
+    C:\tools\lxrunoffline\LxRunOffline.exe d -v 2 -n DisunityTemplate -d %1\wsl\%2 -N %2
     C:\tools\lxrunoffline\LxRunOffline.exe s -n %2 -f %1\wsl\%2.lnk
 )
 
