@@ -17,14 +17,14 @@ IF NOT EXIST C:\tools\lxrunoffline\LxRunOffline.exe (
 
 IF NOT EXIST %1\wsl mkdir %1\wsl
 
-IF NOT EXIST %1\wsl\ubuntu-bionic.tar.gz (
-    bitsadmin.exe /transfer "DownloadUbuntu" https://lxrunoffline.apphb.com/download/UbuntuFromMs/16 "%1\wsl\ubuntu-bionic.tar.gz"
+IF NOT EXIST %1\wsl\ubuntu-xenial.tar.gz (
+    bitsadmin.exe /transfer "DownloadUbuntu" https://lxrunoffline.apphb.com/download/UbuntuFromMs/16 "%1\wsl\ubuntu-xenial.tar.gz"
 ) ELSE (
     @echo Ubuntu distribution already downloaded. Skipping.
 )
 
 IF NOT EXIST %1\wsl\DisunityTemplate\ (
-    C:\tools\lxrunoffline\LxRunOffline.exe install -v 2 -n DisunityTemplate -d %1\wsl\DisunityTemplate -f %1\wsl\ubuntu-bionic.tar.gz
+    C:\tools\lxrunoffline\LxRunOffline.exe install -v 2 -n DisunityTemplate -d %1\wsl\DisunityTemplate -f %1\wsl\ubuntu-xenial.tar.gz
 ) ELSE (
     @echo DisunityTemplate environment exists. Skipping.
 )
