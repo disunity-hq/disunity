@@ -9,29 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -629328125, guid: 6fee6684a98ac674e868f452f96ce038, type: 3}
+  m_Script: {fileID: -629328125, guid: a98f79cfccd1c3c4d9426b5341eeaef7, type: 3}
   m_Name: ExportSettings
   m_EditorClassIdentifier: 
-  <SelectedEditor>k__BackingField: 7
-  <Name>k__BackingField: Example Mod
-  <Author>k__BackingField: Disunity Team
-  <Description>k__BackingField: An example Disunity mod.
-  <Version>k__BackingField: 0.0.1
+  <SelectedEditor>k__BackingField: 0
+  <Name>k__BackingField: 
+  <Author>k__BackingField: 
+  <Description>k__BackingField: 
+  <Version>k__BackingField: 
   <PreloadAssemblies>k__BackingField: []
-  <RuntimeAssemblies>k__BackingField:
-  - Assets/ExampleMod/ExampleMod.asmdef
-  <Artifacts>k__BackingField:
-  - Assets/ExampleMod/README.md
-  <Prefabs>k__BackingField:
-  - Assets/ExampleMod/ExampleUI.prefab
+  <RuntimeAssemblies>k__BackingField: []
+  <Artifacts>k__BackingField: []
+  <Prefabs>k__BackingField: []
   <Scenes>k__BackingField: []
-  <OutputDirectory>k__BackingField: B:/Disunity/core/build
-  <ContentTypes>k__BackingField: 44
-  <RuntimeClass>k__BackingField: ExampleMod
-  <RuntimeAssembly>k__BackingField: ExampleMod
+  <OutputDirectory>k__BackingField: 
+  <ContentTypes>k__BackingField: 0
+  <RuntimeClass>k__BackingField: 
+  <RuntimeAssembly>k__BackingField: 
   <PreloadClass>k__BackingField: 
   <PreloadAssembly>k__BackingField: 
-  <Dependencies>k__BackingField:
-  - RyanPallesen-EnemyEdits-1.0.0
-  - RyanPallesen-NukeMines-1.0.0
-  - RyanPallesen-SizeManager-1.0.1
+  <Dependencies>k__BackingField: []
