@@ -2,6 +2,8 @@
 
 There are numerous options for running Linux software on Windows. By doing so, we can maintain a single set of development procedures and tooling.
 
+Once you have setup WSL2 on your machine learn how to setup environments with it at [getting-started-win.md](getting-started-win.md)
+
 
 ## WSL 2
 
