@@ -37,3 +37,9 @@ There are a few files of note too:
 
 
 Please consult the various files within the `docs/` directory for further documentation.
+
+
+<h3 align="center">A fullstack toolchain for modding Unity games.<h3>
+<p align="center">
+  <img src="./docs/diagram.png">
+</p>
