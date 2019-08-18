@@ -4,7 +4,7 @@ We try to make getting started with Disunity development as easy as possible. Th
 
 ## Bootstrapping WSL2
 
-WSL2 is the second version of the Windows Subsystem for Linux. If you'd like to set it up manually, you can read the procedure at [linux-on-windows.md](linux-on-windows.md).
+WSL2 is the second version of the Windows Subsystem for Linux. In order to utilize WSL2 you'll need to participate in Windows Insider Program and update your OS. Learn how at [linux-on-windows.md](linux-on-windows.md).
 
 Otherwise you can run `init.bat` from an **administrator** command-line or powershell terminal.
 
