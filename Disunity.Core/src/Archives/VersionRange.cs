@@ -25,14 +25,19 @@ namespace Disunity.Core.Archives {
         }
 
         public string Validate() {
-            if (MinVersion == null || MaxVersion == null) {
-                return null;
+
+            SemanticVersion min = null;
+            SemanticVersion max = null;
+            
+            if (MinVersion != null && SemanticVersion.TryParse(MinVersion, out min)) {
+                return "MinVersion must be a valid Semantic Version is specified";
+            }
+            
+            if (MaxVersion != null && SemanticVersion.TryParse(MaxVersion, out max)) {
+                return "MaxVersion must be a valid Semantic Version is specified";
             }
 
-            SemanticVersion min = MinVersion;
-            SemanticVersion max = MaxVersion;
-
-            if (min < max) {
+            if (min == null || max == null || min < max) {
                 return null;
             }
 
