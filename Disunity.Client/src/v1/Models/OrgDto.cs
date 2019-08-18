@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Disunity.Client.v1.Models {
@@ -14,7 +13,7 @@ namespace Disunity.Client.v1.Models {
         /// <summary>
         /// The name to use when displaying this organization to the user
         /// </summary>
-        [Required] [MaxLength(128)] public string DisplayName { get; set; }
+         public string DisplayName { get; set; }
 
         /// <summary>
         /// A unique url slug to use when accessing endpoints for this organization 

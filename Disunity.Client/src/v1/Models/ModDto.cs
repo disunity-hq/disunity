@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Disunity.Client.v1.Models {
@@ -20,15 +19,11 @@ namespace Disunity.Client.v1.Models {
         /// <summary>
         /// The name to be used for display purposes
         /// </summary>
-        [Required]
-        [MaxLength(128)]
         public string DisplayName { get; set; }
 
         /// <summary>
         /// The unique slug used to access this mod's endpoints
         /// </summary>
-        [Required]
-        [MaxLength(128)]
         public string Slug { get; set; }
 
         /// <summary>
