@@ -2,11 +2,18 @@
 
 We try to make getting started with Disunity development as easy as possible. That said, you'll need to go through this document in order to get going.
 
+
 ## Bootstrapping WSL2
 
 WSL2 is the second version of the Windows Subsystem for Linux. In order to utilize WSL2 you'll need to participate in Windows Insider Program and update your OS. Learn how at [linux-on-windows.md](linux-on-windows.md).
 
-Otherwise you can run `init.bat` from an **administrator** command-line or powershell terminal.
+Once WSL2 is working on your machine continue with the rest of this document.
+
+## Creating a template WSL2 environment
+
+First, create a WSL2 environment that will act as a template from which you can create any number of others. If you screw up one environment, you can just duplicate this template.
+
+Run `init.bat` from an **administrator** command-line or powershell terminal.
 
 ```
 > .\init.bat C:
