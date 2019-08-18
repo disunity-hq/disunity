@@ -1,10 +1,15 @@
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 
 using Disunity.Management;
 using Disunity.Management.Models;
 using Disunity.Management.Util;
 
+using Newtonsoft.Json;
+
 using Xunit;
+using Xunit.Abstractions;
 
 
 namespace Disunity.Tests.Management {
@@ -24,7 +29,7 @@ namespace Disunity.Tests.Management {
         [Fact]
         public void CanCreateProperManagedTargetPath_FullHashLength() {
 
-            var actual = Crypto.CalculateManagedPath( _target);
+            var actual = Crypto.CalculateManagedPath(_target);
             var expected = $"{_target.Slug}_{RiskOfRainHash}";
 
             Assert.Equal(expected, actual);
@@ -33,12 +38,40 @@ namespace Disunity.Tests.Management {
         [Fact]
         public void CanCreateProperManagedTargetPath_ShortHashLength() {
             const int hashSize = 4;
-            
+
             var actual = Crypto.CalculateManagedPath(_target, hashSize);
-            var expected = $"{_target.Slug}_{RiskOfRainHash.Substring(0,hashSize*2)}";
+            var expected = $"{_target.Slug}_{RiskOfRainHash.Substring(0, hashSize * 2)}";
 
             Assert.Equal(expected, actual);
-        } 
+        }
+
+        [Fact]
+        public void CanSerializeMod() {
+            var mod = new Mod {
+                Name = "foo",
+                Owner = "bar"
+            };
+
+            var json = TypeDescriptor.GetConverter(mod).ConvertToString(mod);
+
+            var expected = "bar/foo";
+
+            Assert.Equal(expected, json);
+        }
+
+        [Fact]
+        public void CanDeserializeMod() {
+            var expected = new Mod {
+                Name = "foo",
+                Owner = "bar"
+            };
+
+            var json = "bar/foo";
+
+            var actual = (Mod)TypeDescriptor.GetConverter(expected).ConvertFromString(json); 
+
+            Assert.Equal(expected, actual);
+        }
 
     }
 

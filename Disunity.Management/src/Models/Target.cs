@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 
+using Disunity.Core.Archives;
 using Disunity.Management.Util;
 
 using Newtonsoft.Json;
@@ -8,20 +10,27 @@ using Newtonsoft.Json;
 
 namespace Disunity.Management.Models {
 
-    public class Target {
+    [JsonObject(MemberSerialization.OptIn)]
+    public partial class Target {
 
-        public string TargetPath { get; set; }
-        public string ExecutableName { get; set; }
+        [JsonProperty] public string TargetPath { get; set; }
+        [JsonProperty] public string ExecutableName { get; set; }
 
-        public string DisplayName { get; set; }
+        [JsonProperty] public string DisplayName { get; set; }
 
-        public string Slug { get; set; }
+        [JsonProperty] public string Slug { get; set; }
+        
+        [JsonProperty] public Dictionary<string,VersionRange> ModVersionMap { get; }
 
-        [JsonIgnore]
         public string ManagedPath { get; set; }
 
-        [JsonIgnore]
         public string ExecutablePath => Path.Combine(TargetPath, ExecutableName);
+
+        public string MetaFilePath => Path.Combine(TargetPath, "target-info.json");
+
+    }
+
+    public partial class Target {
 
         public void SetActiveProfile(IFileSystem fileSystem, ISymbolicLink symbolicLink, Profile profile) {
             var activeProfilePath = fileSystem.Path.Combine(ManagedPath, "profiles", "active");
@@ -30,7 +39,7 @@ namespace Disunity.Management.Models {
             if (fileSystem.File.Exists(activeProfilePath)) {
                 fileSystem.File.Delete(activeProfilePath);
             }
-            
+
             symbolicLink.CreateDirectoryLink(activeProfilePath, profile.Path);
         }
 

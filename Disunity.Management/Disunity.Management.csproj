@@ -5,7 +5,13 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Disunity.Core\Disunity.Core.csproj" />
+    <ProjectReference Include="..\Disunity.Client\Disunity.Client.csproj" />
+    <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="src\Models\ModConverter.cs">
+      <DependentUpon>Mod.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="..\common.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />
