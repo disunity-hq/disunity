@@ -52,13 +52,8 @@ runtime-outs() {
     copy "$base/Disunity.Runtime.dll" $1
 }
 
-runtime-deps() {
-    local base="Disunity.Runtime/publish/"
-    copy "$base/Unity.Newtonsoft.Json.dll" $1
-}
 
 runtime() {
-    runtime-deps $1
     runtime-outs $1
 }
 
@@ -100,7 +95,6 @@ mkdir $OUT
 
 # 1. Create Disunity Distribution
 core "Distro/core/"
-runtime-deps "Distro/core/"
 preloader-outs "Distro/patchers/"
 runtime-outs "Distro/plugins/"
 
@@ -111,7 +105,12 @@ core-deps "Editor/Assets/Disunity/Dependencies/"
 preloader-outs "Editor/Assets/Disunity/"
 preloader-deps "Editor/Assets/Disunity/Dependencies/"
 runtime-outs "Editor/Assets/Disunity/"
-runtime-deps "Editor/Assets/Disunity/Dependencies/"
+rm -f ExampleMod/Assets/Disunity/Dependencies/Microsoft.CSharp.dll
+rm -f ExampleMod/Assets/Disunity/Dependencies/SemanticVersion.dll
+rm -f ExampleMod/Assets/Disunity/Dependencies/System.Dynamic.Runtime.dll
+rm -f Release/Editor/Assets/Disunity/Dependencies/Microsoft.CSharp.dll
+rm -f Release/Editor/Assets/Disunity/Dependencies/SemanticVersion.dll
+rm -f Release/Editor/Assets/Disunity/Dependencies/System.Dynamic.Runtime.dll
 
 # 3. Create Disunity.Management Release
 management "Disunity.Management/"
