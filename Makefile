@@ -121,9 +121,9 @@ release-mod:
 
 deps-and-release-distro: install-deps release-distro
 
-docker-release:
-	$(COMPOSE) build release
-	$(COMPOSE) run release
+travis-release:
+	$(COMPOSE) -f docker/docker-compose.travis.yml build release
+	$(COMPOSE) -f docker/docker-compose.travis.yml run release
 
 
 # Store commands

@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  release:
+    environment:
+      - TRAVIS_TAG
+    volumes:
+      - release-paket-files:./paket-files
+      - release-paket-cache:~/.paket
+      - release-nuget-cache:~/.nuget
+
+volumes:
+  release-paket-files:
+  release-paket-cache:
+  release-nuget-cache:

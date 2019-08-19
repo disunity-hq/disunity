@@ -15,7 +15,7 @@ jobs:
       #  - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script: make docker-release
+      script: make travis-release
       deploy:
         provider: releases
         api_key:
@@ -29,5 +29,10 @@ jobs:
         file_glob: true
         file:
           - Release/distro*.zip
+cache:
+  directories:
+    - $HOME/.pkaet
+    - $HOME/.nuget
+    - paket-files
 notifications:
   email: false
