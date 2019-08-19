@@ -9,6 +9,8 @@ STORE = Disunity.Store/Disunity.Store.csproj
 
 # makefile boilerplate
 DIR := ${CURDIR}
+WINDIR := $(shell wslpath -w -a $(DIR))
+
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 
 OSFLAG :=
@@ -32,6 +34,9 @@ else
 	PAKET += .paket/paket.exe
 endif
 PAKET := $(strip $(PAKET))
+
+all:
+	echo "$(DIR) -> $(WINDIR)"
 
 
 # Paket commands
@@ -76,14 +81,21 @@ build-store:
 # Clean commands
 
 clean:
-	rm -fr **/obj **/bin **/publish **/nupkg
+	rm -fr **/obj **/bin **/publish **/nupkg ./Release
 
 
 # Release commands
 
 release:
-	dotnet publish -p:SolutionDir=$(DIR) $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) Disunity.Store/Disunity.Store.csproj $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) Disunity.Client/Disunity.Client.csproj $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) Disunity.Management/Disunity.Management.csproj $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) Disunity.Editor/Disunity.Editor.csproj $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Core/Disunity.Core.csproj $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Runtime/Disunity.Runtime.csproj $(ARGS)
+	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Preloader/Disunity.Preloader.csproj $(ARGS)
 	./release.sh
+	/mnt/c/Program\ Files/Unity/Editor/Unity.exe -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
 
 
 # Store commands
