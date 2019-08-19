@@ -15,7 +15,10 @@ jobs:
         # - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script: make release-distro
+      script:
+        - make release-distro
+        - ls
+        - ls Release/
       deploy:
         provider: releases
         api_key:
@@ -27,8 +30,8 @@ jobs:
         skip_cleanup: true
         name: $TRAVIS_TAG
         file_glob: true
-        files:
-          - distro*.zip
+        file:
+          - Release/distro*.zip
 cache:
   directories:
     - $HOME/.paket

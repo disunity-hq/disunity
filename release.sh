@@ -63,7 +63,8 @@ zip-distro() {
     [ ! -z "$TRAVIS_TAG" ] && zip_name=distro_$TRAVIS_TAG.zip
     rm -f $zip_name
     cd "$OUT/Distro"
-    zip -r "$old_dir/$zip_name" .
+    zip -r "../$zip_name" .
+    cd "$old_dir"
 }
 
 management-outs() {
