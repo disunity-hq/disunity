@@ -15,7 +15,10 @@ jobs:
         # - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script: make release-distro
+      script:
+        - make release-distro
+        - ls
+        - ls Release/
       deploy:
         provider: releases
         api_key:
