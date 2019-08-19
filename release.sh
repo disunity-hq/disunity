@@ -98,12 +98,6 @@ cli() {
     cli-outs $1
 }
 
-pwd
-zip-distro
-pwd
-exit
-
-
 # 0. Clean up
 rm -fr $OUT
 mkdir $OUT

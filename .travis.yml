@@ -1,5 +1,6 @@
 language: csharp
 install:
+  - dotnet --version
   - make install-deps
 script:
   - dotnet restore
