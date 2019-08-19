@@ -11,6 +11,7 @@ STORE = Disunity.Store/Disunity.Store.csproj
 DIR := ${CURDIR}
 WINDIR := $(shell wslpath -w -a $(DIR))
 
+UNITY_EDITOR ?= "/mnt/c/Program Files/Unity/Editor/Unity.exe"
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 
 OSFLAG :=
@@ -95,7 +96,7 @@ release:
 	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Runtime/Disunity.Runtime.csproj $(ARGS)
 	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Preloader/Disunity.Preloader.csproj $(ARGS)
 	./release.sh
-	/mnt/c/Program\ Files/Unity/Editor/Unity.exe -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
+	"$(UNITY_EDITOR)" -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
 
 
 # Store commands
