@@ -113,11 +113,17 @@ release-preloader:
 	./release.sh
 
 release-distro: release-core release-runtime release-preloader
-	
+
 release-mod: WINDIR = $(shell wslpath -w -a $(DIR))
 release-mod:
 	./release.sh
 	$(UNITY_EDITOR) -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
+
+deps-and-release-distro: install-deps release-distro
+
+docker-release:
+	$(COMPOSE) build release
+	$(COMPOSE) run release
 
 
 # Store commands

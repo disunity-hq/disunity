@@ -1,7 +1,6 @@
 version: '3.7'
 
 services:
-
   frontend:
     build:
       context: .
@@ -56,6 +55,13 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: ${DATABASE_URL}
+    volumes:
+      - ./:/app
+
+  release:
+    build:
+      context: .
+      dockerfile: ./docker/release.Dockerfile
     volumes:
       - ./:/app
 

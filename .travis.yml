@@ -1,7 +1,6 @@
-language: csharp
-dotnet: 2.2.301
-install:
-  - make install-deps
+language: minimal
+services:
+  - docker
 stages:
   - test
   - name: deploy
@@ -10,12 +9,11 @@ jobs:
   include:
     - stage: test
       name: 'All Tests'
-      script:
-        - dotnet restore
-        # - make test
+      script: skip
+      #  - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script: make release-distro
+      script: make docker-release
       deploy:
         provider: releases
         api_key:
