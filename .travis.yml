@@ -1,7 +1,18 @@
 language: csharp
+dotnet: 2.2.301
 before_script:
   - dotnet --version
   - make install-deps
+jobs:
+  include:
+    - stage: test
+      script:
+        - dotnet restore
+        # - make test
+    - stage: deploy
+      name: 'Deploy to Github'
+      script: skip
+
 script:
   - dotnet restore
   # - make test
