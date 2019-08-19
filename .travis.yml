@@ -3,7 +3,7 @@ dotnet: 2.2.301
 install:
   - make install-deps
 stages:
-  - test
+  # - test
   - name: deploy
     if: tag IS present
 jobs:
@@ -12,15 +12,14 @@ jobs:
       name: 'All Tests'
       script:
         - dotnet restore
-        - make release-distro
         # - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script: skip
-      before_deploy:
-        - make release-distro
+      script: make release-distro
       deploy:
         provider: releases
+        api_key:
+          secure: 'Xu/pLgyFzxeI160RphhNPtxB/j/kkhbIjC3BwgXBBdTAdB74AkDChAB5YAvvb5PusG8K1GikMVbFyO76Aj6pu/tw0Cjbd4ilPFCQ8lsCCyt0zhnY8Fd/HUq3rOfbrF+zTgZWRfXZXuvm+d7GNUmYu+AU5DAW5YlKoD3CjZXeA08fFhbo2OBLQi2lJRFJnoXsOKD0XMeungnjq3KiSUHPxvdUxIfJuR9pKjFLcwBfkxplxfflhvFC5mLNfjJ0mGhdo1runrkL7iZb6X1AbHrqRZ87x8aPaMfqRMk4KfBk4/ZMv61nOgIng5HFSxvYPFjJLW4N/XO3Xdm6XmEz1Q2gTYVsmnHu2DzhWo2XQhzng66BH/m2ODlbQpJp9iu5FrNhrbr9nbLkEIcFpFq7eaOZdIUxpc+7sfXRrLgJhOqhlbbJhfRhmNLkfWSs6lLJyBx60u6d4iJzipIj41DYCd6JBRfiNKw61+sF3Ib6UcBFQX9ZriEWfR/ETbN+KnbzrJ0pACuWrZYqKSuTPtdncMZh9QN8VfW9oYd4PaGQseZFjfTzdYIcT8gzmELUP7Ezjjl7K95W4w0R09UcmFtc/ZsAMWCU2I/Sz6IO6QtFXCGfylJpZclrxyw5FrEvwi5FN5ulbWQA+gVjefL5inwxOUAbchfxOvgxLcStKnXeseL4ZaU='
         on:
           tags: true
           repo: disunity-hq/disunity
@@ -29,9 +28,10 @@ jobs:
         name: $TRAVIS_TAG
         file_glob: true
         files:
-          -
+          - distro*.zip
 cache:
   directories:
     - $HOME/.paket
+    - $HOME/.nuget
 notifications:
   email: false
