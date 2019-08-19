@@ -27,9 +27,5 @@ jobs:
         file_glob: true
         file:
           - Release/distro*.zip
-cache:
-  directories:
-    - $HOME/.paket
-    - $HOME/.nuget
 notifications:
   email: false
