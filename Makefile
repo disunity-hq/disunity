@@ -9,9 +9,9 @@ STORE = Disunity.Store/Disunity.Store.csproj
 
 # makefile boilerplate
 DIR := ${CURDIR}
-WINDIR := $(shell wslpath -w -a $(DIR))
 
-UNITY_EDITOR ?= "/mnt/c/Program Files/Unity/Editor/Unity.exe"
+
+UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 
 OSFLAG :=
@@ -35,9 +35,6 @@ else
 	PAKET += .paket/paket.exe
 endif
 PAKET := $(strip $(PAKET))
-
-all:
-	echo "$(DIR) -> $(WINDIR)"
 
 
 # Paket commands
@@ -117,9 +114,10 @@ release-preloader:
 
 release-distro: release-core release-runtime release-preloader
 	
+release-mod: WINDIR = $(shell wslpath -w -a $(DIR))
 release-mod:
 	./release.sh
-	"$(UNITY_EDITOR)" -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
+	$(UNITY_EDITOR) -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
 
 
 # Store commands
