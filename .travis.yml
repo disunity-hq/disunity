@@ -3,7 +3,7 @@ dotnet: 2.2.301
 install:
   - make install-deps
 stages:
-  # - test
+  - test
   - name: deploy
     if: tag IS present
 jobs:
@@ -15,10 +15,7 @@ jobs:
         # - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script:
-        - make release-distro
-        - ls
-        - ls Release/
+      script: make release-distro
       deploy:
         provider: releases
         api_key:
