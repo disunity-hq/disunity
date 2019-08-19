@@ -63,7 +63,7 @@ services:
       context: .
       dockerfile: ./docker/release.Dockerfile
     volumes:
-      - ./:/app
+      - ./Release:/app/Release
 
 volumes:
   db-data:

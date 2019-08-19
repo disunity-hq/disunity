@@ -31,7 +31,7 @@ jobs:
           - Release/distro*.zip
 cache:
   directories:
-    - $HOME/.pkaet
+    - $HOME/.paket
     - $HOME/.nuget
     - paket-files
 notifications:

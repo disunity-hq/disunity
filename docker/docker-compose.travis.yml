@@ -5,9 +5,9 @@ services:
     environment:
       - TRAVIS_TAG
     volumes:
-      - release-paket-files:./paket-files
-      - release-paket-cache:~/.paket
-      - release-nuget-cache:~/.nuget
+      - release-paket-files:/app/paket-files
+      - release-paket-cache:/root/.paket
+      - release-nuget-cache:/root/.nuget
 
 volumes:
   release-paket-files:

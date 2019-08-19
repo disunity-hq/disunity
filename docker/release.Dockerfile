@@ -12,6 +12,9 @@ RUN apt update && apt install -y make zip
 # Enable building for net 471
 ENV FrameworkPathOverride /usr/lib/mono/4.7.1-api/
 
-WORKDIR /app
 
-ENTRYPOINT ["make", "deps-and-release-distro"]
+# Copy project
+WORKDIR /app
+COPY . .
+
+CMD ["make", "deps-and-release-distro"]

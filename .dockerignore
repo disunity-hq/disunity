@@ -1,9 +1,8 @@
-Frontend/node_modules/
-Disunity.Editor/
-Disunity.Management/
-Disunity.Cli/
-Disunity.Preloader/
-Disunity.Runtime/
-ExampleMod/
+**/node_modules/
 packages/
 paket-files/
+**/bin
+**/obj
+Release/
+
+ExampleMod/
