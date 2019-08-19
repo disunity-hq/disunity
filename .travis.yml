@@ -2,9 +2,13 @@ language: csharp
 dotnet: 2.2.301
 install:
   - make install-deps
+stages:
+  - test
+  - name: deploy
+    if: tag IS present
 jobs:
   include:
-    - stage: 'Tests'
+    - stage: test
       name: 'All Tests'
       script:
         - dotnet restore
@@ -13,16 +17,21 @@ jobs:
     - stage: deploy
       name: 'Deploy to Github'
       script: skip
-
+      before_deploy:
+        - make release-distro
+      deploy:
+        provider: releases
+        on:
+          tags: true
+          repo: disunity-hq/disunity
+        draft: true
+        skip_cleanup: true
+        name: $TRAVIS_TAG
+        file_glob: true
+        files:
+          -
+cache:
+  directories:
+    - $HOME/.paket
 notifications:
   email: false
-# before_deploy:
-#   - make release-distro
-# deploy:
-#   provider: releases
-#   on:
-#     tags: true
-#     repo: disunity-hq/disunity
-#   draft: true
-#   skip_cleanup: true
-#   name: $TRAVIS_TAG
