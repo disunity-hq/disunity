@@ -1,6 +1,5 @@
 language: csharp
-dotnet: 2.2.301
-install:
+before_script:
   - dotnet --version
   - make install-deps
 stages:
