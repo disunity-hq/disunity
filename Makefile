@@ -87,14 +87,37 @@ clean:
 
 # Release commands
 
-release:
+release-store:
 	dotnet publish -p:SolutionDir=$(DIR) Disunity.Store/Disunity.Store.csproj $(ARGS)
+	./release.sh
+
+release-client:
 	dotnet publish -p:SolutionDir=$(DIR) Disunity.Client/Disunity.Client.csproj $(ARGS)
+	./release.sh
+
+release-management:
 	dotnet publish -p:SolutionDir=$(DIR) Disunity.Management/Disunity.Management.csproj $(ARGS)
+	./release.sh
+
+release-editor:
 	dotnet publish -p:SolutionDir=$(DIR) Disunity.Editor/Disunity.Editor.csproj $(ARGS)
+	./release.sh
+
+release-core:
 	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Core/Disunity.Core.csproj $(ARGS)
+	./release.sh
+
+release-runtime:
 	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Runtime/Disunity.Runtime.csproj $(ARGS)
+	./release.sh
+
+release-preloader:
 	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Preloader/Disunity.Preloader.csproj $(ARGS)
+	./release.sh
+
+release-distro: release-core release-runtime release-preloader
+	
+release-mod:
 	./release.sh
 	"$(UNITY_EDITOR)" -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
 
