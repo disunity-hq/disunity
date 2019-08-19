@@ -13,10 +13,8 @@ jobs:
       name: 'Deploy to Github'
       script: skip
 
-script:
-  - dotnet restore
-  # - make test
-  - make release-distro
+notifications:
+  email: false
 # before_deploy:
 #   - make release-distro
 # deploy:
