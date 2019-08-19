@@ -5,6 +5,8 @@ namespace Disunity.Core.Archives {
 
     public class VersionRange {
 
+        public static VersionRange Unbound = new VersionRange();
+
         public string MaxVersion = null;
 
         public string MinVersion = null;
