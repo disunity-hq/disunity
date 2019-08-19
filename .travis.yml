@@ -1,5 +1,5 @@
 language: csharp
-install:
+before_script:
   - dotnet --version
   - make install-deps
 script:
