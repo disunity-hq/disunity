@@ -57,6 +57,15 @@ runtime() {
     runtime-outs $1
 }
 
+zip-distro() {
+    local zip_name=distro.zip
+    local old_dir=$(pwd)
+    [ ! -z "$TRAVIS_TAG" ] && zip_name=distro_$TRAVIS_TAG.zip
+    rm -f $zip_name
+    cd "$OUT/Distro"
+    zip -r "$old_dir/$zip_name" .
+}
+
 management-outs() {
     local base="Disunity.Management/publish/"
     copy "$base/Disunity.Management.dll" $1
@@ -89,6 +98,12 @@ cli() {
     cli-outs $1
 }
 
+pwd
+zip-distro
+pwd
+exit
+
+
 # 0. Clean up
 rm -fr $OUT
 mkdir $OUT
@@ -97,6 +112,7 @@ mkdir $OUT
 core "Distro/core/"
 preloader-outs "Distro/patchers/"
 runtime-outs "Distro/plugins/"
+zip-distro
 
 # 2. Create Mod Editor
 editor "Editor/Assets/Disunity/Editor/"

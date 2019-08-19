@@ -1,0 +1,17 @@
+language: csharp
+install:
+  - make install-deps
+script:
+  - dotnet restore
+  # - make test
+  - make release-distro
+# before_deploy:
+#   - make release-distro
+# deploy:
+#   provider: releases
+#   on:
+#     tags: true
+#     repo: disunity-hq/disunity
+#   draft: true
+#   skip_cleanup: true
+#   name: $TRAVIS_TAG
