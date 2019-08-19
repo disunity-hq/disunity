@@ -3,7 +3,7 @@ dotnet: 2.2.301
 install:
   - make install-deps
 stages:
-  - test
+  # - test
   - name: deploy
     if: tag IS present
 jobs:
@@ -12,7 +12,6 @@ jobs:
       name: 'All Tests'
       script:
         - dotnet restore
-        - make release-distro
         # - make test
     - stage: deploy
       name: 'Deploy to Github'
