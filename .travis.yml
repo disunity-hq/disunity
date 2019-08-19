@@ -1,6 +1,7 @@
 language: csharp
 dotnet: 2.2.301
 install:
+  - dotnet --version
   - make install-deps
 stages:
   - test
