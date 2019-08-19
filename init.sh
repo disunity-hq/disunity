@@ -32,9 +32,10 @@ sudo apt-get install -y docker.io
 sudo service docker start
 
 # add docker group
-ME=$(whoami)
-sudo usermod -a -G docker $ME
+sudo usermod -a -G docker disunity
 
 # setup .env
 cp .env.template .env
+
+echo "export FrameworkPathOverride=/usr/lib/mono/4.7.1-api/" >> /home/disunity/.bashrc
 
