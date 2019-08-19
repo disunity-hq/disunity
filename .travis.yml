@@ -1,6 +1,8 @@
 language: minimal
-services:
-  - docker
+addons:
+  apt:
+    packages:
+      - docker-ce
 stages:
   - test
   - name: deploy
