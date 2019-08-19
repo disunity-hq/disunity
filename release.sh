@@ -16,8 +16,6 @@ core-deps() {
     copy "$base/Commons.Utils.dll" $1
     copy "$base/Newtonsoft.Json.Schema.dll" $1
     copy "$base/SemanticVersion.dll" $1
-    copy "$base/Microsoft.CSharp.dll" $1
-    copy "$base/System.Dynamic.Runtime.dll" $1
 }
 
 core() {
