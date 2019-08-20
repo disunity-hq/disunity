@@ -1,7 +1,8 @@
-language: csharp
-dotnet: 2.2.301
-install:
-  - make install-deps
+language: minimal
+addons:
+  apt:
+    packages:
+      - docker-ce
 stages:
   - test
   - name: deploy
@@ -10,12 +11,11 @@ jobs:
   include:
     - stage: test
       name: 'All Tests'
-      script:
-        - dotnet restore
-        # - make test
+      script: skip
+      #  - make test
     - stage: deploy
       name: 'Deploy to Github'
-      script: make release-distro
+      script: make travis-release
       deploy:
         provider: releases
         api_key:
@@ -33,5 +33,6 @@ cache:
   directories:
     - $HOME/.paket
     - $HOME/.nuget
+    - paket-files
 notifications:
   email: false
