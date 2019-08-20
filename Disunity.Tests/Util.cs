@@ -1,9 +1,11 @@
+using System.IO;
 using System.IO.Abstractions;
+using System.Runtime.InteropServices;
 
 using Xunit;
 
 
-namespace Disunity.Tests.Management {
+namespace Disunity.Tests {
 
     public static class Util {
 
@@ -37,6 +39,16 @@ namespace Disunity.Tests.Management {
 
         public static void AssertDirectoryNotExists(IFileSystem fileSystem, string path, string message) {
             Assert.False(fileSystem.Directory.Exists(path), message);
+        }
+
+        public static string GetAbsolutePath(params string[] segments) {
+            var root = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "C:" : "/";
+
+            var allSegments = new string[segments.Length + 1];
+            allSegments[0] = root;
+            segments.CopyTo(allSegments, 1);
+
+            return Path.Combine(allSegments);
         }
 
     }

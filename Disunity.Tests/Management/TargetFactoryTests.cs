@@ -15,6 +15,7 @@ using Moq;
 using Newtonsoft.Json;
 
 using Xunit;
+using Xunit.Abstractions;
 
 
 namespace Disunity.Tests.Management {
@@ -26,15 +27,15 @@ namespace Disunity.Tests.Management {
                 new Target {
                     DisplayName = "Risk of Rain 2",
                     ExecutableName = "RiskOfRain.exe",
-                    TargetPath = @"C:\Program Files\Risk of Rain 2",
-                    ManagedPath = @"C:\test\managed\risk-of-rain-2",
+                    TargetPath = Util.GetAbsolutePath("Program Files", "Risk of Rain 2"),
+                    ManagedPath = Util.GetAbsolutePath("test", "managed", "risk-of-rain-2"),
                     Slug = "risk-of-rain-2"
                 },
                 new Target {
                     DisplayName = "Stationeers",
                     ExecutableName = "rocketstation.exe",
-                    TargetPath = @"C:\Program Files\Stationeers",
-                    ManagedPath = @"C:\test\managed\stationeers",
+                    TargetPath = Util.GetAbsolutePath("Program Files", "Stationeers"),
+                    ManagedPath = Util.GetAbsolutePath("test", "managed", "stationeers"),
                     Slug = "stationeeers"
                 }
             };
@@ -46,10 +47,10 @@ namespace Disunity.Tests.Management {
             var mockSymbolicLink = Mock.Of<ISymbolicLink>();
 
             Mock.Get(MockProfileFactory).Setup(f => f.CreateExactPath(It.IsAny<string>(), "Default"))
-                .Returns((string a, string b) => Task.FromResult(new Profile{Path = a,DisplayName = b}));
+                .Returns((string a, string b) => Task.FromResult(new Profile {Path = a, DisplayName = b}));
 
             TargetFactory = new TargetFactory(MockFileSystem, MockProfileFactory, mockSymbolicLink) {
-                ManagedRoot = @"C:\test\managed"
+                ManagedRoot = Util.GetAbsolutePath("test", "managed")
             };
         }
 
@@ -79,17 +80,19 @@ namespace Disunity.Tests.Management {
 
     public class TargetFactoryTests : IClassFixture<TargetFactoryFixture> {
 
-        public TargetFactoryTests(TargetFactoryFixture fixture) {
+        public TargetFactoryTests(TargetFactoryFixture fixture, ITestOutputHelper log) {
             _fixture = fixture;
+            _log = log;
         }
 
         private readonly TargetFactoryFixture _fixture;
+        private readonly ITestOutputHelper _log;
 
         [Fact]
         public async void CanLoadAllFromDirectory() {
             var expectedTargets = new List<Target> {_fixture.Targets[0], _fixture.Targets[1]};
 
-            var actual = await _fixture.TargetFactory.LoadAllFromPath(@"C:\test\managed");
+            var actual = await _fixture.TargetFactory.LoadAllFromPath(Util.GetAbsolutePath("test", "managed"));
 
             for (var i = 0; i < expectedTargets.Count; i++) {
                 actual[i].ManagedPath = expectedTargets[i].ManagedPath;
@@ -102,9 +105,11 @@ namespace Disunity.Tests.Management {
         public async void CanLoadFromFile() {
             var expectedTarget = _fixture.Targets[0];
 
-            var actual = await _fixture.TargetFactory.FromFile(@"C:\test\managed\risk-of-rain-2\target-info.json");
+            var actual = await _fixture.TargetFactory.FromFile(expectedTarget.MetaFilePath);
+            _log.WriteLine(expectedTarget.MetaFilePath);
+            Assert.NotNull(actual);
+            
             actual.ManagedPath = expectedTarget.ManagedPath;
-
             Assert.Equal(expectedTarget, actual);
         }
 
@@ -113,24 +118,24 @@ namespace Disunity.Tests.Management {
             var expectedTarget = new Target {
                 DisplayName = "Cuphead",
                 ExecutableName = "Cuphead.exe",
-                TargetPath = @"C:\Program Files\Cuphead",
-                ManagedPath = @"C:\test\managed\cuphead_C1B753477FAF53448FE078E5830439C4",
+                TargetPath = Util.GetAbsolutePath("Program Files", "Cuphead"),
+                ManagedPath = Util.GetAbsolutePath("test", "managed", "cuphead"),
                 Slug = "cuphead"
             };
 
-            var actual = await _fixture.TargetFactory.CreateManagedTarget(expectedTarget.ExecutablePath, expectedTarget.DisplayName, expectedTarget.Slug);
+            var actual = await _fixture.TargetFactory.CreateManagedTarget(expectedTarget.ExecutablePath, expectedTarget.DisplayName, expectedTarget.Slug, 0);
 
             Assert.Equal(expectedTarget, actual);
 
             var defaultProfilePath = _fixture.MockFileSystem.Path.Combine(expectedTarget.ManagedPath, "profiles", "default");
 
             Mock.Get(_fixture.MockProfileFactory).Verify(f => f.CreateExactPath(defaultProfilePath, "Default"), Times.Once());
-            
+
         }
 
         [Fact]
         public async void FromFileReturnsNullWhenFileIsNonExistent() {
-            var actual = await _fixture.TargetFactory.FromFile(@"C:\does\not\exist");
+            var actual = await _fixture.TargetFactory.FromFile(Util.GetAbsolutePath("does", "not", "exist"));
             Assert.Null(actual);
         }
 

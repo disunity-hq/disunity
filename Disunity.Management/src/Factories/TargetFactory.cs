@@ -50,7 +50,7 @@ namespace Disunity.Management.Factories {
             return (await Task.WhenAll(targets)).ToList();
         }
 
-        public async Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug) {
+        public async Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug, int? hashLength=null) {
             var target = new Target {
                 DisplayName = displayName,
                 ExecutableName = Path.GetFileName(executablePath),
@@ -58,7 +58,7 @@ namespace Disunity.Management.Factories {
                 Slug = slug
             };
 
-            var targetDir = Crypto.CalculateManagedPath(target);
+            var targetDir = Crypto.CalculateManagedPath(target, hashLength);
             target.ManagedPath = Path.Combine(ManagedRoot, targetDir);
 
             var defaultProfilePath = _fileSystem.Path.Combine(target.ManagedPath, "profiles", "default");

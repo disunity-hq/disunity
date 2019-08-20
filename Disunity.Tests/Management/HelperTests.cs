@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Security.Cryptography;
 
 using Disunity.Management;
 using Disunity.Management.Models;
@@ -17,7 +18,6 @@ namespace Disunity.Tests.Management {
     public class HelperTests {
 
         private const string ManagedRoot = @"C:\test\managed";
-        private const string RiskOfRainHash = "1492FF6C8FD37B8D9BC9120CEF7A8409";
 
         private Target _target = new Target {
             Slug = "risk-of-rain-2",
@@ -29,20 +29,35 @@ namespace Disunity.Tests.Management {
         [Fact]
         public void CanCreateProperManagedTargetPath_FullHashLength() {
 
-            var actual = Crypto.CalculateManagedPath(_target);
-            var expected = $"{_target.Slug}_{RiskOfRainHash}";
+            using (var md5 = MD5.Create()) {
+                var hash = Crypto.HashString(_target.ExecutablePath, md5);
+                var expected = $"{_target.Slug}_{hash}";
+                var actual = Crypto.CalculateManagedPath(_target);
 
-            Assert.Equal(expected, actual);
+                Assert.Equal(expected, actual);
+            }
+        }
+
+        [Theory]
+        [InlineData(4)]
+        [InlineData(8)]
+        [InlineData(1)]
+        public void CanCreateProperManagedTargetPath_ShortHashLength(int hashSize) {
+
+            using (var md5 = MD5.Create()) {
+                var hash = Crypto.HashString(_target.ExecutablePath, md5);
+                var actual = Crypto.CalculateManagedPath(_target, hashSize);
+                var expected = $"{_target.Slug}_{hash.Substring(0, hashSize * 2)}";
+                Assert.Equal(expected, actual);
+            }
+
         }
 
         [Fact]
-        public void CanCreateProperManagedTargetPath_ShortHashLength() {
-            const int hashSize = 4;
+        public void CanCreatProperManagedTargetPath_NoHash() {
+            var actual = Crypto.CalculateManagedPath(_target, 0);
 
-            var actual = Crypto.CalculateManagedPath(_target, hashSize);
-            var expected = $"{_target.Slug}_{RiskOfRainHash.Substring(0, hashSize * 2)}";
-
-            Assert.Equal(expected, actual);
+            Assert.Equal(_target.Slug, actual);
         }
 
         [Fact]
@@ -68,7 +83,7 @@ namespace Disunity.Tests.Management {
 
             var json = "bar/foo";
 
-            var actual = (Mod)TypeDescriptor.GetConverter(expected).ConvertFromString(json); 
+            var actual = (Mod) TypeDescriptor.GetConverter(expected).ConvertFromString(json);
 
             Assert.Equal(expected, actual);
         }

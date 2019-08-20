@@ -40,8 +40,9 @@ namespace Disunity.Management.Factories {
         /// <param name="executablePath"></param>
         /// <param name="displayName"></param>
         /// <param name="slug"></param>
+        /// <param name="hashLength"></param>
         /// <returns></returns>
-        Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug);
+        Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug, int? hashLength);
 
     }
 

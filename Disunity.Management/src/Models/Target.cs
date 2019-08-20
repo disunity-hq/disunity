@@ -26,7 +26,7 @@ namespace Disunity.Management.Models {
 
         public string ExecutablePath => Path.Combine(TargetPath, ExecutableName);
 
-        public string MetaFilePath => Path.Combine(TargetPath, "target-info.json");
+        public string MetaFilePath => Path.Combine(ManagedPath, "target-info.json");
 
     }
 
