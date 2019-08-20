@@ -11,8 +11,7 @@ jobs:
   include:
     - stage: test
       name: 'All Tests'
-      script: skip
-      #  - make test
+      script: make test
     - stage: deploy
       name: 'Deploy to Github'
       script: make travis-release
