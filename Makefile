@@ -162,8 +162,8 @@ db-up:
 	$(COMPOSE) up db cache
 
 test:
-	$(COMPOSE) build dotnet
-	$(COMPOSE) run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Tests/start.sh dotnet
+	$(COMPOSE) build release
+	$(COMPOSE) run --entrypoint /app/Disunity.Tests/start.sh release
 
 watcher:
 	docker-volume-watcher -v --debounce 0.1 disunitystore_* ${CURDIR}/*

@@ -34,8 +34,10 @@ COPY paket.lock ./
 COPY common.props ./
 COPY Disunity.Core/Disunity.Core.csproj ./Disunity.Core/
 COPY Disunity.Store/Disunity.Store.csproj ./Disunity.Store/
+COPY Disunity.Client/Disunity.Client.csproj ./Disunity.Client/
 COPY Disunity.Core/paket.references ./Disunity.Core/
 COPY Disunity.Store/paket.references ./Disunity.Store/
+COPY Disunity.Client/paket.references ./Disunity.Client/
 RUN mono .paket/paket.exe install
 
 # copy frontend
@@ -44,6 +46,7 @@ COPY --from=frontend /Build/. ../Frontend/dist
 # copy everything else and build app
 COPY Disunity.Core ./Disunity.Core/
 COPY Disunity.Store ./Disunity.Store/
+COPY Disunity.Client ./Disunity.Client/
 WORKDIR /app/Disunity.Store
 RUN dotnet publish -p:SolutionDir=$(pwd) -c Release -o out Disunity.Store.csproj
 

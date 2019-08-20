@@ -29,8 +29,10 @@ namespace Disunity.Tests.Management {
                 DisplayName = "Default"
             });
 
+            var metaPath = Util.GetAbsolutePath("disunity", "managed", "risk-of-rain-2", "profiles", "default", "meta.json");
+
             FileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
-                [@"c:\disunity\managed\risk-of-rain-2\profiles\default\meta.json"] = new MockFileData(defaultProfileMeta)
+                [metaPath] = new MockFileData(defaultProfileMeta)
             });
 
             ProfileFactory = new ProfileFactory(FileSystem);
@@ -51,11 +53,11 @@ namespace Disunity.Tests.Management {
         [Fact]
         public async void CanLoadProfileFromFile() {
             var expected = new Profile {
-                Path = @"c:\disunity\managed\risk-of-rain-2\profiles\default",
+                Path = Util.GetAbsolutePath("disunity", "managed", "risk-of-rain-2", "profiles", "default"),
                 DisplayName = "Default"
             };
 
-            var actual = await  _fixture.ProfileFactory.Load(@"c:\disunity\managed\risk-of-rain-2\profiles\default");
+            var actual = await _fixture.ProfileFactory.Load(expected.Path);
 
             Assert.Equal(expected, actual);
         }
@@ -63,7 +65,8 @@ namespace Disunity.Tests.Management {
         [Fact]
         public async void CanCreateProfileDirectory_GeneratedDirectoryName() {
             const string displayName = "Test Profile w\\ith $trange n@ame";
-            var created = await _fixture.ProfileFactory.Create(@"c:\disunity\managed\risk-of-rain-2\profiles", displayName);
+            var path = Util.GetAbsolutePath("disunity", "managed", "risk-of-rain-2", "profiles");
+            var created = await _fixture.ProfileFactory.Create(path, displayName);
 
             await AssertProfileCreated(created, displayName);
         }
@@ -71,7 +74,8 @@ namespace Disunity.Tests.Management {
         [Fact]
         public async void CanCreateProfileDirectory_SpecificDirectoryName() {
             const string displayName = "Test Profile w\\ith $trange n@ame";
-            var created = await _fixture.ProfileFactory.CreateExactPath(@"c:\disunity\managed\risk-of-rain-2\profiles\strange", displayName);
+            var path = Util.GetAbsolutePath("disunity", "managed", "risk-of-rain-2", "profiles", "strange");
+            var created = await _fixture.ProfileFactory.CreateExactPath(path, displayName);
 
             await AssertProfileCreated(created, displayName);
         }
