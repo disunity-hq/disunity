@@ -162,6 +162,7 @@ db-up:
 	$(COMPOSE) up db cache
 
 test:
+	$(COMPOSE) build dotnet
 	$(COMPOSE) run -w /app/Disunity.Store.Tests --entrypoint /app/Disunity.Tests/start.sh dotnet
 
 watcher:
