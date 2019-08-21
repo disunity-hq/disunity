@@ -1,3 +1,6 @@
+using Disunity.Management.PackageStores;
+
+
 namespace Disunity.Management.Extensions {
 
     public static class PackageStoreExtensions {

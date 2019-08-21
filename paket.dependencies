@@ -14,6 +14,9 @@ nuget Unity.Newtonsoft.Json >= 7.0.0
 nuget xunit >= 2.4.0
 nuget xunit.runner.visualstudio >= 2.4.0
 
+# cli dependencies
+nuget CommandLineParser >= 2.6.0
+
 # management dependencies
 nuget System.IO.Abstractions >= 6.0.21
 nuget SymbolicLinkSupport >= 1.2.0

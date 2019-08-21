@@ -1,0 +1,4 @@
+CommandLineParser
+Microsoft.Extensions.Configuration
+Microsoft.Extensions.Configuration.EnvironmentVariables
+Microsoft.Extensions.Hosting.Abstractions

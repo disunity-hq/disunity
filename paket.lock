@@ -35,6 +35,7 @@ NUGET
       System.Reflection.Emit (>= 4.3) - restriction: || (&& (< net35) (>= netstandard1.3) (< netstandard1.5)) (&& (< net35) (>= netstandard1.5))
       System.Reflection.TypeExtensions (>= 4.3) - restriction: || (&& (< net35) (>= netstandard1.3) (< netstandard1.5)) (&& (< net35) (>= netstandard1.5))
       System.Xml.XmlDocument (>= 4.3) - restriction: || (&& (< net35) (>= netstandard1.3) (< netstandard1.5)) (&& (< net35) (>= netstandard1.5))
+    CommandLineParser (2.6)
     Commons.Json (0.4.0.1347)
       System.Dynamic.Runtime (>= 4.3) - restriction: >= netstandard1.3
       System.Reflection.TypeExtensions (>= 4.4) - restriction: >= netstandard1.3

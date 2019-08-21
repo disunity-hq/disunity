@@ -18,7 +18,7 @@ namespace Disunity.Tests {
         }
 
         public static void AssertFileNotExists(IFileSystem fileSystem, string path) {
-            AssertFileNotExists(fileSystem, path, $"Expected file {path} to exist");
+            AssertFileNotExists(fileSystem, path, $"Expected file {path} not to exist");
         }
 
         public static void AssertFileNotExists(IFileSystem fileSystem, string path, string message) {
@@ -26,7 +26,7 @@ namespace Disunity.Tests {
         }
 
         public static void AssertDirectoryExists(IFileSystem fileSystem, string path) {
-            AssertDirectoryExists(fileSystem, path, $"Expected file {path} to exist");
+            AssertDirectoryExists(fileSystem, path, $"Expected directory {path} to exist");
         }
 
         public static void AssertDirectoryExists(IFileSystem fileSystem, string path, string message) {
@@ -34,7 +34,7 @@ namespace Disunity.Tests {
         }
 
         public static void AssertDirectoryNotExists(IFileSystem fileSystem, string path) {
-            AssertDirectoryNotExists(fileSystem, path, $"Expected file {path} to exist");
+            AssertDirectoryNotExists(fileSystem, path, $"Expected directory {path} not to exist");
         }
 
         public static void AssertDirectoryNotExists(IFileSystem fileSystem, string path, string message) {

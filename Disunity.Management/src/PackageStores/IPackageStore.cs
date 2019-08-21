@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 
 
-namespace Disunity.Management {
+namespace Disunity.Management.PackageStores {
 
     /// <summary>
     /// A general interface for handling downloading and storing the various online archives (mods, disunity distro, etc)
@@ -18,10 +18,10 @@ namespace Disunity.Management {
         /// <summary>
         /// Create a symlink at <see cref="path"/> pointing to the specified package 
         /// </summary>
-        /// <param name="fullPackageName"></param>
-        /// <param name="path"></param>
+        /// <param name="fullPackageName">The package to link to</param>
+        /// <param name="path">The path at which to create the symlink</param>
         /// <returns></returns>
-        Task CreatePackageReference(string fullPackageName, string path);
+        Task<bool> CreatePackageReference(string fullPackageName, string path);
 
         /// <summary>
         /// Download the specified package into the package store.
