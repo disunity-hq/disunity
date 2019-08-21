@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CommandLine;
 
-namespace Disunity.Cli
+namespace Disunity.Management.Cli
 {
     class Program
     {

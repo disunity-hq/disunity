@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
-namespace Disunity.Cli {
+namespace Disunity.Management.Cli {
 
     public class Startup {
 

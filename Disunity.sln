@@ -2,6 +2,11 @@
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 15.0.26124.0
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{85B93077-760D-41F6-9C68-202687010C50}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disunity.Core", "Disunity.Core\Disunity.Core.csproj", "{E8049062-E350-4025-BED1-8995019C9A25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Disunity.Editor", "Disunity.Editor\Disunity.Editor.csproj", "{1E7C724F-EF89-4CEC-9063-E95DFFE5346F}"
@@ -16,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Store", "Disunity.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Management", "Disunity.Management\Disunity.Management.csproj", "{96533FB3-18C4-49C9-B14C-C6EBDEF6B329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Cli", "Disunity.Cli\Disunity.Cli.csproj", "{25C26E51-67BF-4AF0-ABCD-EBC6C9191BAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Management.Cli", "Disunity.Management.Cli\Disunity.Management.Cli.csproj", "{25C26E51-67BF-4AF0-ABCD-EBC6C9191BAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Client", "Disunity.Client\Disunity.Client.csproj", "{13C95810-1E99-4E89-A198-17483B58CD69}"
 EndProject

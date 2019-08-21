@@ -1,4 +1,4 @@
-namespace Disunity.Cli {
+namespace Disunity.Management.Cli {
     
     
     public static class ParserExtensions {
