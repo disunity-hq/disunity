@@ -47,6 +47,10 @@ nuget Westwind.AspNetCore.Markdown 3.2.5
 # test dependencies
 nuget System.IO.Abstractions.TestingHelpers >= 6.0.21
 
+# ui dependencies
+nuget Avalonia >= 0.8.0
+nuget Avalonia.Desktop >= 0.8.0
+
 git https://github.com/scottbot95/EFCoreHooks.git master build: "build.sh", OS: mono, Packages: /EFCoreHooks/nupkg
 git https://github.com/scottbot95/EFCoreHooks.git master build: "build.bat", OS: windows, Packages: /EFCoreHooks/nupkg
 nuget EFCoreHooks >= 0.1.0
