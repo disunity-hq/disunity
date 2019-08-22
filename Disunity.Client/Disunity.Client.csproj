@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
+  <Import Project="..\common.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

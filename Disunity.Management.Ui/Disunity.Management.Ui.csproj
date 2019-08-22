@@ -11,5 +11,6 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
   </ItemGroup>
+  <Import Project="..\common.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

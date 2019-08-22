@@ -1,15 +1,17 @@
 # project paths
-CORE = Disunity.Core/Disunity.Core.csproj
-EDITOR = Disunity.Editor/Disunity.Editor.csproj
-PRELOADER = Disunity.Preloader/Disunity.Preloader.csproj
-RUNTIME = Disunity.Runtime/Disunity.Runtime.csproj
-MANAGEMENT = Disunity.Management/Disunity.Management.csproj
-CLI = Disunity.Cli/Disunity.Cli.csproj
-STORE = Disunity.Store/Disunity.Store.csproj
+CORE = Disunity.Core
+EDITOR = Disunity.Editor
+PRELOADER = Disunity.Preloader
+RUNTIME = Disunity.Runtime
+MANAGEMENT = Disunity.Management
+MANAGER_UI = Disunity.Management.Ui
+CLI = Disunity.Management.Cli
+CLIENT = Disunity.Client
+STORE = Disunity.Store
 
 # makefile boilerplate
 DIR := ${CURDIR}
-
+TAG ?= ${TRAVIS_TAG}
 
 UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
@@ -75,48 +77,76 @@ build-cli:
 build-store:
 	dotnet build -p:SolutionDir=$(DIR) $(STORE) $(ARGS)
 
+build-client:
+	dotnet build -p:SolutionDir=$(DIR) $(CLIENT) $(ARGS)
+
 
 # Clean commands
 
-clean:
-	rm -fr **/obj **/bin **/publish **/nupkg ./Release
+clean-release:
+	rm -rf ./Release
 
+clean: clean-release
+	rm -fr **/obj **/bin **/publish **/nupkg
 
-# Release commands
+# Publish commands
 
-release-store:
-	dotnet publish -p:SolutionDir=$(DIR) Disunity.Store/Disunity.Store.csproj $(ARGS)
-	./release.sh
+publish-store:
+	dotnet publish -p:SolutionDir=$(DIR) $(STORE) $(ARGS)
 
-release-client:
-	dotnet publish -p:SolutionDir=$(DIR) Disunity.Client/Disunity.Client.csproj $(ARGS)
-	./release.sh
+publish-client:
+	dotnet publish -p:SolutionDir=$(DIR) $(CLIENT) $(ARGS)
 
-release-management:
-	dotnet publish -p:SolutionDir=$(DIR) Disunity.Management/Disunity.Management.csproj $(ARGS)
-	./release.sh
+publish-management:
+	dotnet publish -p:SolutionDir=$(DIR) $(MANAGEMENT) $(ARGS)
 
-release-editor:
-	dotnet publish -p:SolutionDir=$(DIR) Disunity.Editor/Disunity.Editor.csproj $(ARGS)
-	./release.sh
+publish-cli:
+	dotnet publish -p:SolutionDir=$(DIR) $(CLI) $(ARGS)
 
-release-core:
-	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Core/Disunity.Core.csproj $(ARGS)
-	./release.sh
+publish-manager-ui:
+	dotnet publish -p:SolutionDir=$(DIR) $(MANAGER_UI) $(ARGS)
 
-release-runtime:
-	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Runtime/Disunity.Runtime.csproj $(ARGS)
-	./release.sh
+publish-editor:
+	dotnet publish -p:SolutionDir=$(DIR) $(EDITOR) $(ARGS)
 
-release-preloader:
-	dotnet publish -p:SolutionDir=$(DIR) -f net471 Disunity.Preloader/Disunity.Preloader.csproj $(ARGS)
-	./release.sh
+publish-core:
+	dotnet publish -p:SolutionDir=$(DIR) -f net471 $(CORE) $(ARGS)
 
-release-distro: release-core release-runtime release-preloader
+publish-runtime:
+	dotnet publish -p:SolutionDir=$(DIR) -f net471 $(RUNTIME) $(ARGS)
+
+publish-preloader:
+	dotnet publish -p:SolutionDir=$(DIR) -f net471 $(PRELOADER) $(ARGS)
+
+# release commands
+
+release-all: release-core release-client release-cli release-management release-manager-ui \
+						 release-editor release-distro
+
+release-core: clean-release publish-core
+	./scripts/release-core.sh
+
+release-client: clean-release publish-client
+	./scripts/release-client.sh
+
+release-cli: clean-release publish-cli
+	./scripts/release-cli.sh
+
+release-management: clean-release publish-management
+	./scripts/release-management.sh
+
+release-manager-ui: clean-release publish-manager-ui
+	./scripts/release-manager-ui.sh
+
+release-editor: clean-release publish-editor
+	./scripts/release-editor.sh
+
+release-distro: clean-release publish-core publish-runtime publish-preloader
+	./scripts/release-distro.sh $(TAG)
 
 release-mod: WINDIR = $(shell wslpath -w -a $(DIR))
 release-mod:
-	./release.sh
+	./scripts/release-example-mod.sh
 	$(UNITY_EDITOR) -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
 
 deps-and-release-distro: install-deps release-distro
@@ -166,4 +196,4 @@ test:
 	$(COMPOSE) run --entrypoint /app/Disunity.Tests/start.sh release
 
 watcher:
-	docker-volume-watcher -v --debounce 0.1 disunitystore_* ${CURDIR}/*
+	docker-volume-watcher -v --debounce 0.1 disunitystore_* ${DIR}/*

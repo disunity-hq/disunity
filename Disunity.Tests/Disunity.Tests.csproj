@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
@@ -13,5 +12,6 @@
     <None Update="data\manifest.json" CopyToOutputDirectory="Always" />
     <None Update="data\broken_manifest.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
+  <Import Project="..\common.props" />
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
