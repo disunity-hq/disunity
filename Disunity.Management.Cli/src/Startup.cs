@@ -1,3 +1,8 @@
+using Disunity.Core;
+using Disunity.Management.Cli.Commands;
+using Disunity.Management.Cli.Commands.Options;
+using Disunity.Management.Cli.Services;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,7 +19,9 @@ namespace Disunity.Management.Cli {
         }
 
         public void ConfigureServices(ServiceCollection services) {
-            
+            services.AddSingleton<ILogger, ConsoleLogger>()
+                    .AddSingleton<ICommandBase<LogReplyCommandOptions>, LogReplyCommand>()
+                    .AddSingleton<ICommandBase<LogCountCommandOptions>, LogCountCommand>();
         }
 
     }

@@ -89,7 +89,7 @@ namespace Disunity.Tests.Management {
                 Assert.Null(actual);
             }
         }
-        
+
         public static IEnumerable<object[]> CanCreateSymbolicLink_Data => new List<object[]> {
             new object[] {"test_package", Util.GetAbsolutePath("some", "valid", "path")}
         };
@@ -108,15 +108,16 @@ namespace Disunity.Tests.Management {
             Util.AssertDirectoryNotExists(_fixture.MockFileSystem, _fixture.BaseStorePath);
         }
 
-        [Fact]
+//        [Fact]
         public async void CanDownloadDisunityDistro() {
             const string disunityPackage = "disunity_2.0.0";
-            
+
             var expected = Path.Combine(_fixture.DisunityStorePath, disunityPackage);
             var actual = await _fixture.DisunityDistroStore.DownloadPackage(disunityPackage);
-            
+
             Assert.Equal(expected, actual);
         }
+
     }
 
     public class MockBasePackageStore : BasePackageStore {
