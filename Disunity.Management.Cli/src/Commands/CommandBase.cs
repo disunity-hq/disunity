@@ -1,15 +1,17 @@
 using System.Threading.Tasks;
 
+using CommandLine;
+
 using Disunity.Core;
-using Disunity.Management.Cli.Commands.Options;
+
+using Ninject;
 
 
 namespace Disunity.Management.Cli.Commands {
 
-    
-    public interface ICommandBase<T> where T : CommandOptionsBase {
+    public interface ICommandBase {
 
-        Task Execute(T options);
+        Task Execute();
 
     }
 
@@ -21,39 +23,30 @@ namespace Disunity.Management.Cli.Commands {
     /// General pattern is that commands that have child verbs should be left abstract
     /// and provide utilities, while leaf commands that do the actual work should be concrete.
     /// </remarks>
-    public abstract class CommandBase<T>:ICommandBase<T> where T : CommandOptionsBase {
+    public abstract class CommandBase {
 
-        private readonly ILogger _logger;
+        [Option('v', "verbose", HelpText = "Print details during execution")]
+        public bool Verbose { get; set; }
 
-        protected T Options { get; set; }
+        [Inject] public ILogger Logger { get; set; }
 
-        public CommandBase(ILogger logger) {
-            _logger = logger;
-        }
-
-        public async Task Execute(T options) {
-            Options = options;
-            await Execute();
-            Options = null;
-        }
-
-        protected abstract Task Execute();
+        public abstract Task Execute();
 
         protected void WriteLog(string message) {
-            _logger.LogInfo(message);
+            Logger.LogInfo(message);
         }
 
         protected void WriteError(string message) {
-            _logger.LogError(message);
+            Logger.LogError(message);
         }
 
         protected void WriteWarning(string message) {
-            _logger.LogWarning(message);
+            Logger.LogWarning(message);
         }
 
         protected void WriteVerbose(string message) {
-            if (Options.Verbose) {
-                _logger.LogDebug(message);
+            if (Verbose) {
+                Logger.LogDebug(message);
             }
         }
 

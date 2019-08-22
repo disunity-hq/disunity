@@ -1,77 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 using CommandLine;
 
 using Disunity.Core;
 using Disunity.Management.Cli.Commands;
-using Disunity.Management.Cli.Commands.Options;
-using Disunity.Management.Cli.Services;
+
+using Ninject;
 
 
 namespace Disunity.Management.Cli {
 
-    public class Program {
+    public class Program : IDisposable {
 
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _logger;
+        private int _exitCode;
+        private readonly IKernel _kernel;
 
-        private static void Main(string[] args) {
-            var program = new Program();
-            program.ProcessArgs(args);
+        private static int Main(string[] args) {
+            using (var program = new Program()) {
+                program.ProcessArgs(args);
+
+                return program._exitCode;
+            }
         }
 
         private Program() {
-            _serviceProvider = SetupServiceProvider();
-            _logger = _serviceProvider.GetRequiredService<ILogger>();
+            _kernel = CreateKernel();
+            _logger = _kernel.Get<ILogger>();
+            _exitCode = 0;
         }
 
         private void ProcessArgs(IEnumerable<string> args) {
-            Parser.Default.ParseVerbs<LogCommandOptions>(args)
+            Parser.Default.ParseVerbs<LogCommand>(args)
                   .WithParsed(ExecuteCommand);
         }
 
-        private IServiceProvider SetupServiceProvider() {
+        private IKernel CreateKernel() {
             var configuration = new ConfigurationBuilder()
                                 .AddEnvironmentVariables()
                                 .Build();
 
-            var services = new ServiceCollection();
-            new Startup(configuration).ConfigureServices(services);
+            var kernel = new StandardKernel(new Startup(configuration));
 
-            var provider = services.BuildServiceProvider();
-
-            return provider;
+            return kernel;
         }
 
         private async void ExecuteCommand(object arg) {
-            var commandOptions = (CommandOptionsBase) arg;
-            var commandType = typeof(ICommandBase<>).MakeGenericType(commandOptions.GetType());
-
-            object command;
+            var command = (CommandBase) arg;
 
             try {
-                command = _serviceProvider.GetRequiredService(commandType);
+                // Inject dependencies into command
+                _kernel.Inject(command);
             }
             catch (Exception ex) {
-                _logger.LogError($"No command found to handle {commandType.Name}");
+                _logger.LogError($"Failed to resolve dependencies for {command.GetType().Name}");
                 _logger.LogError(ex.Message);
+                _exitCode = 1;
                 return;
             }
 
             try {
-                var method = commandType.GetMethod("Execute");
-                var task = (Task) method.Invoke(command, new[] {commandOptions});
-                await task;
+                await command.Execute();
             }
             catch (Exception ex) {
                 _logger.LogError($"An error occured handling {command.GetType().Name}");
                 _logger.LogError(ex.Message);
+
+                if (command.Verbose) {
+                    _logger.LogError(ex.ToString());
+                }
+                _exitCode = 1;
             }
+        }
+
+        public void Dispose() {
+            _kernel?.Dispose();
         }
 
     }
