@@ -9,7 +9,7 @@ using OrgMemberDto = Disunity.Client.v1.Models.OrgMemberDto;
 namespace Disunity.Client.v1 {
 
     [GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IOrgMemberClient
+    public interface IOrgMemberClient: IClientBase
     {
         /// <summary>Get a list of the memberships for all users in the given org</summary>
         /// <param name="orgSlug">The human-readable unique identifier for this org</param>

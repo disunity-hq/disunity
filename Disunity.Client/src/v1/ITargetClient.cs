@@ -10,7 +10,7 @@ using TargetVersionDto = Disunity.Client.v1.Models.TargetVersionDto;
 namespace Disunity.Client.v1 {
 
     [GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface ITargetClient
+    public interface ITargetClient: IClientBase
     {
         /// <summary>Get a list of all targets currently registered with Disunity.io</summary>
         /// <returns>Returns a JSON array of targets currently registered</returns>

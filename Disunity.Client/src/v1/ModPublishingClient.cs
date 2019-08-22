@@ -20,13 +20,13 @@ namespace Disunity.Client.v1 {
     public class ModPublishingClient : IModPublishingClient
     {
         private string _baseUrl = "";
-        private HttpClient _httpClient;
+        public HttpClient HttpClient { get; }
         private Lazy<JsonSerializerSettings> _settings;
     
         public ModPublishingClient(string baseUrl, HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
-            _httpClient = httpClient; 
+            HttpClient = httpClient; 
             _settings = new Lazy<JsonSerializerSettings>(() => 
             {
                 var settings = new JsonSerializerSettings();
@@ -86,7 +86,7 @@ namespace Disunity.Client.v1 {
             urlBuilder_.Replace("{ModSlug}", Uri.EscapeDataString(ConvertToString(modSlug, CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{VersionNumber}", Uri.EscapeDataString(ConvertToString(versionNumber, CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {
@@ -156,7 +156,7 @@ namespace Disunity.Client.v1 {
             urlBuilder_.Replace("{ModSlug}", Uri.EscapeDataString(ConvertToString(modSlug, CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{VersionNumber}", Uri.EscapeDataString(ConvertToString(versionNumber, CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {

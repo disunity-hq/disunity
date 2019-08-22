@@ -23,13 +23,13 @@ namespace Disunity.Client.v1 {
     public class OrgMemberClient : IOrgMemberClient
     {
         private string _baseUrl = "";
-        private HttpClient _httpClient;
+        public HttpClient HttpClient { get; }
         private Lazy<JsonSerializerSettings> _settings;
     
         public OrgMemberClient(string baseUrl, HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
-            _httpClient = httpClient; 
+            HttpClient = httpClient; 
             _settings = new Lazy<JsonSerializerSettings>(() => 
             {
                 var settings = new JsonSerializerSettings();
@@ -85,7 +85,7 @@ namespace Disunity.Client.v1 {
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/orgs/{orgSlug}/members");
             urlBuilder_.Replace("{orgSlug}", Uri.EscapeDataString(ConvertToString(orgSlug, CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {
@@ -156,7 +156,7 @@ namespace Disunity.Client.v1 {
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/orgs/{orgSlug}/members");
             urlBuilder_.Replace("{orgSlug}", Uri.EscapeDataString(ConvertToString(orgSlug, CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {
@@ -226,7 +226,7 @@ namespace Disunity.Client.v1 {
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/orgs/{orgSlug}/members");
             urlBuilder_.Replace("{orgSlug}", Uri.EscapeDataString(ConvertToString(orgSlug, CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {
@@ -307,7 +307,7 @@ namespace Disunity.Client.v1 {
             urlBuilder_.Replace("{username}", Uri.EscapeDataString(ConvertToString(username, CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{orgSlug}", Uri.EscapeDataString(ConvertToString(orgSlug, CultureInfo.InvariantCulture)));
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {

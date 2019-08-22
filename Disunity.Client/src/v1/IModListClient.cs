@@ -9,7 +9,7 @@ using ModDto = Disunity.Client.v1.Models.ModDto;
 namespace Disunity.Client.v1 {
 
     [GeneratedCode("NSwag", "13.0.4.0 (NJsonSchema v10.0.21.0 (Newtonsoft.Json v11.0.0.0))")]
-    public interface IModListClient
+    public interface IModListClient: IClientBase
     {
         /// <summary>Get a list of all mods registered with disunity.io</summary>
         /// <param name="page">The current page of information to display, begins at 1.</param>

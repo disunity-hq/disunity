@@ -13,6 +13,7 @@ namespace Disunity.Client.v1 {
         public IUploadClient UploadClient { get; }
 
         public Client(string baseUrl, HttpClient httpClient) {
+            HttpClient = httpClient;
             DisunityClient = new DisunityClient(baseUrl, httpClient);
             ModListClient = new ModListClient(baseUrl, httpClient);
             ModPublishingClient = new ModPublishingClient(baseUrl, httpClient);
@@ -20,6 +21,8 @@ namespace Disunity.Client.v1 {
             TargetClient = new TargetClient(baseUrl, httpClient);
             UploadClient = new UploadClient(baseUrl, httpClient);
         }
+
+        public HttpClient HttpClient { get; }
 
     }
 

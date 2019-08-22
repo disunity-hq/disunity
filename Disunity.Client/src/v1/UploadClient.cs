@@ -21,13 +21,13 @@ namespace Disunity.Client.v1 {
     public class UploadClient : IUploadClient
     {
         private string _baseUrl = "";
-        private HttpClient _httpClient;
+        public HttpClient HttpClient { get; }
         private Lazy<JsonSerializerSettings> _settings;
     
         public UploadClient(string baseUrl, HttpClient httpClient)
         {
             BaseUrl = baseUrl; 
-            _httpClient = httpClient; 
+            HttpClient = httpClient; 
             _settings = new Lazy<JsonSerializerSettings>(() => 
             {
                 var settings = new JsonSerializerSettings();
@@ -75,7 +75,7 @@ namespace Disunity.Client.v1 {
             var urlBuilder_ = new StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/mods/upload");
     
-            var client_ = _httpClient;
+            var client_ = HttpClient;
 
             using (var request_ = new HttpRequestMessage())
             {
