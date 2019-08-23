@@ -1,4 +1,4 @@
 CommandLineParser
 Microsoft.Extensions.Configuration
 Microsoft.Extensions.Configuration.EnvironmentVariables
-Ninject
+Microsoft.Extensions.DependencyInjection

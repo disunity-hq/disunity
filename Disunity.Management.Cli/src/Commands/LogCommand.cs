@@ -1,38 +1,28 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using CommandLine;
+using Disunity.Core;
+using Disunity.Management.Cli.Commands.Options;
 
 
 namespace Disunity.Management.Cli.Commands {
 
-    [Verb("log", HelpText = "Echo input to console")]
-    [ChildVerbs(typeof(LogReplyCommand), typeof(LogCountCommand))]
-    public abstract class LogCommand : CommandBase {
+    public class LogReplyCommand: CommandBase<LogReplyCommandOptions> {
 
-        [Value(0, HelpText = "Input Text", Required = true)]
-        public IEnumerable<string> Input { get; set; }
+        public LogReplyCommand(ILogger logger) : base(logger) { }
 
-    }
-
-    [Verb("reply", HelpText = "Reply with the input")]
-
-    public class LogReplyCommand : LogCommand {
-
-        public override Task Execute() {
-            WriteLog(string.Join(' ', Input));
+        protected override Task Execute() {
+            WriteLog(string.Join(' ', Options.Input));
 
             return Task.CompletedTask;
         }
 
     }
+    public class LogCountCommand: CommandBase<LogCountCommandOptions> {
 
-    [Verb("count", HelpText = "Counts the input length")]
+        public LogCountCommand(ILogger logger) : base(logger) { }
 
-    public class LogCountCommand : LogCommand {
-
-        public override Task Execute() {
-            WriteLog(string.Join(' ', Input).Length.ToString());
+        protected override Task Execute() {
+            WriteLog(string.Join(' ', Options.Input).Length.ToString());
 
             return Task.CompletedTask;
         }

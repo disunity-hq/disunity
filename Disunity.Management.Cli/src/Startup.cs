@@ -1,14 +1,15 @@
 using Disunity.Core;
+using Disunity.Management.Cli.Commands;
+using Disunity.Management.Cli.Commands.Options;
 using Disunity.Management.Cli.Services;
 
 using Microsoft.Extensions.Configuration;
-
-using Ninject.Modules;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Management.Cli {
 
-    public class Startup : NinjectModule {
+    public class Startup {
 
         private readonly IConfigurationRoot _configuration;
 
@@ -17,8 +18,10 @@ namespace Disunity.Management.Cli {
 
         }
 
-        public override void Load() {
-            Bind<ILogger>().To<ConsoleLogger>();
+        public void ConfigureServices(ServiceCollection services) {
+            services.AddSingleton<ILogger, ConsoleLogger>()
+                    .AddSingleton<ICommandBase<LogReplyCommandOptions>, LogReplyCommand>()
+                    .AddSingleton<ICommandBase<LogCountCommandOptions>, LogCountCommand>();
         }
 
     }
