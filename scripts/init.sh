@@ -15,6 +15,9 @@ echo "deb https://download.mono-project.com/repo/ubuntu stable-xenial main" | su
 # update packages listings
 sudo apt-get update -y
 
+# install zip util
+sudo apt-get install -y zip
+
 # install dotnet sdk
 wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb

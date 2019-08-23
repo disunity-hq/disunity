@@ -13,7 +13,8 @@ EDITOR_DEPS="$EDITOR_OUT_BASE/Dependencies"
 rm -rf "$EDITOR_OUT_BASE"
 
 # 1. Create Mod Editor
-editor "$EDITOR_OUT_BASE/Editor/"
+editor-outs "$EDITOR_OUT_BASE/Editor/"
+editor-deps "$EDITOR_DEPS"
 core-outs "$EDITOR_OUT_BASE"
 core-deps "$EDITOR_DEPS"
 preloader-outs "$EDITOR_OUT_BASE"
