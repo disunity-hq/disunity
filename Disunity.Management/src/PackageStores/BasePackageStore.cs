@@ -11,11 +11,13 @@ namespace Disunity.Management.PackageStores {
         protected readonly string RootPath;
         protected readonly IFileSystem FileSystem;
         protected readonly ISymbolicLink SymbolicLink;
+        protected readonly IZipUtil ZipUtil;
 
-        public BasePackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink) {
+        public BasePackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil) {
             RootPath = rootPath;
             FileSystem = fileSystem;
             SymbolicLink = symbolicLink;
+            ZipUtil = zipUtil;
 
             if (!FileSystem.Directory.Exists(RootPath)) {
                 FileSystem.Directory.CreateDirectory(RootPath);
@@ -36,11 +38,23 @@ namespace Disunity.Management.PackageStores {
             return true;
         }
 
+        public async Task<string> DownloadPackage(string fullPackageName, bool force = false) {
+            var downloadUrl = await GetDownloadUrl(fullPackageName);
+            if (downloadUrl == null) return null;
+
+            var extractPath = FileSystem.Path.Combine(RootPath, fullPackageName);
+
+            if (FileSystem.Directory.Exists(extractPath)) return extractPath;
+
+            return await ZipUtil.ExtractOnlineZip(downloadUrl, extractPath);
+        }
+
         public Task Clear() {
             return Task.Run(() => FileSystem.Directory.Delete(RootPath, true));
         }
+        
+        public abstract Task<string> GetDownloadUrl(string fullPackageName);
 
-        public abstract Task<string> DownloadPackage(string fullPackageName, bool force = false);
 
     }
 

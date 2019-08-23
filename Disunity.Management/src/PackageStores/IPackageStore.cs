@@ -32,7 +32,14 @@ namespace Disunity.Management.PackageStores {
         /// <param name="fullPackageName">The full package name (ie owner_mod_version or disunity_version)</param>
         /// <param name="force">When true, will always download, even if the specified mod is already downloaded</param>
         /// <returns>The absolute path to the downloaded package</returns>
-        Task<string> DownloadPackage(string fullPackageName, bool force=false);
+        Task<string> DownloadPackage(string fullPackageName, bool force = false);
+
+        /// <summary>
+        /// Retrieve the download url for a given package 
+        /// </summary>
+        /// <param name="fullPackageName">The full package name (ie owner_mod_version or disunity_version)</param>
+        /// <returns>The url the package can be downloaded from or null</returns>
+        Task<string> GetDownloadUrl(string fullPackageName);
 
         /// <summary>
         /// Wipes the store and removes all downloaded entities

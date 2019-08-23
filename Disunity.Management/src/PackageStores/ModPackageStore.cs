@@ -1,4 +1,5 @@
 using System.IO.Abstractions;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Disunity.Client.v1;
@@ -9,14 +10,12 @@ namespace Disunity.Management.PackageStores {
 
     public class ModPackageStore : BasePackageStore {
 
-        private readonly IModListClient _modListClient;
+        public const string DownloadUrlBase = "https://disunity.io/u";
 
-        public ModPackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IModListClient modListClient) : base(rootPath, fileSystem, symbolicLink) {
-            _modListClient = modListClient;
-        }
+        public ModPackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil) : base(rootPath, fileSystem, symbolicLink, zipUtil) { }
 
-        public override Task<string> DownloadPackage(string fullPackageName, bool force = false) {
-            throw new System.NotImplementedException();
+        public override Task<string> GetDownloadUrl(string fullPackageName) {
+            return Task.FromResult($"{DownloadUrlBase}/{fullPackageName}/download");
         }
 
     }

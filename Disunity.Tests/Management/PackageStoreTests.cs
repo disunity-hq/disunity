@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Disunity.Client.v1;
+using Disunity.Client.v1.Models;
 using Disunity.Management.PackageStores;
 using Disunity.Management.Util;
 
@@ -21,6 +23,9 @@ namespace Disunity.Tests.Management {
 
     public class PackageStoreFixture {
 
+        // Totally not the real url but it doesn't matter
+        public const string DisunityDistroDownloadBase = "https://disunity.io/distro/download";
+
         public MockBasePackageStore BasePackageStore { get; }
         public DisunityDistroStore DisunityDistroStore { get; }
         public ModPackageStore ModPackageStore { get; }
@@ -34,19 +39,36 @@ namespace Disunity.Tests.Management {
             var mockDisunityClient = Mock.Of<IDisunityClient>();
             var mockModListClient = Mock.Of<IModListClient>();
             var mockSymbolicLink = Mock.Of<ISymbolicLink>();
+            var mockZipUtil = Mock.Of<IZipUtil>();
 
             MockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
                 [Path.Combine(BaseStorePath, "test_package")] = new MockDirectoryData(),
                 [Path.Combine(DisunityStorePath, "disunity_1.0.0")] = new MockDirectoryData()
             });
 
-            BasePackageStore = new MockBasePackageStore(BaseStorePath, MockFileSystem, mockSymbolicLink);
-            DisunityDistroStore = new DisunityDistroStore(DisunityStorePath, MockFileSystem, mockSymbolicLink, mockDisunityClient);
-            ModPackageStore = new ModPackageStore(ModStorePath, MockFileSystem, mockSymbolicLink, mockModListClient);
+            MockPackageStore = new Mock<IPackageStore>();
+            BasePackageStore = new MockBasePackageStore(BaseStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil, MockPackageStore);
+            DisunityDistroStore = new DisunityDistroStore(DisunityStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil, mockDisunityClient);
+            ModPackageStore = new ModPackageStore(ModStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil);
 
             MockDisunityClient = Mock.Get(mockDisunityClient);
             MockModListClient = Mock.Get(mockModListClient);
             MockSymbolicLink = Mock.Get(mockSymbolicLink);
+            MockZipUtil = Mock.Get(mockZipUtil);
+
+            MockDisunityClient.Setup(m => m.GetDisunityVersionsAsync()).Returns(Task.FromResult(new List<DisunityVersionDto> {
+                new DisunityVersionDto {
+                    Url = DisunityDistroDownloadBase + "/1.0.0",
+                    VersionNumber = "1.0.0"
+                },
+                new DisunityVersionDto {
+                    Url = DisunityDistroDownloadBase + "/2.0.0",
+                    VersionNumber = "2.0.0"
+                }
+            }));
+
+            MockPackageStore.Setup(m => m.GetDownloadUrl(It.IsIn("disunity_1.0.0", "disunity_2.0.0")))
+                            .Returns(((string package) => Task.FromResult($"{DisunityDistroDownloadBase}/{package.Substring("disunity_".Length)}")));
         }
 
         public Mock<IModListClient> MockModListClient { get; }
@@ -55,6 +77,10 @@ namespace Disunity.Tests.Management {
 
         public Mock<IDisunityClient> MockDisunityClient { get; }
 
+        public Mock<IPackageStore> MockPackageStore { get; set; }
+
+        public Mock<IZipUtil> MockZipUtil { get; set; }
+
         public string BaseStorePath { get; }
 
         public string DisunityStorePath { get; }
@@ -62,6 +88,14 @@ namespace Disunity.Tests.Management {
         public string ModStorePath { get; }
 
         public MockFileSystem MockFileSystem { get; }
+
+        public void ResetMocks() {
+            MockDisunityClient.Invocations.Clear();
+            MockPackageStore.Invocations.Clear();
+            MockSymbolicLink.Invocations.Clear();
+            MockZipUtil.Invocations.Clear();
+            MockModListClient.Invocations.Clear();
+        }
 
     }
 
@@ -74,7 +108,7 @@ namespace Disunity.Tests.Management {
             _log = log;
             _fixture = fixture;
 
-            var foo = new IPackageStore[] {_fixture.BasePackageStore, _fixture.DisunityDistroStore, _fixture.ModPackageStore};
+            _fixture.ResetMocks();
         }
 
         [Theory]
@@ -108,12 +142,34 @@ namespace Disunity.Tests.Management {
             Util.AssertDirectoryNotExists(_fixture.MockFileSystem, _fixture.BaseStorePath);
         }
 
-//        [Fact]
-        public async void CanDownloadDisunityDistro() {
-            const string disunityPackage = "disunity_2.0.0";
+        [Theory]
+        [InlineData("1.0.0", false)]
+        [InlineData("2.0.0", true)]
+        [InlineData("0.0.0", false, false)]
+        public async Task CanDownloadPackage(string disunityVersion, bool shouldDownload, bool hasPath = true) {
+            var packageName = $"disunity_{disunityVersion}";
 
-            var expected = Path.Combine(_fixture.DisunityStorePath, disunityPackage);
-            var actual = await _fixture.DisunityDistroStore.DownloadPackage(disunityPackage);
+            var expected = hasPath ? Path.Combine(_fixture.BaseStorePath, packageName) : null;
+            var actual = await _fixture.BasePackageStore.DownloadPackage(packageName);
+
+            _fixture.MockPackageStore.Verify(m => m.GetDownloadUrl(packageName), Times.Once);
+            Assert.Equal(expected, actual);
+
+            if (shouldDownload) {
+                var expectedUrl = $"{PackageStoreFixture.DisunityDistroDownloadBase}/{disunityVersion}";
+                var expectedPath = Path.Combine(_fixture.BaseStorePath, $"disunity_{disunityVersion}");
+                _fixture.MockZipUtil.Verify(m => m.ExtractOnlineZip(expectedUrl, expectedPath), Times.Once);
+            }
+        }
+
+        [Theory]
+        [InlineData("2.0.0", PackageStoreFixture.DisunityDistroDownloadBase + "/2.0.0")]
+        [InlineData("1.0.0", PackageStoreFixture.DisunityDistroDownloadBase + "/1.0.0")]
+        [InlineData("0.0.0", null)]
+        [InlineData("ahhhhhh", null)]
+        public async void CanGetDisunityDownloadUrl(string disunityVersion, string expected) {
+
+            var actual = await _fixture.DisunityDistroStore.GetDownloadUrl($"disunity_{disunityVersion}");
 
             Assert.Equal(expected, actual);
         }
@@ -122,10 +178,15 @@ namespace Disunity.Tests.Management {
 
     public class MockBasePackageStore : BasePackageStore {
 
-        public MockBasePackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink) : base(rootPath, fileSystem, symbolicLink) { }
+        private readonly Mock<IPackageStore> _mock;
 
-        public override Task<string> DownloadPackage(string fullPackageName, bool force = false) {
-            throw new System.NotImplementedException();
+        public MockBasePackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, Mock<IPackageStore> mock) : base(rootPath, fileSystem, symbolicLink, zipUtil) {
+            _mock = mock;
+
+        }
+
+        public override Task<string> GetDownloadUrl(string fullPackageName) {
+            return _mock.Object.GetDownloadUrl(fullPackageName);
         }
 
     }

@@ -9,7 +9,7 @@ namespace Disunity.Management.Util {
 
     public interface IZipUtil {
 
-        Task ExtractOnlineZip( string url, string path);
+        Task<string> ExtractOnlineZip( string url, string path);
 
     }
 
@@ -23,9 +23,10 @@ namespace Disunity.Management.Util {
             _client = client;
         }
 
-        public async Task ExtractOnlineZip( string url, string path) {
-            var responseStream = await _client.GetStreamAsync(url);
-            var zipArchive = new ZipArchive(responseStream);
+        public async Task<string> ExtractOnlineZip( string url, string path) {
+            var response = await _client.GetAsync(url);
+            if (!response.IsSuccessStatusCode) return null;
+            var zipArchive = new ZipArchive(await response.Content.ReadAsStreamAsync());
             _fileSystem.Directory.CreateDirectory(path);
 
             foreach (var entry in zipArchive.Entries) {
@@ -35,6 +36,8 @@ namespace Disunity.Management.Util {
                     stream.CopyTo(destination);
                 }
             }
+
+            return path;
         }
 
     }
