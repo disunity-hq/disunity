@@ -4,7 +4,7 @@ OUT="$SCRIPT_DIR/../Release"
 SOLUTION_ROOT="$SCRIPT_DIR/.."
 
 copy() {
-    mkdir -p "$OUT/$2" && cp $1 "$_"
+    mkdir -p "$OUT/$2" && cp -r $1 "$_"
 }
 
 delete() {

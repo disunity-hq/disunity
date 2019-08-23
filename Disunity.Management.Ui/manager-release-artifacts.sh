@@ -5,7 +5,9 @@ source $MANAGER_DIR/../scripts/release-funcs.sh
 
 manager-ui-out() {
   local base=$MANAGER_DIR/publish
-  copy "$base/Disunity.Management.Ui.dll" $1
+  copy "$base/../scripts/disunity_manager" $1
+  copy "$base/../scripts/disunity_manager.cmd" $1
+  copy "$base/*" $1
 }
 
 manager-ui-deps() {

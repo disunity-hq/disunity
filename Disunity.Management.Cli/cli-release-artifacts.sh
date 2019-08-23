@@ -6,6 +6,7 @@ source "$SOLUTION_ROOT/Disunity.Management/management-release-artifacts.sh"
 cli-outs() {
     local base=$CLI_DIR/publish
     copy "$base/../scripts/disunity" $1
+    copy "$base/../scripts/disunity.cmd" $1
     copy "$base/Disunity.Management.Cli.dll" $1
     copy "$base/Disunity.Management.Cli.runtimeconfig.json" $1
 }
