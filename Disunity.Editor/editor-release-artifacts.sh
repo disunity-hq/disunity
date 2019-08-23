@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 EDITOR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $EDITOR_DIR/../scripts/release-funcs.sh
-source "$SOLUTION_DIR/Disunity.Core/core-release-artifacts.sh"
+source "$SOLUTION_ROOT/Disunity.Core/core-release-artifacts.sh"
 
 editor-outs() {
     local base=$EDITOR_DIR/publish
