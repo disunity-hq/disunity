@@ -19,9 +19,7 @@ namespace Disunity.Management.Cli {
         }
 
         public void ConfigureServices(ServiceCollection services) {
-            services.AddSingleton<ILogger, ConsoleLogger>()
-                    .AddSingleton<ICommandBase<LogReplyCommandOptions>, LogReplyCommand>()
-                    .AddSingleton<ICommandBase<LogCountCommandOptions>, LogCountCommand>();
+            services.AddSingleton<ILogger, ConsoleLogger>();
         }
 
     }

@@ -31,7 +31,7 @@ namespace Disunity.Management.Cli {
         }
 
         private void ProcessArgs(IEnumerable<string> args) {
-            Parser.Default.ParseVerbs<LogCommandOptions>(args)
+            Parser.Default.ParseVerbs<TargetCommandOptions, ModCommandOptions, ProfileCommandOptions>(args)
                   .WithParsed(ExecuteCommand);
         }
 
