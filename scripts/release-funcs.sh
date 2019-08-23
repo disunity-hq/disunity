@@ -7,12 +7,16 @@ copy() {
     mkdir -p "$OUT/$2" && cp $1 "$_"
 }
 
+delete() {
+    rm -fr "$OUT/$1"
+}
+
 publish-dir() {
     echo $1/publish
 }
 
 remove-unity-duplicates() {
-    rm -f $1/Microsoft.CSharp.dll
-    rm -f $1/SemanticVersion.dll
-    rm -f $1/System.Dynamic.Runtime.dll
+    delete "$1/Microsoft.CSharp.dll"
+    delete "$1/SemanticVersion.dll"
+    delete "$1/System.Dynamic.Runtime.dll"
 }
