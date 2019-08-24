@@ -43,7 +43,7 @@ namespace Disunity.Tests.Management {
 
             MockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
                 [Path.Combine(BaseStorePath, "test_package")] = new MockDirectoryData(),
-                [Path.Combine(DisunityStorePath, "disunity_1.0.0")] = new MockDirectoryData()
+                [Path.Combine(BaseStorePath, "disunity_1.0.0")] = new MockDirectoryData()
             });
 
             MockPackageStore = new Mock<IPackageStore>();
@@ -66,6 +66,9 @@ namespace Disunity.Tests.Management {
                     VersionNumber = "2.0.0"
                 }
             }));
+
+            MockZipUtil.Setup(m => m.ExtractOnlineZip(It.IsAny<string>(), It.IsAny<string>()))
+                       .Returns((string url, string path) => Task.FromResult(path));
 
             MockPackageStore.Setup(m => m.GetDownloadUrl(It.IsIn("disunity_1.0.0", "disunity_2.0.0")))
                             .Returns(((string package) => Task.FromResult($"{DisunityDistroDownloadBase}/{package.Substring("disunity_".Length)}")));
