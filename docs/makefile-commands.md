@@ -12,6 +12,13 @@ Some commands take an optional `ARGS` parameter which is specified as so:
 
     > make build-cli ARGS="-v detailed"
 
+Or as environemnt variables like:
+```
+> export ARGS="-v detailed"
+> make build-cli
+or
+> ARGS="-v detailed" make build-cli
+```
 These arguments are passed to the underlying commands.
 
 ## Paket commands
@@ -22,10 +29,16 @@ Paket is the tool we use to install our C# dependencies. It is included within t
 - `install-deps [ARGS=""]` Install all dependencies and update the `paket.lock` file.
 - `update-deps [ARGS=""]` Update all dependencies or those provided as arguments.
 
+## Clean commands
+
+- `clean` Remove all `bin/`, `obj/`, `publish/`, and `nupkg/` directories as well as the `Release/` directory.
+- `clean-release` Removes the `Release/` directory in the root of the solution
+- `<project>/clean` Clean only specified project (eg `make Disunity.Core/clean`)
+
 
 ## Build commands
 
-The following commands build the Disunity projects.
+The following commands build the Disunity projects. The build command will all call `paket update` as needed.
 
 - `build [ARGS=""]` Build all of the projects.
 - `build-core [ARGS=""]` Build `Disunity.Core`
@@ -33,19 +46,30 @@ The following commands build the Disunity projects.
 - `build-preloader [ARGS=""]` Build `Disunity.Preloader`
 - `build-runtime [ARGS=""]` Build `Disunity.Runtime`
 - `build-management [ARGS=""]` Build `Disunity.Management`
-- `build-cli [ARGS=""]` Build `Disunity.Cli`
+- `build-manager-ui [ARGS=""]` Build `Disunity.Management.Ui`
+- `build-cli [ARGS=""]` Build `Disunity.Managment.Cli`
 - `build-store [ARGS=""]` Build `Disunity.Store`
 
-## Clean commands
+## Publish commands
 
-- `clean` Remove all `bin/`, `obj/` and `publish/` directories.
+While the rules for publish exist as requirements for the release process, it is not recommended to use them as the release targets should output the desired results.
+If, however, you need to run a publish manually, all the rules follow this form
 
+- `<project>/publish` - Run the publish script on the given project (eg `make Disunity.Core/publish`)
 
 ## Release commands
 
 The following commands publish a release of the Disunity projects. Publishing produces a `Release/` directory in the repository root containing the built projects ready for distribution.
 
-- `release` Publish a Disunity release.
+- `release-all` Create a release for all Disunity components
+- `release-cli` Create a release for the cli manager
+- `release-client` Create a release for api client classlib
+- `release-core` Create a release for the core classlib
+- `release-distro` Create a release for Disunity distro (including BepInEx)
+- `release-editor` Create a release for the Unity Editor plugin
+- `release-managemnt` Create a release for the management classlib
+- `release-manager-ui` Create a release for the desktop GUI manager
+- `release-example-mod` Create a release for the example mod
 
 ## Store commands
 
@@ -65,3 +89,4 @@ These commands are for working with the store. A number of the commands are for 
 Here are various additional commands.
 
 - `test` Run the test suite.
+- `watcher` Workaround for filesystem event propagtion to docker containers on windows
