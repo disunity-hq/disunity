@@ -46,9 +46,9 @@ PAKET := $(strip $(PAKET))
 # Paket commands
 paket:
 	$(PAKET) $(ARGS)
-
+install-deps:
 	$(PAKET) install $(ARGS)
-
+update-deps:
 	$(PAKET) update $(ARGS)
 
 # Build commands
