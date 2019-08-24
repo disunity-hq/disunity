@@ -12,9 +12,13 @@ STORE = Disunity.Store
 # makefile boilerplate
 DIR := ${CURDIR}
 TAG ?= ${TRAVIS_TAG}
+SRC_DIR := src
+
+COMMON_DEPS := paket.dependencies paket.lock
 
 UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
+DOTNET_ARGS = -p:SolutionDir=$(DIR)
 
 OSFLAG :=
 ifeq ($(OS),Windows_NT)
@@ -40,48 +44,39 @@ PAKET := $(strip $(PAKET))
 
 
 # Paket commands
-
 paket:
 	$(PAKET) $(ARGS)
 
-install-deps:
 	$(PAKET) install $(ARGS)
 
-update-deps:
 	$(PAKET) update $(ARGS)
-
 
 # Build commands
 
-build:
-	dotnet build -p:SolutionDir=$(DIR) $(ARGS)
+build: build-core build-editor build-preloader build-runtime build-management build-management-ui build-cli build-store build-client
+	# dotnet build $(DOTNET_ARGS) $(ARGS)
 
-build-core:
-	dotnet build -p:SolutionDir=$(DIR) $(CORE) $(ARGS)
+build-core: $(CORE)/bin
 
-build-editor:
-	dotnet build -p:SolutionDir=$(DIR) $(EDITOR) $(ARGS)
+build-editor: $(EDITOR)/bin
 
-build-preloader:
-	dotnet build -p:SolutionDir=$(DIR) $(PRELOADER) $(ARGS)
+build-preloader: $(PRELOADER)/bin
 
-build-runtime:
-	dotnet build -p:SolutionDir=$(DIR) $(RUNTIME) $(ARGS)
+build-runtime: $(RUNTIME)/bin
 
-build-management:
-	dotnet build -p:SolutionDir=$(DIR) $(MANAGEMENT) $(ARGS)
+build-management: $(MANAGEMENT)/bin
 
-build-cli:
-	dotnet build -p:SolutionDir=$(DIR) $(CLI) $(ARGS)
+build-management-ui: $(MANAGER_UI)/bin
 
-build-store:
-	dotnet build -p:SolutionDir=$(DIR) $(STORE) $(ARGS)
+build-cli: $(CLI)/bin
 
-build-client:
-	dotnet build -p:SolutionDir=$(DIR) $(CLIENT) $(ARGS)
+build-store: $(STORE)/bin
+
+build-client: $(CLIENT)/bin
 
 
 # Clean commands
+.PHONY: clean clean-release
 
 clean-release:
 	rm -rf ./Release
@@ -91,55 +86,36 @@ clean: clean-release
 
 # Publish commands
 
-publish-store:
-	dotnet publish -p:SolutionDir=$(DIR) $(STORE) $(ARGS)
+$(CORE)/publish $(RUNTIME)/publish $(PRELOADER)/publish: ARGS += -f net471
+$(STORE)/publish:
+$(MANAGER_UI)/publish: SRC_DIR := .
 
-publish-client:
-	dotnet publish -p:SolutionDir=$(DIR) $(CLIENT) $(ARGS)
+publish-store: $(STORE)/publish
 
-publish-management:
-	dotnet publish -p:SolutionDir=$(DIR) $(MANAGEMENT) $(ARGS)
+publish-client: $(CLIENT)/publish
 
-publish-cli:
-	dotnet publish -p:SolutionDir=$(DIR) $(CLI) $(ARGS)
+publish-management: $(MANAGEMENT)/publish
 
-publish-manager-ui:
-	dotnet publish -p:SolutionDir=$(DIR) $(MANAGER_UI) $(ARGS)
+publish-cli: $(CLI)/publish
 
-publish-editor:
-	dotnet publish -p:SolutionDir=$(DIR) $(EDITOR) $(ARGS)
+publish-manager-ui: $(MANAGER_UI)/publish
 
-publish-core:
-	dotnet publish -p:SolutionDir=$(DIR) -f net471 $(CORE) $(ARGS)
+publish-editor: $(EDITOR)/publish
 
-publish-runtime:
-	dotnet publish -p:SolutionDir=$(DIR) -f net471 $(RUNTIME) $(ARGS)
+publish-core: $(CORE)/publish
 
-publish-preloader:
-	dotnet publish -p:SolutionDir=$(DIR) -f net471 $(PRELOADER) $(ARGS)
+publish-runtime: $(RUNTIME)/publish
+
+publish-preloader: $(PRELOADER)/publish
 
 # release commands
 
 release-all: release-core release-client release-cli release-management release-manager-ui \
 						 release-editor release-distro
 
-release-core: clean-release publish-core
-	./scripts/release-core.sh
+release-%: scripts/release-%.sh clean-release publish-%
+	./scripts/$@.sh $(ARGS)
 
-release-client: clean-release publish-client
-	./scripts/release-client.sh
-
-release-cli: clean-release publish-cli
-	./scripts/release-cli.sh
-
-release-management: clean-release publish-management
-	./scripts/release-management.sh
-
-release-manager-ui: clean-release publish-manager-ui
-	./scripts/release-manager-ui.sh
-
-release-editor: clean-release publish-editor
-	./scripts/release-editor.sh
 
 release-distro: clean-release publish-core publish-runtime publish-preloader
 	./scripts/release-distro.sh $(TAG)
@@ -148,8 +124,6 @@ release-mod: WINDIR = $(shell wslpath -w -a $(DIR))
 release-mod:
 	./scripts/release-example-mod.sh
 	$(UNITY_EDITOR) -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
-
-deps-and-release-distro: install-deps release-distro
 
 travis-release:
 	$(COMPOSE) -f docker/docker-compose.travis.yml build release
@@ -197,3 +171,12 @@ test:
 
 watcher:
 	docker-volume-watcher -v --debounce 0.1 disunitystore_* ${DIR}/*
+
+# Secondary expansion commands
+.SECONDEXPANSION:
+%/bin: COMMAND := build
+%/publish: COMMAND := publish
+%/bin %/publish: $(COMMON_DEPS) %/paket.references $$(shell find %/$$(SRC_DIR) -type f -not -path "*/obj/*" -not -path "*/bin/*") $$(shell find % -type f -name *.csproj)
+	# safer but slower than `touch $@`. Something even better would be nice
+	rm -rf $@
+	dotnet $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
