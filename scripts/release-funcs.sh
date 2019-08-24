@@ -40,3 +40,22 @@ extract-online-zip() {
     mkdir -p "$outdir" && unzip -d "$outdir" "$tmpfile"
     rm -f "$tmpfile"
 }
+
+tagged-name() {
+    if [ -z "$2" ]; then
+        echo "$1"
+    else
+        echo "${1}_${2}"
+    fi
+}
+
+create-tagged-zip() {
+    # calculate filename
+    local zipname="$(tagged-name "$1" "$3").zip"
+
+    # remove old file if it exists
+    delete "$zipname"
+
+    # create new zip
+    (cd "$2"; zip -r "$OUT/$zipname" .)
+}

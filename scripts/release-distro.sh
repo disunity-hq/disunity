@@ -18,17 +18,17 @@ rm "$DISTRO_OUT/doorstop_config.ini" # Generated my Disunity.Managment
 mv $DISTRO_OUT/BepInEx/* $DISTRO_OUT
 rm -r "$DISTRO_OUT/BepInEx"
 
-# 1. Collect distro files
+# 3. Download the monomod loader
+extract-online-zip "https://github.com/scottbot95/BepInEx.MonoMod.Loader/releases/download/v1.0.0/BepInEx.MonoMod.Loader_v1.0.0.zip" "$DISTRO_OUT/patchers"
+
+# 4. Collect distro files
 core "Distro/core/"
 preloader-outs "Distro/patchers/"
 runtime-outs "Distro/plugins/"
 
 
-# 2. Zip up the distro
-ZIP_NAME=distro.zip
-[ ! -z "$1" ] && ZIP_NAME=distro_$1.zip
-rm -f "$OUT/$ZIP_NAME"
-(cd "$DISTRO_OUT"; zip -r "$OUT/$ZIP_NAME" .)
+# 5. Zip up the distro
+create-tagged-zip "disunity" "$DISTRO_OUT" "$1"
 
-# 3. cleanup files
+# 6. cleanup files
 # rm -rf $DISTRO_OUT
