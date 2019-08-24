@@ -141,7 +141,7 @@ store-run:
 	dotnet run -p Disunity.Store/Disunity.Store.csproj
 
 store-build:
-	$(COMPOSE) build $(ARGS)
+	$(COMPOSE) build web $(ARGS)
 
 store-up: store-build
 	$(COMPOSE) up db cache frontend web

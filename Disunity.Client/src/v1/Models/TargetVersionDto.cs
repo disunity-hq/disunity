@@ -44,6 +44,11 @@ namespace Disunity.Client.v1.Models {
         /// </summary>
         public string Hash { get; set; }
 
+        /// <summary>
+        /// The unique slug attached to the target
+        /// </summary>
+        public string Slug { get; set; }
+
     }
 
 }

@@ -76,6 +76,7 @@ namespace Disunity.Store.Areas.API.v1.Targets {
         [Produces("application/json")]
         public async Task<ActionResult<TargetVersionDto>> FindTargetVersionByHash([Required, FromQuery] string hash) {
             var foundVersion = await _context.TargetVersions.Where(v => v.Hash == hash)
+                                             .Include(v => v.Target)
                                              .Include(v => v.DisunityCompatibility)
                                              .ThenInclude(d => d.MinCompatibleVersion)
                                              .Include(v => v.DisunityCompatibility)

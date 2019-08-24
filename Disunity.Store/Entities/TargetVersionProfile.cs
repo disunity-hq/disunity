@@ -10,6 +10,8 @@ namespace Disunity.Store.Entities {
         public TargetVersionProfile() {
             // Allegedly AutoMapper can figure this out on it's own. Not sure why it isnt'
             CreateMap<TargetVersion, TargetVersionDto>()
+                .ForMember(v => v.Slug,
+                    m => m.MapFrom(s => s.Target.Slug))
                 .ForMember(
                     v => v.MaxCompatibleVersion,
                     m => m.MapFrom(
