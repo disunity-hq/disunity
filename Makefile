@@ -44,37 +44,18 @@ PAKET := $(strip $(PAKET))
 
 
 # Paket commands
+.PHONY: paket install-deps update-deps
 paket:
 	$(PAKET) $(ARGS)
 install-deps:
 	$(PAKET) install $(ARGS)
+	
 update-deps:
 	$(PAKET) update $(ARGS)
-
-# Build commands
-
-build: build-core build-editor build-preloader build-runtime build-management build-management-ui build-cli build-store build-client
-	# dotnet build $(DOTNET_ARGS) $(ARGS)
-
-build-core: $(CORE)/bin
-
-build-editor: $(EDITOR)/bin
-
-build-preloader: $(PRELOADER)/bin
-
-build-runtime: $(RUNTIME)/bin
-
-build-management: $(MANAGEMENT)/bin
-
-build-management-ui: $(MANAGER_UI)/bin
-
-build-cli: $(CLI)/bin
-
-build-store: $(STORE)/bin
-
-build-client: $(CLIENT)/bin
-
-
+	
+paket-files: paket.dependencies */paket.references
+	$(PAKET) update 
+	
 # Clean commands
 .PHONY: clean clean-release %/clean %/clean-publish
 
@@ -94,30 +75,52 @@ clean: clean-release
 %/clean-publish:
 	rm -rf $(PROJ_DIR)/publish
 
+# Build commands
+
+build: build-core build-editor build-preloader build-runtime build-management build-management-ui build-cli build-store build-client
+	# dotnet build $(DOTNET_ARGS) $(ARGS)
+
+build-core:  paket-files$(CORE)/bin
+
+build-editor: paket-files $(EDITOR)/bin
+
+build-preloader: paket-files $(PRELOADER)/bin
+
+build-runtime: paket-files $(RUNTIME)/bin
+
+build-management: paket-files $(MANAGEMENT)/bin
+
+build-management-ui: paket-files $(MANAGER_UI)/bin
+
+build-cli: paket-files $(CLI)/bin
+
+build-store: paket-files $(STORE)/bin
+
+build-client: paket-files $(CLIENT)/bin
 
 # Publish commands
 
 $(CORE)/publish $(RUNTIME)/publish $(PRELOADER)/publish: ARGS += -f net471
-$(STORE)/publish:
+$(STORE)/publish: SRC_DIR := . 
 $(MANAGER_UI)/publish: SRC_DIR := .
 
-publish-store: $(STORE)/publish
+publish-store: paket-files $(STORE)/publish
 
-publish-client: $(CLIENT)/publish
+publish-client: paket-files $(CLIENT)/publish
 
-publish-management: $(MANAGEMENT)/publish
+publish-management: paket-files $(MANAGEMENT)/publish
 
-publish-cli: $(CLI)/publish
+publish-cli: paket-files $(CLI)/publish
 
-publish-manager-ui: $(MANAGER_UI)/publish
+publish-manager-ui: paket-files $(MANAGER_UI)/publish
 
-publish-editor: $(EDITOR)/publish
+publish-editor: paket-files $(EDITOR)/publish
 
-publish-core: $(CORE)/publish
+publish-core: paket-files $(CORE)/publish
 
-publish-runtime: $(RUNTIME)/publish
+publish-runtime: paket-files $(RUNTIME)/publish
 
-publish-preloader: $(PRELOADER)/publish
+publish-preloader: paket-files $(PRELOADER)/publish
 
 # release commands
 
