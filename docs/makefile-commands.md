@@ -55,21 +55,21 @@ The following commands build the Disunity projects. The build command will all c
 While the rules for publish exist as requirements for the release process, it is not recommended to use them as the release targets should output the desired results.
 If, however, you need to run a publish manually, all the rules follow this form
 
-- `<project>/publish` - Run the publish script on the given project (eg `make Disunity.Core/publish`)
+- `<project>/publish [ARGS=""]` - Run the publish script on the given project (eg `make Disunity.Core/publish`)
 
 ## Release commands
 
 The following commands publish a release of the Disunity projects. Publishing produces a `Release/` directory in the repository root containing the built projects ready for distribution.
 
-- `release-all` Create a release for all Disunity components
-- `release-cli` Create a release for the cli manager
-- `release-client` Create a release for api client classlib
-- `release-core` Create a release for the core classlib
-- `release-distro` Create a release for Disunity distro (including BepInEx)
-- `release-editor` Create a release for the Unity Editor plugin
-- `release-managemnt` Create a release for the management classlib
-- `release-manager-ui` Create a release for the desktop GUI manager
-- `release-example-mod` Create a release for the example mod
+- `release-all [ARGS=""]` Create a release for all Disunity components
+- `release-cli [ARGS=""]` Create a release for the cli manager
+- `release-client [ARGS=""]` Create a release for api client classlib
+- `release-core [ARGS=""]` Create a release for the core classlib
+- `release-distro [ARGS=""]` Create a release for Disunity distro (including BepInEx)
+- `release-editor [ARGS=""]` Create a release for the Unity Editor plugin
+- `release-managemnt [ARGS=""]` Create a release for the management classlib
+- `release-manager-ui [ARGS=""]` Create a release for the desktop GUI manager
+- `release-example-mod [ARGS=""]` Create a release for the example mod
 
 ## Store commands
 

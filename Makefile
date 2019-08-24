@@ -111,17 +111,23 @@ $(MANAGER_UI)/publish: SRC_DIR := .
 release-all: release-core release-client release-cli release-management release-manager-ui \
 						 release-editor release-distro
 
-release-%: scripts/release-%.sh clean-release publish-%
+release-cli: $(CLI)/publish
+release-client: $(CLIENT)/publish
+release-core: $(CORE)/publish
+release-editor: $(EDITOR)/publish
+release-management: $(MANAGEMENT)/publish
+release-manager-ui: $(MANAGER_UI)/publish
+release-%: scripts/release-%.sh clean-release
 	./scripts/$@.sh $(ARGS)
 
 
-release-distro: clean-release publish-core publish-runtime publish-preloader
+release-distro: clean-release $(CORE)/publish $(RUNTIME)/publish $(PRELOADER)/publish
 	./scripts/release-distro.sh $(TAG)
 
-release-mod: WINDIR = $(shell wslpath -w -a $(DIR))
-release-mod:
+release-example-mod: WINDIR = $(shell wslpath -w -a $(DIR))
+release-example-mod: release-editor
 	./scripts/release-example-mod.sh
-	$(UNITY_EDITOR) -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
+	# $(UNITY_EDITOR) -batchmode -nographics -projectPath "$(WINDIR)\ExampleMod" -exportPackage "Assets" "$(WINDIR)\Release\ExampleMod.unitypackage" -quit
 
 travis-release:
 	$(COMPOSE) -f docker/docker-compose.travis.yml build release
