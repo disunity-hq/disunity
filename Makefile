@@ -14,8 +14,6 @@ DIR := ${CURDIR}
 TAG ?= ${TRAVIS_TAG}
 SRC_DIR := src
 
-COMMON_DEPS := paket.dependencies paket.lock
-
 UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 DOTNET_ARGS = -p:SolutionDir=$(DIR)
@@ -49,13 +47,13 @@ paket:
 	$(PAKET) $(ARGS)
 install-deps:
 	$(PAKET) install $(ARGS)
-	
+
 update-deps:
 	$(PAKET) update $(ARGS)
-	
+
 paket-files: paket.dependencies */paket.references
-	$(PAKET) update 
-	
+	$(PAKET) update
+
 # Clean commands
 .PHONY: clean clean-release %/clean %/clean-publish
 
@@ -80,47 +78,33 @@ clean: clean-release
 build: build-core build-editor build-preloader build-runtime build-management build-management-ui build-cli build-store build-client
 	# dotnet build $(DOTNET_ARGS) $(ARGS)
 
-build-core:  paket-files$(CORE)/bin
+build-core: $(CORE)/bin
 
-build-editor: paket-files $(EDITOR)/bin
+build-editor: $(EDITOR)/bin
 
-build-preloader: paket-files $(PRELOADER)/bin
+build-preloader: $(PRELOADER)/bin
 
-build-runtime: paket-files $(RUNTIME)/bin
+build-runtime: $(RUNTIME)/bin
 
-build-management: paket-files $(MANAGEMENT)/bin
+build-management: $(MANAGEMENT)/bin
 
-build-management-ui: paket-files $(MANAGER_UI)/bin
+build-management-ui: $(MANAGER_UI)/bin
 
-build-cli: paket-files $(CLI)/bin
+build-cli: $(CLI)/bin
 
-build-store: paket-files $(STORE)/bin
+build-store: $(STORE)/bin
 
-build-client: paket-files $(CLIENT)/bin
+build-client: $(CLIENT)/bin
 
 # Publish commands
 
 $(CORE)/publish $(RUNTIME)/publish $(PRELOADER)/publish: ARGS += -f net471
-$(STORE)/publish: SRC_DIR := . 
+$(STORE)/publish: SRC_DIR := .
 $(MANAGER_UI)/publish: SRC_DIR := .
-
-publish-store: paket-files $(STORE)/publish
-
-publish-client: paket-files $(CLIENT)/publish
-
-publish-management: paket-files $(MANAGEMENT)/publish
-
-publish-cli: paket-files $(CLI)/publish
-
-publish-manager-ui: paket-files $(MANAGER_UI)/publish
-
-publish-editor: paket-files $(EDITOR)/publish
-
-publish-core: paket-files $(CORE)/publish
-
-publish-runtime: paket-files $(RUNTIME)/publish
-
-publish-preloader: paket-files $(PRELOADER)/publish
+%/bin: COMMAND := build
+%/publish: COMMAND := publish
+%/bin: %/clean-bin
+%/publish: %/clean-publish
 
 # release commands
 
@@ -188,10 +172,6 @@ watcher:
 
 # Secondary expansion commands
 .SECONDEXPANSION:
-%/bin: COMMAND := build
-%/publish: COMMAND := publish
-%/bin: %/clean-bin
-%/publish: %/clean-publish
 
-%/bin %/publish: $(COMMON_DEPS) %/paket.references $$(shell find %/$$(SRC_DIR) -type f -not -path "*/obj/*" -not -path "*/bin/*") $$(shell find % -type f -name *.csproj)
+%/bin %/publish: paket-files $$(shell find %/$$(SRC_DIR) -type f -not -path "*/obj/*" -not -path "*/bin/*") $$(shell find % -type f -name *.csproj)
 	dotnet $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
