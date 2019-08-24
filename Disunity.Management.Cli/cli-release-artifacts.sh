@@ -20,6 +20,7 @@ cli-deps() {
     copy "$base/Microsoft.Extensions.DependencyInjection.dll" $1
     copy "$base/Microsoft.Extensions.DependencyInjection.Abstractions.dll" $1
     copy "$base/Microsoft.Extensions.Primitives.dll" $1
+    copy "$base/System.IO.Abstractions.dll" $1
 }
 
 cli() {
