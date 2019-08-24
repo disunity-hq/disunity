@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Disunity.Client.v1;
@@ -56,7 +57,7 @@ namespace Disunity.Tests.Management {
             MockSymbolicLink = Mock.Get(mockSymbolicLink);
             MockZipUtil = Mock.Get(mockZipUtil);
 
-            MockDisunityClient.Setup(m => m.GetDisunityVersionsAsync()).Returns(Task.FromResult(new List<DisunityVersionDto> {
+            MockDisunityClient.Setup(m => m.GetDisunityVersionsAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(new List<DisunityVersionDto> {
                 new DisunityVersionDto {
                     Url = DisunityDistroDownloadBase + "/1.0.0",
                     VersionNumber = "1.0.0"
@@ -70,8 +71,8 @@ namespace Disunity.Tests.Management {
             MockZipUtil.Setup(m => m.ExtractOnlineZip(It.IsAny<string>(), It.IsAny<string>()))
                        .Returns((string url, string path) => Task.FromResult(path));
 
-            MockPackageStore.Setup(m => m.GetDownloadUrl(It.IsIn("disunity_1.0.0", "disunity_2.0.0")))
-                            .Returns(((string package) => Task.FromResult($"{DisunityDistroDownloadBase}/{package.Substring("disunity_".Length)}")));
+            MockPackageStore.Setup(m => m.GetDownloadUrl(It.IsIn("disunity_1.0.0", "disunity_2.0.0"), It.IsAny<CancellationToken>()))
+                            .Returns(((string package, CancellationToken cancellationToken) => Task.FromResult($"{DisunityDistroDownloadBase}/{package.Substring("disunity_".Length)}")));
         }
 
         public Mock<IModListClient> MockModListClient { get; }
@@ -155,7 +156,7 @@ namespace Disunity.Tests.Management {
             var expected = hasPath ? Path.Combine(_fixture.BaseStorePath, packageName) : null;
             var actual = await _fixture.BasePackageStore.DownloadPackage(packageName);
 
-            _fixture.MockPackageStore.Verify(m => m.GetDownloadUrl(packageName), Times.Once);
+            _fixture.MockPackageStore.Verify(m => m.GetDownloadUrl(packageName, It.IsAny<CancellationToken>()), Times.Once);
             Assert.Equal(expected, actual);
 
             if (shouldDownload) {
@@ -188,8 +189,8 @@ namespace Disunity.Tests.Management {
 
         }
 
-        public override Task<string> GetDownloadUrl(string fullPackageName) {
-            return _mock.Object.GetDownloadUrl(fullPackageName);
+        public override Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default) {
+            return _mock.Object.GetDownloadUrl(fullPackageName, cancellationToken);
         }
 
     }

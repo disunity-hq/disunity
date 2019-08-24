@@ -1,6 +1,7 @@
 using System.IO.Abstractions;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Disunity.Client.v1;
@@ -19,9 +20,9 @@ namespace Disunity.Management.PackageStores {
             _httpClient = disunityClient.HttpClient;
         }
         
-        public override async Task<string> GetDownloadUrl(string fullPackageName) {
+        public override async Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default) {
             var versionNumber = fullPackageName.Substring("disunity_".Length);
-            var allVersions = await _disunityClient.GetDisunityVersionsAsync();
+            var allVersions = await _disunityClient.GetDisunityVersionsAsync(cancellationToken);
             var foundVersion = allVersions.SingleOrDefault(v => v.VersionNumber == versionNumber);
 
             return foundVersion?.Url;

@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -31,15 +32,17 @@ namespace Disunity.Management.PackageStores {
         /// </remarks>
         /// <param name="fullPackageName">The full package name (ie owner_mod_version or disunity_version)</param>
         /// <param name="force">When true, will always download, even if the specified mod is already downloaded</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The absolute path to the downloaded package</returns>
-        Task<string> DownloadPackage(string fullPackageName, bool force = false);
+        Task<string> DownloadPackage(string fullPackageName, bool force = false, CancellationToken cancellationToken=default);
 
         /// <summary>
         /// Retrieve the download url for a given package 
         /// </summary>
         /// <param name="fullPackageName">The full package name (ie owner_mod_version or disunity_version)</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The url the package can be downloaded from or null</returns>
-        Task<string> GetDownloadUrl(string fullPackageName);
+        Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken=default);
 
         /// <summary>
         /// Wipes the store and removes all downloaded entities

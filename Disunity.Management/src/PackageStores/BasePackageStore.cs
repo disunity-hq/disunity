@@ -1,4 +1,5 @@
 using System.IO.Abstractions;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Disunity.Management.Util;
@@ -38,9 +39,9 @@ namespace Disunity.Management.PackageStores {
             return true;
         }
 
-        public async Task<string> DownloadPackage(string fullPackageName, bool force = false) {
-            var downloadUrl = await GetDownloadUrl(fullPackageName);
-            if (downloadUrl == null) return null;
+        public async Task<string> DownloadPackage(string fullPackageName, bool force = false, CancellationToken cancellationToken = default) {
+            var downloadUrl = await GetDownloadUrl(fullPackageName, cancellationToken);
+            if (downloadUrl == null || cancellationToken.IsCancellationRequested) return null;
 
             var extractPath = FileSystem.Path.Combine(RootPath, fullPackageName);
 
@@ -52,9 +53,8 @@ namespace Disunity.Management.PackageStores {
         public Task Clear() {
             return Task.Run(() => FileSystem.Directory.Delete(RootPath, true));
         }
-        
-        public abstract Task<string> GetDownloadUrl(string fullPackageName);
 
+        public abstract Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default);
 
     }
 
