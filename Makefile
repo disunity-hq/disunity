@@ -76,13 +76,24 @@ build-client: $(CLIENT)/bin
 
 
 # Clean commands
-.PHONY: clean clean-release
+.PHONY: clean clean-release %/clean %/clean-publish
 
 clean-release:
 	rm -rf ./Release
 
 clean: clean-release
 	rm -fr **/obj **/bin **/publish **/nupkg
+
+%/clean: PROJ_DIR = %
+%/clean-publish: PROJ_DIR = %
+%/clean-bin: PROJ_DIR = %
+%/clean: %/clean-publish %/clean-bin
+	rm -rf $(PROJ_DIR)/obj
+%/clean-bin:
+	rm -rf $(PROJ_DIR)/bin
+%/clean-publish:
+	rm -rf $(PROJ_DIR)/publish
+
 
 # Publish commands
 
@@ -176,7 +187,8 @@ watcher:
 .SECONDEXPANSION:
 %/bin: COMMAND := build
 %/publish: COMMAND := publish
+%/bin: %/clean-bin
+%/publish: %/clean-publish
+
 %/bin %/publish: $(COMMON_DEPS) %/paket.references $$(shell find %/$$(SRC_DIR) -type f -not -path "*/obj/*" -not -path "*/bin/*") $$(shell find % -type f -name *.csproj)
-	# safer but slower than `touch $@`. Something even better would be nice
-	rm -rf $@
 	dotnet $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
