@@ -4,7 +4,10 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Management.Models;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Newtonsoft.Json;
@@ -12,6 +15,7 @@ using Newtonsoft.Json;
 
 namespace Disunity.Management.Factories {
 
+    [AsSingleton(typeof(ITargetFactory))]
     public class TargetFactory : ITargetFactory {
 
         private readonly IFileSystem _fileSystem;

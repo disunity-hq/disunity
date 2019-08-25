@@ -1,3 +1,4 @@
+BindingAttributes
 Newtonsoft.Json
 System.IO.Abstractions
-SymbolicLinkSupport
+Microsoft.Extensions.Options

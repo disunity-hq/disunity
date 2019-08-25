@@ -4,11 +4,16 @@ using System.IO.Abstractions;
 using System.Runtime.InteropServices;
 using System.Text;
 
+using BindingAttributes;
+
+using Disunity.Management.Util;
+
 using Microsoft.Win32.SafeHandles;
 
 
-namespace Disunity.Management.Util {
+namespace Disunity.Management.Services {
 
+    [AsSingleton(typeof(ISymbolicLink))]
     public class SymbolicLink : ISymbolicLink {
 
         private readonly IFileSystem _fileSystem;

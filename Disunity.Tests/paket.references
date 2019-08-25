@@ -1,4 +1,5 @@
 Microsoft.NET.Test.Sdk
+Microsoft.Extensions.Options
 Moq
 System.IO.Abstractions.TestingHelpers
 xunit

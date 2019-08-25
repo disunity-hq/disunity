@@ -3,6 +3,8 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Management.Models;
 
 using Newtonsoft.Json;
@@ -10,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace Disunity.Management.Factories {
 
+    [AsSingleton(typeof(IProfileFactory))]
     public class ProfileFactory : IProfileFactory {
 
         private readonly IFileSystem _fileSystem;

@@ -2,31 +2,34 @@ using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Disunity.Management.Services;
 using Disunity.Management.Util;
+
+using Microsoft.Extensions.Options;
 
 
 namespace Disunity.Management.PackageStores {
 
     public abstract class BasePackageStore : IPackageStore {
 
-        protected readonly string RootPath;
         protected readonly IFileSystem FileSystem;
         protected readonly ISymbolicLink SymbolicLink;
         protected readonly IZipUtil ZipUtil;
+        protected readonly PackageStoreOptions Options;
 
-        public BasePackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil) {
-            RootPath = rootPath;
+        public BasePackageStore(IOptionsMonitor<PackageStoreOptions> optionsAccessor, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil) {
+            Options = optionsAccessor.CurrentValue;
             FileSystem = fileSystem;
             SymbolicLink = symbolicLink;
             ZipUtil = zipUtil;
 
-            if (!FileSystem.Directory.Exists(RootPath)) {
-                FileSystem.Directory.CreateDirectory(RootPath);
+            if (!FileSystem.Directory.Exists(Options.Path)) {
+                FileSystem.Directory.CreateDirectory(Options.Path);
             }
         }
 
         public string GetPackagePath(string fullPackageName) {
-            var path = FileSystem.Path.Combine(RootPath, fullPackageName);
+            var path = FileSystem.Path.Combine(Options.Path, fullPackageName);
             return FileSystem.Directory.Exists(path) ? path : null;
         }
 
@@ -43,7 +46,7 @@ namespace Disunity.Management.PackageStores {
             var downloadUrl = await GetDownloadUrl(fullPackageName, cancellationToken);
             if (downloadUrl == null || cancellationToken.IsCancellationRequested) return null;
 
-            var extractPath = FileSystem.Path.Combine(RootPath, fullPackageName);
+            var extractPath = FileSystem.Path.Combine(Options.Path, fullPackageName);
 
             if (FileSystem.Directory.Exists(extractPath)) return extractPath;
 
@@ -51,7 +54,7 @@ namespace Disunity.Management.PackageStores {
         }
 
         public Task Clear() {
-            return Task.Run(() => FileSystem.Directory.Delete(RootPath, true));
+            return Task.Run(() => FileSystem.Directory.Delete(Options.Path, true));
         }
 
         public abstract Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default);

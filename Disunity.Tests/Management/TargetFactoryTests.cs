@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Disunity.Management;
 using Disunity.Management.Factories;
 using Disunity.Management.Models;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Moq;

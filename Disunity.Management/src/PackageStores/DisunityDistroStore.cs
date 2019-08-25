@@ -4,21 +4,26 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Client.v1;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 
 namespace Disunity.Management.PackageStores {
 
+    [AsSingleton]
     public class DisunityDistroStore : BasePackageStore {
 
         private readonly IDisunityClient _disunityClient;
         private readonly HttpClient _httpClient;
 
-        public DisunityDistroStore(IConfiguration config, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, IDisunityClient disunityClient) :
-            base(config["PackageStore:Disunity:Path"] ?? "~/.disunity/store/disunity", fileSystem, symbolicLink, zipUtil) {
+        public DisunityDistroStore(IOptionsMonitor<PackageStoreOptions> optionsAccessor, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, IDisunityClient disunityClient) :
+            base(optionsAccessor, fileSystem, symbolicLink, zipUtil) {
             _disunityClient = disunityClient;
             _httpClient = disunityClient.HttpClient;
         }

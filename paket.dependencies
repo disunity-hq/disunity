@@ -19,6 +19,7 @@ nuget CommandLineParser >= 2.6.0
 
 # management dependencies
 nuget System.IO.Abstractions >= 6.0.21
+nuget Microsoft.Extensions.Options >= 2.2.0
 nuget SymbolicLinkSupport >= 1.2.0
 
 # store dependencies

@@ -11,8 +11,6 @@ using CommandLine;
 using Disunity.Core;
 using Disunity.Management.Cli.Commands;
 using Disunity.Management.Cli.Commands.Options;
-using Disunity.Management.Cli.Services;
-
 
 namespace Disunity.Management.Cli {
 

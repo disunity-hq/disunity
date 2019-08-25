@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Moq;

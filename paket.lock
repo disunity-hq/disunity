@@ -879,7 +879,7 @@ NUGET
     Microsoft.Extensions.Logging.TraceSource (2.2) - restriction: >= netcoreapp2.2
       Microsoft.Extensions.Logging (>= 2.2) - restriction: >= netstandard2.0
     Microsoft.Extensions.ObjectPool (2.2) - restriction: >= netcoreapp2.2
-    Microsoft.Extensions.Options (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.Extensions.Options (2.2)
       Microsoft.Extensions.DependencyInjection.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.Primitives (>= 2.2) - restriction: >= netstandard2.0
       System.ComponentModel.Annotations (>= 4.5) - restriction: >= netstandard2.0
@@ -892,7 +892,7 @@ NUGET
       Microsoft.Extensions.DependencyInjection.Abstractions (>= 2.2) - restriction: >= netstandard2.0
       Microsoft.Extensions.Options (>= 2.2) - restriction: >= netstandard2.0
       System.ComponentModel.Annotations (>= 4.5) - restriction: >= netstandard2.0
-    Microsoft.Extensions.Primitives (2.2) - restriction: >= netcoreapp2.2
+    Microsoft.Extensions.Primitives (2.2) - restriction: >= netstandard2.0
       System.Memory (>= 4.5.1) - restriction: >= netstandard2.0
       System.Runtime.CompilerServices.Unsafe (>= 4.5.1) - restriction: >= netstandard2.0
     Microsoft.Extensions.WebEncoders (2.2) - restriction: >= netcoreapp2.2
@@ -1952,7 +1952,7 @@ NUGET
       Microsoft.NET.Test.Sdk (>= 15.0) - restriction: >= netcoreapp1.0
   remote: paket-files/github.com/dustinlacewell/BindingAttributes/BindingAttributes/nupkg
     BindingAttributes (0.1.0)
-      Microsoft.Extensions.DependencyInjection (>= 2.2) - restriction: >= netcoreapp2.1
+      Microsoft.Extensions.DependencyInjection (>= 2.2) - restriction: >= netstandard2.0
   remote: paket-files/github.com/dustinlacewell/TopoSort/TopoSort/nupkg
     TopoSort (0.1.0)
   remote: paket-files/github.com/dustinlacewell/Tracery/Tracery/nupkg
@@ -1969,11 +1969,11 @@ GIT
       path: /EFCoreHooks/nupkg
       os: windows
   remote: https://github.com/dustinlacewell/BindingAttributes.git
-     (b65822e6ff0b40bed5ee9f6e47df4103bdc87fd6)
+     (a81e52f657275a1357d8b6a4a869087cda0daa23)
       build: build.sh
       path: /BindingAttributes/nupkg
       os: mono
-     (b65822e6ff0b40bed5ee9f6e47df4103bdc87fd6)
+     (a81e52f657275a1357d8b6a4a869087cda0daa23)
       build: build.bat
       path: /BindingAttributes/nupkg
       os: windows

@@ -11,9 +11,12 @@ using System.Threading.Tasks;
 using Disunity.Client.v1;
 using Disunity.Client.v1.Models;
 using Disunity.Management.PackageStores;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 using Moq;
 
@@ -35,28 +38,37 @@ namespace Disunity.Tests.Management {
 
         public PackageStoreFixture() {
             var rootPath = Util.GetAbsolutePath();
-            BaseStorePath = Path.Combine(rootPath, "mock");
-            DisunityStorePath = Path.Combine(rootPath, "disunity");
-            ModStorePath = Path.Combine(rootPath, "mods");
+            BaseStorePath = Path.Combine(rootPath, "disunity");
 
             var mockDisunityClient = Mock.Of<IDisunityClient>();
             var mockModListClient = Mock.Of<IModListClient>();
             var mockSymbolicLink = Mock.Of<ISymbolicLink>();
             var mockZipUtil = Mock.Of<IZipUtil>();
+            MockPackageStore = new Mock<IPackageStore>();
 
             MockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
                 [Path.Combine(BaseStorePath, "test_package")] = new MockDirectoryData(),
                 [Path.Combine(BaseStorePath, "disunity_1.0.0")] = new MockDirectoryData()
             });
 
-            var mockConfig = new ConfigurationBuilder().AddInMemoryCollection(new KeyValuePair<string, string>[] {
-                new KeyValuePair<string, string>("","")
-            }).Build();
+            var services = new ServiceCollection();
+            services.Configure<PackageStoreOptions>(options => { options.Path = BaseStorePath; });
 
-            MockPackageStore = new Mock<IPackageStore>();
-            BasePackageStore = new MockBasePackageStore(BaseStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil, MockPackageStore);
-            DisunityDistroStore = new DisunityDistroStore(mockConfig, MockFileSystem, mockSymbolicLink, mockZipUtil, mockDisunityClient);
-            ModPackageStore = new ModPackageStore(mockConfig, MockFileSystem, mockSymbolicLink, mockZipUtil);
+            services.AddSingleton(typeof(IFileSystem), MockFileSystem)
+                    .AddSingleton(typeof(ISymbolicLink), mockSymbolicLink)
+                    .AddSingleton(typeof(IZipUtil), mockZipUtil)
+                    .AddSingleton(typeof(IDisunityClient), mockDisunityClient)
+                    .AddSingleton(MockPackageStore);
+
+            services.AddSingleton<MockBasePackageStore>()
+                    .AddSingleton<DisunityDistroStore>()
+                    .AddSingleton<ModPackageStore>();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            BasePackageStore = serviceProvider.GetRequiredService<MockBasePackageStore>();
+            DisunityDistroStore = serviceProvider.GetRequiredService<DisunityDistroStore>();
+            ModPackageStore = serviceProvider.GetRequiredService<ModPackageStore>();
 
             MockDisunityClient = Mock.Get(mockDisunityClient);
             MockModListClient = Mock.Get(mockModListClient);
@@ -92,10 +104,6 @@ namespace Disunity.Tests.Management {
         public Mock<IZipUtil> MockZipUtil { get; set; }
 
         public string BaseStorePath { get; }
-
-        public string DisunityStorePath { get; }
-
-        public string ModStorePath { get; }
 
         public MockFileSystem MockFileSystem { get; }
 
@@ -190,13 +198,12 @@ namespace Disunity.Tests.Management {
 
         private readonly Mock<IPackageStore> _mock;
 
-        public MockBasePackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, Mock<IPackageStore> mock) : base(rootPath, fileSystem, symbolicLink, zipUtil) {
-            _mock = mock;
-
-        }
-
         public override Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default) {
             return _mock.Object.GetDownloadUrl(fullPackageName, cancellationToken);
+        }
+
+        public MockBasePackageStore(IOptionsMonitor<PackageStoreOptions> optionsAccessor, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, Mock<IPackageStore> mock) : base(optionsAccessor, fileSystem, symbolicLink, zipUtil) {
+            _mock = mock;
         }
 
     }

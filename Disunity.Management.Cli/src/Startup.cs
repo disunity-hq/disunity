@@ -6,10 +6,10 @@ using Disunity.Core;
 using Disunity.Management.Cli.Commands;
 using Disunity.Management.Cli.Commands.Options;
 using Disunity.Management.Cli.Commands.Target;
-using Disunity.Management.Cli.Services;
 using Disunity.Management.Factories;
 using Disunity.Management.Models;
 using Disunity.Management.PackageStores;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Microsoft.Extensions.Configuration;

@@ -1,4 +1,4 @@
-namespace Disunity.Management.Util {
+namespace Disunity.Management.Services {
 
     public interface ISymbolicLink {
 

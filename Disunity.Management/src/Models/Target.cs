@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Abstractions;
 
 using Disunity.Core.Archives;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Newtonsoft.Json;

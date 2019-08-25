@@ -5,6 +5,7 @@ using System.IO.Abstractions.TestingHelpers;
 
 using Disunity.Management;
 using Disunity.Management.Models;
+using Disunity.Management.Services;
 using Disunity.Management.Util;
 
 using Moq;
