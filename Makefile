@@ -13,6 +13,7 @@ STORE = Disunity.Store
 DIR := ${CURDIR}
 TAG ?= ${TRAVIS_TAG}
 SRC_DIR := src
+PAKET_ARGS ?= $(ARGS)
 
 UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
@@ -42,14 +43,27 @@ PAKET := $(strip $(PAKET))
 
 
 # Paket commands
-.PHONY: paket install-deps update-deps
+.PHONY: paket install-deps update-deps restore refresh-paket
 paket:
-	$(PAKET) $(ARGS)
-install-deps:
-	$(PAKET) install $(ARGS)
+	$(PAKET) $(PAKET_ARGS)
 
-update-deps:
-	$(PAKET) update $(ARGS)
+restore:
+	dotnet restore $(ARGS)
+
+paket-refresh: clean clean-paket-files install-deps
+
+paket-hard-refresh: PAKET_ARGS := clear-cache
+paket-hard-refresh: clean clean-paket-files paket-clear-cache update-deps
+
+clean-paket-files:
+	rm -rf packages paket-files
+
+paket-clear-cache:
+	$(PAKET) clear-cache
+
+install-deps: PAKET_ARGS := install $(ARGS)
+update-deps: PAKET_ARGS := update $(ARGS)
+install-deps update-deps: paket restore
 
 paket-files: paket.dependencies */paket.references
 	$(PAKET) update

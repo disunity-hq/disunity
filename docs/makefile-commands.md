@@ -28,6 +28,9 @@ Paket is the tool we use to install our C# dependencies. It is included within t
 - `paket [ARGS=""]` Run Paket with the provided arguments.
 - `install-deps [ARGS=""]` Install all dependencies and update the `paket.lock` file.
 - `update-deps [ARGS=""]` Update all dependencies or those provided as arguments.
+- `restore [ARGS=""]` Restores packages with provided arguments
+- `paket-refresh` Clean all project paket files and run `install-deps`
+- `paket-hard-refresh` As `paket-refresh` but also clears caches and run `update-deps` instead
 
 ## Clean commands
 
