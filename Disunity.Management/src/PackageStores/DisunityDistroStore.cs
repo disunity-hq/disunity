@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Disunity.Client.v1;
 using Disunity.Management.Util;
 
+using Microsoft.Extensions.Configuration;
+
 
 namespace Disunity.Management.PackageStores {
 
@@ -15,11 +17,12 @@ namespace Disunity.Management.PackageStores {
         private readonly IDisunityClient _disunityClient;
         private readonly HttpClient _httpClient;
 
-        public DisunityDistroStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, IDisunityClient disunityClient) : base(rootPath, fileSystem, symbolicLink, zipUtil) {
+        public DisunityDistroStore(IConfiguration config, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil, IDisunityClient disunityClient) :
+            base(config["PackageStore:Disunity:Path"] ?? "~/.disunity/store/disunity", fileSystem, symbolicLink, zipUtil) {
             _disunityClient = disunityClient;
             _httpClient = disunityClient.HttpClient;
         }
-        
+
         public override async Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default) {
             var versionNumber = fullPackageName.Substring("disunity_".Length);
             var allVersions = await _disunityClient.GetDisunityVersionsAsync(cancellationToken);

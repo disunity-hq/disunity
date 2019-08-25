@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Configuration;
@@ -58,14 +59,14 @@ namespace Disunity.Management.Cli {
                 command = _serviceProvider.GetRequiredService(commandType);
             }
             catch (Exception ex) {
-                _logger.LogError($"No command found to handle {commandType.Name}");
+                _logger.LogError($"No command found to handle '{commandOptions.GetType().Name}'");
                 _logger.LogError(ex.Message);
                 return;
             }
 
             try {
                 var method = commandType.GetMethod("Execute");
-                var task = (Task) method.Invoke(command, new[] {commandOptions});
+                var task = (Task) method.Invoke(command, new object[] {commandOptions, default(CancellationToken)});
                 await task;
             }
             catch (Exception ex) {

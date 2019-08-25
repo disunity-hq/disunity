@@ -1,7 +1,10 @@
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Disunity.Management.Models;
 
@@ -28,7 +31,7 @@ namespace Disunity.Management.Util {
                 if (hashLength != null) {
                     hashChars = hashChars.Take(hashLength.Value).ToList();
                 }
-                
+
                 if (hashChars.Any()) {
                     sb.Append('_');
                     sb.Append(string.Join("", hashChars));
@@ -49,6 +52,32 @@ namespace Disunity.Management.Util {
 
             var sb = new StringBuilder();
             var bytes = algorithm.ComputeHash(Encoding.ASCII.GetBytes(data));
+
+            foreach (var letter in bytes) {
+                sb.Append(letter.ToString("X2"));
+            }
+
+            if (cleanup) {
+                algorithm.Dispose();
+            }
+
+            return sb.ToString();
+        }
+
+        public static async Task<string> HashFile(string path, IFileSystem fileSystem, HashAlgorithm algorithm = null, CancellationToken cancellationToken=default) {
+            var cleanup = false;
+
+            if (algorithm == null) {
+                algorithm = MD5.Create();
+                cleanup = true;
+            }
+
+            var sb = new StringBuilder();
+            var bytes = new byte[0];
+
+            using (var file = fileSystem.File.OpenRead(path)) {
+                await Task.Run(() => bytes = algorithm.ComputeHash(file), cancellationToken);
+            }
 
             foreach (var letter in bytes) {
                 sb.Append(letter.ToString("X2"));

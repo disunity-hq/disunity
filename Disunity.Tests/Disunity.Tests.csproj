@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
+    <ProjectReference Include="..\Disunity.Management.Cli\Disunity.Management.Cli.csproj" />
     <ProjectReference Include="..\Disunity.Management\Disunity.Management.csproj" />
   </ItemGroup>
   <ItemGroup>

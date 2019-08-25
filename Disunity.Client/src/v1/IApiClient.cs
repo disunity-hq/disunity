@@ -1,6 +1,6 @@
 namespace Disunity.Client.v1 {
 
-    public interface IClient: IClientBase {
+    public interface IApiClient: IClientBase {
 
         IDisunityClient DisunityClient { get; }
         IModListClient ModListClient { get; }

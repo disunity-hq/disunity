@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Disunity.Client.v1;
 using Disunity.Management.Util;
 
+using Microsoft.Extensions.Configuration;
+
 
 namespace Disunity.Management.PackageStores {
 
@@ -13,9 +15,9 @@ namespace Disunity.Management.PackageStores {
 
         public const string DownloadUrlBase = "https://disunity.io/u";
 
-        public ModPackageStore(string rootPath, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil) : base(rootPath, fileSystem, symbolicLink, zipUtil) { }
+        public ModPackageStore(IConfiguration config, IFileSystem fileSystem, ISymbolicLink symbolicLink, IZipUtil zipUtil) : base(config["PackageStore:Disunity:Path"] ?? "~/.disunity/store/mods", fileSystem, symbolicLink, zipUtil) { }
 
-        public override Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken) {
+        public override Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken = default) {
             return Task.FromResult($"{DownloadUrlBase}/{fullPackageName}/download");
         }
 

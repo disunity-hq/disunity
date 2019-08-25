@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
 
 using ModDto = Disunity.Client.v1.Models.ModDto;
@@ -26,8 +28,9 @@ namespace Disunity.Client.v1 {
         public HttpClient HttpClient { get; }
         private Lazy<JsonSerializerSettings> _settings;
     
-        public ModListClient(string baseUrl, HttpClient httpClient)
+        public ModListClient(IConfiguration config, HttpClient httpClient)
         {
+            var baseUrl = config["Api:BaseUrl"] ?? "https://disunity.io/api/v1";
             BaseUrl = baseUrl; 
             HttpClient = httpClient; 
             _settings = new Lazy<JsonSerializerSettings>(() => 

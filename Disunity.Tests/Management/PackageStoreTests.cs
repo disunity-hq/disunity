@@ -13,6 +13,8 @@ using Disunity.Client.v1.Models;
 using Disunity.Management.PackageStores;
 using Disunity.Management.Util;
 
+using Microsoft.Extensions.Configuration;
+
 using Moq;
 
 using Xunit;
@@ -47,10 +49,14 @@ namespace Disunity.Tests.Management {
                 [Path.Combine(BaseStorePath, "disunity_1.0.0")] = new MockDirectoryData()
             });
 
+            var mockConfig = new ConfigurationBuilder().AddInMemoryCollection(new KeyValuePair<string, string>[] {
+                new KeyValuePair<string, string>("","")
+            }).Build();
+
             MockPackageStore = new Mock<IPackageStore>();
             BasePackageStore = new MockBasePackageStore(BaseStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil, MockPackageStore);
-            DisunityDistroStore = new DisunityDistroStore(DisunityStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil, mockDisunityClient);
-            ModPackageStore = new ModPackageStore(ModStorePath, MockFileSystem, mockSymbolicLink, mockZipUtil);
+            DisunityDistroStore = new DisunityDistroStore(mockConfig, MockFileSystem, mockSymbolicLink, mockZipUtil, mockDisunityClient);
+            ModPackageStore = new ModPackageStore(mockConfig, MockFileSystem, mockSymbolicLink, mockZipUtil);
 
             MockDisunityClient = Mock.Get(mockDisunityClient);
             MockModListClient = Mock.Get(mockModListClient);

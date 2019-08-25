@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 
 using Disunity.Core;
@@ -6,10 +7,9 @@ using Disunity.Management.Cli.Commands.Options;
 
 namespace Disunity.Management.Cli.Commands {
 
-    
     public interface ICommandBase<T> where T : CommandOptionsBase {
 
-        Task Execute(T options);
+        Task Execute(T options, CancellationToken cancellationToken=default);
 
     }
 
@@ -21,7 +21,7 @@ namespace Disunity.Management.Cli.Commands {
     /// General pattern is that commands that have child verbs should be left abstract
     /// and provide utilities, while leaf commands that do the actual work should be concrete.
     /// </remarks>
-    public abstract class CommandBase<T>:ICommandBase<T> where T : CommandOptionsBase {
+    public abstract class CommandBase<T> : ICommandBase<T> where T : CommandOptionsBase {
 
         private readonly ILogger _logger;
 
@@ -31,13 +31,13 @@ namespace Disunity.Management.Cli.Commands {
             _logger = logger;
         }
 
-        public async Task Execute(T options) {
+        public async Task Execute(T options, CancellationToken cancellationToken=default) {
             Options = options;
-            await Execute();
+            await Execute(cancellationToken);
             Options = null;
         }
 
-        protected abstract Task Execute();
+        protected abstract Task Execute(CancellationToken cancellationToken);
 
         protected void WriteLog(string message) {
             _logger.LogInfo(message);

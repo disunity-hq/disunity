@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 using Disunity.Client.v1.Models;
 
+using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
 
 
@@ -26,8 +28,9 @@ namespace Disunity.Client.v1 {
         public HttpClient HttpClient { get; }
         private Lazy<JsonSerializerSettings> _settings;
     
-        public DisunityClient(string baseUrl, HttpClient httpClient)
+        public DisunityClient(IConfiguration config, HttpClient httpClient)
         {
+            var baseUrl = config["Api:BaseUrl"] ?? "https://disunity.io/api/v1";
             BaseUrl = baseUrl; 
             HttpClient = httpClient; 
             _settings = new Lazy<JsonSerializerSettings>(() => 
