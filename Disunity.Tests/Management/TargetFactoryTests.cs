@@ -50,7 +50,7 @@ namespace Disunity.Tests.Management {
             Mock.Get(MockProfileFactory).Setup(f => f.CreateExactPath(It.IsAny<string>(), "Default"))
                 .Returns((string a, string b) => Task.FromResult(new Profile {Path = a, DisplayName = b}));
 
-            TargetFactory = new TargetFactory(MockFileSystem, MockProfileFactory, mockSymbolicLink) {
+            TargetFactory = new TargetFactory(MockFileSystem, MockProfileFactory, mockSymbolicLink, new Crypto(null)) {
                 ManagedRoot = Util.GetAbsolutePath("test", "managed")
             };
         }

@@ -21,17 +21,17 @@ namespace Disunity.Management.Factories {
         private readonly IFileSystem _fileSystem;
         private readonly IProfileFactory _profileFactory;
         private readonly ISymbolicLink _symbolicLink;
+        private readonly Crypto _crypto;
 
         public string ManagedRoot { get; set; }
 
-        public TargetFactory(IFileSystem fileSystem, IProfileFactory profileFactory, ISymbolicLink symbolicLink) {
+        public TargetFactory(IFileSystem fileSystem, IProfileFactory profileFactory, ISymbolicLink symbolicLink, Crypto crypto) {
             _fileSystem = fileSystem;
             _profileFactory = profileFactory;
             _symbolicLink = symbolicLink;
+            _crypto = crypto;
         }
-
-        public TargetFactory(ISymbolicLink symbolicLink): this(new FileSystem(), new ProfileFactory(), symbolicLink) {}
-
+        
         public async Task<Target> FromFile(string path) {
             if (!_fileSystem.File.Exists(path)) return null;
 
@@ -62,7 +62,7 @@ namespace Disunity.Management.Factories {
                 Slug = slug
             };
 
-            var targetDir = Crypto.CalculateManagedPath(target, hashLength);
+            var targetDir = _crypto.CalculateManagedPath(target, hashLength);
             target.ManagedPath = Path.Combine(ManagedRoot, targetDir);
 
             var defaultProfilePath = _fileSystem.Path.Combine(target.ManagedPath, "profiles", "default");

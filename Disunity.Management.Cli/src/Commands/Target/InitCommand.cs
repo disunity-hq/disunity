@@ -25,18 +25,20 @@ namespace Disunity.Management.Cli.Commands.Target {
         private readonly IPackageStore _disunityStore;
         private readonly ITargetFactory _targetFactory;
         private readonly IDisunityClient _disunityClient;
+        private readonly Crypto _crypto;
 
-        public InitCommand(ILogger logger, IFileSystem fileSystem, ITargetClient targetClient, IPackageStore disunityStore, ITargetFactory targetFactory, IDisunityClient disunityClient) : base(logger) {
+        public InitCommand(ILogger logger, IFileSystem fileSystem, ITargetClient targetClient, IPackageStore disunityStore, ITargetFactory targetFactory, IDisunityClient disunityClient, Crypto crypto) : base(logger) {
             _fileSystem = fileSystem;
             _targetClient = targetClient;
             _disunityStore = disunityStore;
             _targetFactory = targetFactory;
             _disunityClient = disunityClient;
+            _crypto = crypto;
         }
 
         protected override async Task Execute(CancellationToken cancellationToken) {
             // 0. Hash target
-            var targetHash = await Crypto.HashFile(Options.ExecutablePath, _fileSystem, cancellationToken: cancellationToken);
+            var targetHash = await _crypto.HashFile(Options.ExecutablePath, _fileSystem, cancellationToken);
             // 1. Get target info from store
             var targetInfo = await _targetClient.FindTargetByHashAsync(targetHash, cancellationToken);
             // 2. Calculate disunity distro version

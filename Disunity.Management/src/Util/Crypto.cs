@@ -6,22 +6,38 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using BindingAttributes;
+
 using Disunity.Management.Models;
+
+using Microsoft.Extensions.Options;
 
 
 namespace Disunity.Management.Util {
 
-    public static class Crypto {
+    public class CryptoOptions {
+
+        public string Algo { get; set; } = "md5";
+
+    }
+
+    [AsScoped]
+    public class Crypto {
+
+        private readonly string _algo;
+
+        public Crypto(IOptionsMonitor<CryptoOptions> optionsMonitor) {
+            _algo = (optionsMonitor?.CurrentValue ?? new CryptoOptions()).Algo;
+        }
 
         /// <summary>
-        /// Calculate the 
+        /// Calculate the managed path for a target by hashing the target's executable path
         /// </summary>
-        /// <param name="managedPath"></param>
         /// <param name="target"></param>
         /// <param name="hashLength"></param>
         /// <returns></returns>
-        public static string CalculateManagedPath(Target target, int? hashLength = null) {
-            using (var hash = MD5.Create()) {
+        public string CalculateManagedPath(Target target, int? hashLength = null) {
+            using (var hash = HashAlgorithm.Create(_algo)) {
                 var pathHash = hash.ComputeHash(System.Text.Encoding.ASCII.GetBytes(target.ExecutablePath));
                 var sb = new StringBuilder();
                 sb.Append(target.Slug);
@@ -42,52 +58,34 @@ namespace Disunity.Management.Util {
 
         }
 
-        public static string HashString(string data, HashAlgorithm algorithm = null) {
-            var cleanup = false;
+        public string HashString(string data) {
+            using (var hash = HashAlgorithm.Create(_algo)) {
+                var sb = new StringBuilder();
+                var bytes = hash.ComputeHash(Encoding.ASCII.GetBytes(data));
 
-            if (algorithm == null) {
-                algorithm = MD5.Create();
-                cleanup = true;
+                foreach (var letter in bytes) {
+                    sb.Append(letter.ToString("X2"));
+                }
+
+                return sb.ToString();
             }
-
-            var sb = new StringBuilder();
-            var bytes = algorithm.ComputeHash(Encoding.ASCII.GetBytes(data));
-
-            foreach (var letter in bytes) {
-                sb.Append(letter.ToString("X2"));
-            }
-
-            if (cleanup) {
-                algorithm.Dispose();
-            }
-
-            return sb.ToString();
         }
 
-        public static async Task<string> HashFile(string path, IFileSystem fileSystem, HashAlgorithm algorithm = null, CancellationToken cancellationToken=default) {
-            var cleanup = false;
+        public async Task<string> HashFile(string path, IFileSystem fileSystem, CancellationToken cancellationToken = default) {
+            using (var hash = HashAlgorithm.Create(_algo)) {
+                var sb = new StringBuilder();
+                var bytes = new byte[0];
 
-            if (algorithm == null) {
-                algorithm = MD5.Create();
-                cleanup = true;
+                using (var file = fileSystem.File.OpenRead(path)) {
+                    await Task.Run(() => bytes = hash.ComputeHash(file), cancellationToken);
+                }
+
+                foreach (var letter in bytes) {
+                    sb.Append(letter.ToString("X2"));
+                }
+
+                return sb.ToString();
             }
-
-            var sb = new StringBuilder();
-            var bytes = new byte[0];
-
-            using (var file = fileSystem.File.OpenRead(path)) {
-                await Task.Run(() => bytes = algorithm.ComputeHash(file), cancellationToken);
-            }
-
-            foreach (var letter in bytes) {
-                sb.Append(letter.ToString("X2"));
-            }
-
-            if (cleanup) {
-                algorithm.Dispose();
-            }
-
-            return sb.ToString();
         }
 
     }

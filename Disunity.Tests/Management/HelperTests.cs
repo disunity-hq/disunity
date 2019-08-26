@@ -7,6 +7,9 @@ using Disunity.Management;
 using Disunity.Management.Models;
 using Disunity.Management.Util;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
 using Newtonsoft.Json;
 
 using Xunit;
@@ -15,9 +18,28 @@ using Xunit.Abstractions;
 
 namespace Disunity.Tests.Management {
 
-    public class HelperTests {
+    public class HelperTestFixture {
+
+        public Crypto Crypto { get; }
+
+        public HelperTestFixture() {
+            var services = new ServiceCollection();
+            services.Configure<CryptoOptions>(options => { });
+            services.AddSingleton<Crypto>();
+            Crypto = services.BuildServiceProvider().GetRequiredService<Crypto>();
+        }
+
+    }
+
+    public class HelperTests : IClassFixture<HelperTestFixture> {
 
         private const string ManagedRoot = @"C:\test\managed";
+
+        private Crypto Crypto { get; }
+
+        public HelperTests(HelperTestFixture fixture) {
+            Crypto = fixture.Crypto;
+        }
 
         private Target _target = new Target {
             Slug = "risk-of-rain-2",
@@ -29,13 +51,11 @@ namespace Disunity.Tests.Management {
         [Fact]
         public void CanCreateProperManagedTargetPath_FullHashLength() {
 
-            using (var md5 = MD5.Create()) {
-                var hash = Crypto.HashString(_target.ExecutablePath, md5);
-                var expected = $"{_target.Slug}_{hash}";
-                var actual = Crypto.CalculateManagedPath(_target);
+            var hash = Crypto.HashString(_target.ExecutablePath);
+            var expected = $"{_target.Slug}_{hash}";
+            var actual = Crypto.CalculateManagedPath(_target);
 
-                Assert.Equal(expected, actual);
-            }
+            Assert.Equal(expected, actual);
         }
 
         [Theory]
@@ -44,12 +64,10 @@ namespace Disunity.Tests.Management {
         [InlineData(1)]
         public void CanCreateProperManagedTargetPath_ShortHashLength(int hashSize) {
 
-            using (var md5 = MD5.Create()) {
-                var hash = Crypto.HashString(_target.ExecutablePath, md5);
-                var actual = Crypto.CalculateManagedPath(_target, hashSize);
-                var expected = $"{_target.Slug}_{hash.Substring(0, hashSize * 2)}";
-                Assert.Equal(expected, actual);
-            }
+            var hash = Crypto.HashString(_target.ExecutablePath);
+            var actual = Crypto.CalculateManagedPath(_target, hashSize);
+            var expected = $"{_target.Slug}_{hash.Substring(0, hashSize * 2)}";
+            Assert.Equal(expected, actual);
 
         }
 
