@@ -3,7 +3,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source $SCRIPT_DIR/release-funcs.sh
 source "$SOLUTION_ROOT/Disunity.Core/core-release-artifacts.sh"
 
-CORE_OUT="Disunity.Manangement.Cli"
+CORE_OUT="Disunity.Core"
 
 # 0. Cleanup old out dir
 rm -rf "$CORE_OUT"
