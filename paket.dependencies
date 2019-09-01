@@ -23,6 +23,7 @@ nuget CommandLineParser >= 2.6.0
 nuget System.IO.Abstractions >= 6.0.21
 nuget Microsoft.Extensions.Options >= 2.2.0
 nuget SymbolicLinkSupport >= 1.2.0
+nuget Vsxmd >= 1.4.2
 
 # store dependencies
 nuget AspNet.Security.OAuth.Discord >= 2.1.0

@@ -17,14 +17,6 @@ namespace Disunity.Management.PackageStores {
         string GetPackagePath(string fullPackageName);
 
         /// <summary>
-        /// Create a symlink at <see cref="path"/> pointing to the specified package 
-        /// </summary>
-        /// <param name="fullPackageName">The package to link to</param>
-        /// <param name="path">The path at which to create the symlink</param>
-        /// <returns></returns>
-        Task<bool> CreatePackageReference(string fullPackageName, string path);
-
-        /// <summary>
         /// Download the specified package into the package store.
         /// </summary>
         /// <remarks>
@@ -34,15 +26,23 @@ namespace Disunity.Management.PackageStores {
         /// <param name="force">When true, will always download, even if the specified mod is already downloaded</param>
         /// <param name="cancellationToken"></param>
         /// <returns>The absolute path to the downloaded package</returns>
-        Task<string> DownloadPackage(string fullPackageName, bool force = false, CancellationToken cancellationToken=default);
+        Task<string> DownloadPackage(string fullPackageName, bool force = false, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Retrieve the download url for a given package 
+        /// Run the garbage collector
         /// </summary>
-        /// <param name="fullPackageName">The full package name (ie owner_mod_version or disunity_version)</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>The url the package can be downloaded from or null</returns>
-        Task<string> GetDownloadUrl(string fullPackageName, CancellationToken cancellationToken=default);
+        /// <remarks>
+        /// Checks for and removes the following:
+        /// <list type="bullet">
+        /// <item>
+        /// <description>Profiles not referenced by any targets</description>
+        /// </item>
+        /// <item>
+        /// <description>Packages(of all types) not referenced by any profiles</description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        void GarbageCollect();
 
         /// <summary>
         /// Wipes the store and removes all downloaded entities

@@ -16,16 +16,27 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Disunity.Management {
 
+    /// <summary>
+    /// Entry point into the Disunity.Management layer. 
+    /// </summary>
+    /// <remarks>
+    /// Please use the static <see cref="Create"/> method to get instances of the Management class.
+    /// </remarks>
     [AsSingleton]
     public class Management {
 
         public ITargetManager TargetManager { get; }
 
-        public Management(ManagementDbContext context) {
-//            TargetManager = targetManager;
+        public Management(ManagementDbContext context, ITargetManager targetManager) {
+            TargetManager = targetManager;
             context.Database.Migrate();
         }
 
+        /// <summary>
+        /// Configures all internal services and creates an instances of <see cref="Management"/>
+        /// </summary>
+        /// <param name="config">The configuration to use for this instance</param>
+        /// <returns></returns>
         public static Management Create(IConfiguration config) {
             var serviceProvider = BuildServiceProvider(config);
 

@@ -53,6 +53,10 @@ namespace Disunity.Management.PackageStores {
             return await ZipUtil.ExtractOnlineZip(downloadUrl, extractPath);
         }
 
+        public void GarbageCollect() {
+            throw new System.NotImplementedException();
+        }
+
         public Task Clear() {
             return Task.Run(() => FileSystem.Directory.Delete(Options.Path, true));
         }
