@@ -6,7 +6,7 @@ source "$SOLUTION_ROOT/Disunity.Management.Ui/manager-release-artifacts.sh"
 MANAGER_UI_OUT="Disunity.Manangement.Ui"
 
 # 0. Cleanup old out dir
-rm -rf "$MANAGER_UI_OUT"
+delete "$MANAGER_UI_OUT"
 
 # 1. Copy new files to out dir
 manager-ui "$MANAGER_UI_OUT"

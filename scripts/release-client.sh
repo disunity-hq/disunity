@@ -6,7 +6,7 @@ source "$SOLUTION_ROOT/Disunity.Client/client-release-artifacts.sh"
 CLIENT_OUT="Disunity.Manangement.Client"
 
 # 0. Cleanup old out dir
-rm -rf "$CLIENT_OUT"
+delete "$CLIENT_OUT"
 
 # 1. Copy new files to out dir
 client "$CLIENT_OUT"

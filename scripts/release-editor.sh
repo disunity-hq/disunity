@@ -10,7 +10,7 @@ EDITOR_OUT_BASE="Editor/Assets/Disunity"
 EDITOR_DEPS="$EDITOR_OUT_BASE/Dependencies"
 
 # 0. Cleanup out directory
-rm -rf "$EDITOR_OUT_BASE"
+delete "$EDITOR_OUT_BASE"
 
 # 1. Create Mod Editor
 editor-outs "$EDITOR_OUT_BASE/Editor/"

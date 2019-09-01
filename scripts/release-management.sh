@@ -6,7 +6,7 @@ source "$SOLUTION_ROOT/Disunity.Management/management-release-artifacts.sh"
 MANAGEMENT_OUT="Disunity.Manangement"
 
 # 0. Cleanup old out dir
-rm -rf "$MANAGEMENT_OUT"
+delete "$MANAGEMENT_OUT"
 
 # 1. Copy new files to out dir
 management "$MANAGEMENT_OUT"

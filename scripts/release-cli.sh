@@ -6,7 +6,7 @@ source "$SOLUTION_ROOT/Disunity.Management.Cli/cli-release-artifacts.sh"
 CLI_OUT="Disunity.Manangement.Cli"
 
 # 0. Cleanup old out dir
-rm -rf "$CLI_OUT"
+delete "$CLI_OUT"
 
 # 1. Copy new files to out dir
 cli "$CLI_OUT"

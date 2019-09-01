@@ -6,7 +6,7 @@ source "$SOLUTION_ROOT/Disunity.Core/core-release-artifacts.sh"
 CORE_OUT="Disunity.Core"
 
 # 0. Cleanup old out dir
-rm -rf "$CORE_OUT"
+delete "$CORE_OUT"
 
 # 1. Copy new files to out dir
 core "$CORE_OUT"
