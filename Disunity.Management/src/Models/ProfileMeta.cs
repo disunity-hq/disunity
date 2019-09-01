@@ -17,9 +17,9 @@ namespace Disunity.Management.Models {
 
         public List<TargetProfile> Targets { get; set; }
 
-        public PackageIdentifier DisunityDistro { get; set; }
+        public DisunityDistroIdentifier DisunityDistro { get; set; }
 
-        public Dictionary<string, VersionRange> Mods { get; set; }
+        public Dictionary<ModIdentifier, VersionRange> Mods { get; set; }
 
     }
 

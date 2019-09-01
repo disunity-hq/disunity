@@ -4,7 +4,6 @@ using Disunity.Client.v1;
 using Disunity.Core;
 using Disunity.Management.Cli.Commands.Options;
 using Disunity.Management.Cli.Commands.Target;
-using Disunity.Management.Factories;
 using Disunity.Management.PackageStores;
 using Disunity.Management.Util;
 
@@ -23,8 +22,8 @@ namespace Disunity.Tests.Management.Cli {
             var logger = Mock.Of<ILogger>();
 
             InitCommand = new InitCommand(logger, new MockFileSystem(),
-                                          Mock.Of<ITargetClient>(), Mock.Of<IPackageStore>(),
-                                          Mock.Of<ITargetFactory>(), Mock.Of<IDisunityClient>(), new Crypto(null));
+                                          Mock.Of<ITargetClient>(),
+                                          Mock.Of<IDisunityClient>(), new Crypto(null));
         }
 
     }

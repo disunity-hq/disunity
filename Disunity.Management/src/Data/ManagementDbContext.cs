@@ -16,6 +16,7 @@ namespace Disunity.Management.Data {
         public DbSet<TargetMeta> Targets { get; set; }
         public DbSet<ProfileMeta> Profiles { get; set; }
         public DbSet<TargetProfile> TargetProfiles { get; set; }
+        public DbSet<Package> Packages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

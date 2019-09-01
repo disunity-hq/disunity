@@ -6,7 +6,6 @@ using Disunity.Core;
 using Disunity.Management.Cli.Commands;
 using Disunity.Management.Cli.Commands.Options;
 using Disunity.Management.Cli.Commands.Target;
-using Disunity.Management.Factories;
 using Disunity.Management.Models;
 using Disunity.Management.PackageStores;
 using Disunity.Management.Services;
@@ -29,15 +28,13 @@ namespace Disunity.Management.Cli {
         }
 
         public void ConfigureServices(ServiceCollection services) {
-            services.AddSingleton(_configuration as IConfiguration);
+            services.AddSingleton(_configuration);
             services.AddSingleton<ILogger, ConsoleLogger>();
             services.AddSingleton<IFileSystem, FileSystem>();
             services.AddSingleton<ICommandBase<TargetInitOptions>, InitCommand>();
-            services.AddSingleton<IPackageStore, DisunityDistroStore>();
             services.AddSingleton<ISymbolicLink, SymbolicLink>();
             services.AddSingleton<IZipUtil, ZipUtil>();
-            services.AddSingleton<ITargetFactory, TargetFactory>();
-            services.AddSingleton<IProfileFactory, ProfileFactory>();
+            services.AddSingleton(Management.Create(_configuration));
             services.ConfigureApiClient();
         }
 

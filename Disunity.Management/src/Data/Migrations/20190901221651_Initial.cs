@@ -1,23 +1,51 @@
 ﻿using System;
-
 using Microsoft.EntityFrameworkCore.Migrations;
 
-
-namespace Disunity.Management.Data.Migrations
+namespace Disunity.Management.src.Data.Migrations
 {
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PackageIdentifier",
+                name: "DisunityDistroIdentifier",
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PackageIdentifier", x => x.Id);
+                    table.PrimaryKey("PK_DisunityDistroIdentifier", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VersionSet",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VersionSet", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Packages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    VersionSetId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Packages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Packages_VersionSet_VersionSetId",
+                        column: x => x.VersionSetId,
+                        principalTable: "VersionSet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,17 +54,48 @@ namespace Disunity.Management.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     DisunityDistroId = table.Column<string>(nullable: true),
-                    Mods = table.Column<string>(nullable: false)
+                    Mods = table.Column<string>(nullable: false),
+                    PackageId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Profiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Profiles_PackageIdentifier_DisunityDistroId",
+                        name: "FK_Profiles_DisunityDistroIdentifier_DisunityDistroId",
                         column: x => x.DisunityDistroId,
-                        principalTable: "PackageIdentifier",
+                        principalTable: "DisunityDistroIdentifier",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Profiles_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "VersionSetPackage",
+                columns: table => new
+                {
+                    VersionSetId = table.Column<int>(nullable: false),
+                    PackageId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VersionSetPackage", x => new { x.VersionSetId, x.PackageId });
+                    table.ForeignKey(
+                        name: "FK_VersionSetPackage_Packages_PackageId",
+                        column: x => x.PackageId,
+                        principalTable: "Packages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VersionSetPackage_VersionSet_VersionSetId",
+                        column: x => x.VersionSetId,
+                        principalTable: "VersionSet",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,9 +146,19 @@ namespace Disunity.Management.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Packages_VersionSetId",
+                table: "Packages",
+                column: "VersionSetId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Profiles_DisunityDistroId",
                 table: "Profiles",
                 column: "DisunityDistroId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_PackageId",
+                table: "Profiles",
+                column: "PackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TargetProfiles_TargetMetaId",
@@ -100,6 +169,11 @@ namespace Disunity.Management.Data.Migrations
                 name: "IX_Targets_ActiveProfileId",
                 table: "Targets",
                 column: "ActiveProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VersionSetPackage_PackageId",
+                table: "VersionSetPackage",
+                column: "PackageId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -108,13 +182,22 @@ namespace Disunity.Management.Data.Migrations
                 name: "TargetProfiles");
 
             migrationBuilder.DropTable(
+                name: "VersionSetPackage");
+
+            migrationBuilder.DropTable(
                 name: "Targets");
 
             migrationBuilder.DropTable(
                 name: "Profiles");
 
             migrationBuilder.DropTable(
-                name: "PackageIdentifier");
+                name: "DisunityDistroIdentifier");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
+
+            migrationBuilder.DropTable(
+                name: "VersionSet");
         }
     }
 }

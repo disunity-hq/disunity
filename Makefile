@@ -179,8 +179,8 @@ store-db-drop:
 	docker volume rm store_db-data
 
 # management db commands
-managment-db-drop:
-	$(DOTNET) ef --project $(MANAGEMENT) --startup-project $(MANAGEMENT_STARTUP) database drop
+management-db-drop:
+	$(DOTNET) ef --project $(MANAGEMENT) --startup-project $(MANAGEMENT_STARTUP) database drop -f
 	
 management-db-migrate:
 	$(DOTNET) ef --project $(MANAGEMENT) --startup-project $(MANAGEMENT_STARTUP) database update
@@ -192,7 +192,7 @@ managment-db-migration:
 management-db-clean-migrations:
 	rm -rf $(MANAGEMENT)/src/Data/Migrations
 
-management-db-reset: management-db-clean-migrations managment-db-migration management-db-migrate
+management-db-reset: management-db-clean-migrations management-db-drop managment-db-migration management-db-migrate
 	
 # Db commands
 

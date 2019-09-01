@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using BindingAttributes;
 
+using Disunity.Management.Managers;
 using Disunity.Management.Models;
 
 using Microsoft.Extensions.Options;
@@ -36,7 +37,7 @@ namespace Disunity.Management.Util {
         /// <param name="target"></param>
         /// <param name="hashLength"></param>
         /// <returns></returns>
-        public string CalculateManagedPath(Target target, int? hashLength = null) {
+        public string CalculateManagedPath(ITarget target, int? hashLength = null) {
             using (var hash = HashAlgorithm.Create(_algo)) {
                 var pathHash = hash.ComputeHash(System.Text.Encoding.ASCII.GetBytes(target.TargetMeta.ExecutablePath));
                 var sb = new StringBuilder();

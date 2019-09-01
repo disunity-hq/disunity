@@ -4,6 +4,7 @@ using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 
 using Disunity.Management;
+using Disunity.Management.Managers;
 using Disunity.Management.Models;
 using Disunity.Management.Util;
 
@@ -16,11 +17,8 @@ namespace Disunity.Tests.Management {
 
     public class ProfileFixture {
 
-        public Profile DefaultProfile { get; }
+        public ITarget ExpectedTarget { get; }
 
-        public Target Target { get; }
-
-        public IFileSystem MockFileSystem { get; }
 
         public ProfileFixture() {
             var targetMeta = new TargetMeta {
@@ -30,19 +28,8 @@ namespace Disunity.Tests.Management {
                 ManagedPath = @"C:\test\managed\risk-of-rain-2_1492FF6C8FD37B8D9BC9120CEF7A8409",
             };
 
-            Target = new Target(targetMeta);
+            ExpectedTarget = Target.CreateTarget(null)(targetMeta);
 
-            var defaultProfilePath = new MockFileSystem().Path.Combine(Target.TargetMeta.ManagedPath, "profiles", "default");
-            var defaultProfileMetaPath = new MockFileSystem().Path.Combine(defaultProfilePath, "meta.json");
-
-            DefaultProfile = new Profile {
-                Path = defaultProfilePath,
-                DisplayName = "Default"
-            };
-
-            MockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
-                [defaultProfileMetaPath] = new MockFileData(JsonConvert.SerializeObject(DefaultProfile, Formatting.Indented))
-            });
 
         }
 
@@ -56,14 +43,6 @@ namespace Disunity.Tests.Management {
             _fixture = fixture;
         }
 
-        [Fact]
-        public void CanDeleteProfile() {
-            Util.AssertDirectoryExists(_fixture.MockFileSystem, _fixture.DefaultProfile.Path);
-            
-            _fixture.DefaultProfile.Delete(_fixture.MockFileSystem);
-            
-            Util.AssertDirectoryNotExists(_fixture.MockFileSystem, _fixture.DefaultProfile.Path);
-        }
 
     }
 

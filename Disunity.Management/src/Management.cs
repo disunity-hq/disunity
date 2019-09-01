@@ -6,6 +6,8 @@ using BindingAttributes;
 
 using Disunity.Client.v1;
 using Disunity.Management.Data;
+using Disunity.Management.Managers;
+using Disunity.Management.Models;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,10 +19,11 @@ namespace Disunity.Management {
     [AsSingleton]
     public class Management {
 
-        public ITargetManagement TargetManager { get; }
+        public ITargetManager TargetManager { get; }
 
-        protected Management(ITargetManagement targetManager) {
-            TargetManager = targetManager;
+        public Management(ManagementDbContext context) {
+//            TargetManager = targetManager;
+            context.Database.Migrate();
         }
 
         public static Management Create(IConfiguration config) {
@@ -40,6 +43,7 @@ namespace Disunity.Management {
             var assemblies = new[] {Assembly.GetExecutingAssembly()};
             BindingAttribute.ConfigureBindings(services, assemblies);
             OptionsAttribute.ConfigureOptions(services, config, assemblies);
+            FactoryAttribute.ConfigureFactories(services, assemblies);
             services.ConfigureApiClient();
             services.AddSingleton(config);
             services.AddSingleton<IFileSystem, FileSystem>();

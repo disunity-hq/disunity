@@ -36,7 +36,6 @@ nuget Microsoft.AspNetCore.App == 2.2.4
 nuget Microsoft.AspNetCore.Mvc.Versioning >= 3.1.2
 nuget Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
 nuget Microsoft.AspNetCore.Razor.Design >= 2.2.0
-nuget Microsoft.EntityFrameworkCore.Sqlite >= 2.2.1
 nuget Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3
 nuget Npgsql.EntityFrameworkCore.PostgreSQL >= 2.2.4
 nuget Npgsql.EntityFrameworkCore.PostgreSQL.Design >= 1.1.1

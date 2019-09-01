@@ -17,6 +17,7 @@ namespace Disunity.Management.Services {
             switch (level) {
                 case LogLevel.Fatal:
                 case LogLevel.Error:
+                    Console.ForegroundColor = ConsoleColor.Red;
                     writer = Console.Error;
                     break;
 

@@ -1,18 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Disunity.Client\Disunity.Client.csproj" />
-    <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="src\Models\ModConverter.cs">
-      <DependentUpon>Mod.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <Import Project="..\common.props" />
-  <Import Project="..\.paket\Paket.Restore.targets" />
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Disunity.Client\Disunity.Client.csproj" />
+        <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="src\Models\ModIdentifier.cs">
+        <DependentUpon>PackageIdentifier.cs</DependentUpon>
+      </Compile>
+      <Compile Update="src\Models\DisunityDistroIdentifier.cs">
+        <DependentUpon>PackageIdentifier.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+    <Import Project="..\common.props" />
+    <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

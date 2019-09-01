@@ -10,13 +10,13 @@ namespace Disunity.Core.Archives {
     public static partial class Schema {
 
         public const string SLUG_PATTERN = "^[a-z0-9]+(?:-[a-z0-9]+)*$";
-        private const string NAME_PATTERN = "^[a-zA-Z0-9 -_]+$";
-        public const string WORD_PATTERN = "^[a-zA-Z0-9-_]+$";
-        private const string CLASS_PATTERN = "^[a-zA-Z]+$";
-        private const string PACKAGE_PATTERN = "^[a-z0-9]+(?:-[a-z0-9]+)*/[a-z0-9]+(?:-[a-z0-9]+)*$";
+        public const string NAME_PATTERN = "^[a-zA-Z0-9 -]+$";
+        public const string WORD_PATTERN = "^[a-zA-Z0-9-]+$";
+        public const string CLASS_PATTERN = "^[a-zA-Z]+$";
+        public const string PACKAGE_PATTERN = "^([a-z0-9]+(?:-[a-z0-9]+)*)/([a-z0-9]+(?:-[a-z0-9]+)*)$";
         public const string VERSION_PATTERN = "^[0-9]+\\.[0-9]+\\.[0-9]+$";
-        private const string DLL_PATTERN = "^[a-zA-Z0-9-_]+\\.dll$";
-        private const string TAG_PATTERN = "^[a-z]+(?:-[a-z]+)*$";
+        public const string DLL_PATTERN = "^[a-zA-Z0-9-_]+\\.dll$";
+        public const string TAG_PATTERN = "^[a-z]+(?:-[a-z]+)*$";
 
         private static object SchemaData() {
             return Object(new {

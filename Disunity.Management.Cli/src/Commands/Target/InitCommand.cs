@@ -11,7 +11,6 @@ using Disunity.Client.v1;
 using Disunity.Client.v1.Models;
 using Disunity.Core;
 using Disunity.Management.Cli.Commands.Options;
-using Disunity.Management.Factories;
 using Disunity.Management.PackageStores;
 using Disunity.Management.Util;
 
@@ -22,21 +21,18 @@ namespace Disunity.Management.Cli.Commands.Target {
 
         private readonly IFileSystem _fileSystem;
         private readonly ITargetClient _targetClient;
-        private readonly IPackageStore _disunityStore;
-        private readonly ITargetFactory _targetFactory;
         private readonly IDisunityClient _disunityClient;
         private readonly Crypto _crypto;
 
-        public InitCommand(ILogger logger, IFileSystem fileSystem, ITargetClient targetClient, IPackageStore disunityStore, ITargetFactory targetFactory, IDisunityClient disunityClient, Crypto crypto) : base(logger) {
+        public InitCommand(ILogger logger, IFileSystem fileSystem, ITargetClient targetClient, IDisunityClient disunityClient, Crypto crypto) : base(logger) {
             _fileSystem = fileSystem;
             _targetClient = targetClient;
-            _disunityStore = disunityStore;
-            _targetFactory = targetFactory;
             _disunityClient = disunityClient;
             _crypto = crypto;
         }
 
         protected override async Task Execute(CancellationToken cancellationToken) {
+            /*
             // 0. Hash target
             var targetHash = await _crypto.HashFile(Options.ExecutablePath, _fileSystem, cancellationToken);
             // 1. Get target info from store
@@ -51,6 +47,7 @@ namespace Disunity.Management.Cli.Commands.Target {
             // 5. Install disunity version to default profile
             await _disunityStore.CreatePackageReference(disunityPackage, _fileSystem.Path.Combine(target.TargetMeta.ManagedPath, "profiles", "active", "distro"));
             // 6. Add and configure doorstop to target install
+            */
             throw new System.NotImplementedException();
         }
 

@@ -2,24 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Disunity.Client.v1.Models;
-using Disunity.Management.Models;
 
+namespace Disunity.Management.Managers {
 
-namespace Disunity.Management {
-
-    public interface ITargetManagement {
+    public interface ITargetManager {
         
         /// <summary>
         /// A list of all managed targets
         /// </summary>
-        IReadOnlyList<Target> Targets { get; }
+        IReadOnlyList<ITarget> Targets { get; }
 
         /// <summary>
         /// Find and parse all managed target directories within <see cref="path"/>
         /// </summary>
         /// <returns>A <see cref="List{T}"/> of all the found <see cref="Target"/>s.</returns>
-        Task<List<Target>> LoadTargets();
+        Task<List<ITarget>> LoadTargets();
 
         
         /// <summary>
@@ -29,7 +26,7 @@ namespace Disunity.Management {
         /// <param name="disunityVersion">The desired disunity version to install in the default profile. Null for latest compatible version</param>
         /// <returns>The newly created <see cref="Target"/> or null</returns>
         /// <exception cref="ArgumentException"></exception>
-        Task<Target> InitTarget(string executablePath, string disunityVersion=null);
+        Task<ITarget> InitTarget(string executablePath, string disunityVersion=null);
 
     }
 
