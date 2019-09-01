@@ -8,7 +8,6 @@ Microsoft.AspNetCore.App
 Microsoft.AspNetCore.Mvc.Versioning
 Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
 Microsoft.AspNetCore.Razor.Design
-Microsoft.EntityFrameworkCore.Sqlite
 Microsoft.VisualStudio.Web.CodeGeneration.Design
 Newtonsoft.Json.Schema
 Npgsql.EntityFrameworkCore.PostgreSQL
