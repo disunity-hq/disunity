@@ -5,25 +5,27 @@ using System.Reflection;
 using BindingAttributes;
 
 using Disunity.Client.v1;
-using Disunity.Management.Factories;
-using Disunity.Management.Util;
+using Disunity.Management.Data;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Disunity.Management {
 
+    [AsSingleton]
     public class Management {
 
+        public ITargetManagement TargetManager { get; }
 
-        protected Management() {
-            
+        protected Management(ITargetManagement targetManager) {
+            TargetManager = targetManager;
         }
 
         public static Management Create(IConfiguration config) {
             var serviceProvider = BuildServiceProvider(config);
-            
+
             return serviceProvider.GetRequiredService<Management>();
         }
 
@@ -35,12 +37,13 @@ namespace Disunity.Management {
         }
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration config) {
-            BindingAttribute.ConfigureBindings(services, new []{Assembly.GetExecutingAssembly()});
-            FactoryAttribute.ConfigureFactories(services, new []{Assembly.GetExecutingAssembly()});
+            var assemblies = new[] {Assembly.GetExecutingAssembly()};
+            BindingAttribute.ConfigureBindings(services, assemblies);
+            OptionsAttribute.ConfigureOptions(services, config, assemblies);
             services.ConfigureApiClient();
             services.AddSingleton(config);
-            services.AddSingleton<Management>();
             services.AddSingleton<IFileSystem, FileSystem>();
+            services.AddDbContext<ManagementDbContext>(options => { options.UseSqlite("Data Source=disunity.db"); }, ServiceLifetime.Singleton);
         }
 
     }

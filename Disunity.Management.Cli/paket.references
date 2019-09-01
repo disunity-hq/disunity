@@ -2,3 +2,4 @@ CommandLineParser
 Microsoft.Extensions.Configuration
 Microsoft.Extensions.Configuration.EnvironmentVariables
 Microsoft.Extensions.DependencyInjection
+System.IO.Abstractions

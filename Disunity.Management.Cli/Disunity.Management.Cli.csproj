@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\Disunity.Management\Disunity.Management.csproj" />
+    <ProjectReference Include="..\Disunity.Client\Disunity.Client.csproj" />
     <ProjectReference Include="..\Disunity.Core\Disunity.Core.csproj" />
   </ItemGroup>
   <Import Project="..\common.props" />

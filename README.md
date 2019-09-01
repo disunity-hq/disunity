@@ -17,7 +17,8 @@ repository:
 - `Disunity.Preloader/` MonoMod preload patcher which implements the Disunity mod-preloader
 - `Disunity.Runtime/` Bepinex plugin which implements the Disunity runtime mod-loader
 - `Disunity.Management/` functionality covering all aspects of local mod management
-- `Disunity.Cli/` a commandline mod manager which utilizes Disunity.Management
+- `Disunity.Management.Startup/` a simple wrapper for `Disunity.Managment` to facilate the EF Core cli tools
+- `Disunity.Management.Cli/` a commandline mod manager which utilizes Disunity.Management
 - `Disunity.Store/` an ASP.NET Core site implementing the mod store backend
 - `Frontend/` a Typescript/Vue.js frontend for the mod store
 

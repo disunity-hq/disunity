@@ -41,18 +41,17 @@ namespace Disunity.Tests.Management {
             Crypto = fixture.Crypto;
         }
 
-        private Target _target = new Target {
+        private Target _target = new Target(new TargetMeta {
             Slug = "risk-of-rain-2",
             DisplayName = "Risk of Rain 2",
-            ExecutableName = "Risk of Rain.exe",
-            TargetPath = @"C:\Program Files\Risk of Rain 2"
-        };
+            ExecutablePath = @"C:\Program Files\Risk of Rain 2\Risk of Rain.exe",
+        });
 
-        [Fact]
+    [Fact]
         public void CanCreateProperManagedTargetPath_FullHashLength() {
 
-            var hash = Crypto.HashString(_target.ExecutablePath);
-            var expected = $"{_target.Slug}_{hash}";
+            var hash = Crypto.HashString(_target.TargetMeta.ExecutablePath);
+            var expected = $"{_target.TargetMeta.Slug}_{hash}";
             var actual = Crypto.CalculateManagedPath(_target);
 
             Assert.Equal(expected, actual);
@@ -64,9 +63,9 @@ namespace Disunity.Tests.Management {
         [InlineData(1)]
         public void CanCreateProperManagedTargetPath_ShortHashLength(int hashSize) {
 
-            var hash = Crypto.HashString(_target.ExecutablePath);
+            var hash = Crypto.HashString(_target.TargetMeta.ExecutablePath);
             var actual = Crypto.CalculateManagedPath(_target, hashSize);
-            var expected = $"{_target.Slug}_{hash.Substring(0, hashSize * 2)}";
+            var expected = $"{_target.TargetMeta.Slug}_{hash.Substring(0, hashSize * 2)}";
             Assert.Equal(expected, actual);
 
         }
@@ -75,7 +74,7 @@ namespace Disunity.Tests.Management {
         public void CanCreatProperManagedTargetPath_NoHash() {
             var actual = Crypto.CalculateManagedPath(_target, 0);
 
-            Assert.Equal(_target.Slug, actual);
+            Assert.Equal(_target.TargetMeta.Slug, actual);
         }
 
         [Fact]

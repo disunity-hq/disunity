@@ -1,5 +1,7 @@
 source https://api.nuget.org/v3/index.json
 
+nuget Microsoft.Extensions.Options.ConfigurationExtensions
+
 # core dependencies
 nuget Commons.Json >= 0.4.0.1347
 nuget Microsoft.CSharp >= 4.5.0

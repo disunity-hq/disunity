@@ -27,16 +27,17 @@ namespace Disunity.Tests.Management {
         public ISymbolicLink MockSymbolicLink { get; }
 
         public TargetFixture() {
-            Target = new Target {
+            var targetMeta = new TargetMeta {
                 Slug = "risk-of-rain-2",
                 DisplayName = "Risk of Rain 2",
-                ExecutableName = "Risk of Rain.exe",
+                ExecutablePath = @"C:\Program Files\Risk of Rain 2\Risk of Rain.exe",
                 ManagedPath = @"C:\test\managed\risk-of-rain-2_1492FF6C8FD37B8D9BC9120CEF7A8409",
-                TargetPath = @"C:\Program Files\Risk of Rain 2"
             };
 
-            var targetMetaPath = Path.Combine(Target.ManagedPath, "target-info.json");
-            var defaultProfilePath = Path.Combine(Target.ManagedPath, "profiles", "default");
+            Target = new Target(targetMeta);
+
+            var targetMetaPath = Path.Combine(Target.TargetMeta.ManagedPath, "target-info.json");
+            var defaultProfilePath = Path.Combine(Target.TargetMeta.ManagedPath, "profiles", "default");
 
             MockFileSystem = new MockFileSystem(new Dictionary<string, MockFileData> {
                 [defaultProfilePath] = new MockDirectoryData(),
@@ -66,7 +67,7 @@ namespace Disunity.Tests.Management {
 
             _fixture.Target.SetActiveProfile(_fixture.MockFileSystem, _fixture.MockSymbolicLink, _fixture.DefaultProfile);
 
-            var activeProfilePath = _fixture.MockFileSystem.Path.Combine(_fixture.Target.ManagedPath, "profiles", "active");
+            var activeProfilePath = _fixture.MockFileSystem.Path.Combine(_fixture.Target.TargetMeta.ManagedPath, "profiles", "active");
 
             Mock.Get(_fixture.MockSymbolicLink).Verify(s => s.CreateDirectoryLink(activeProfilePath, _fixture.DefaultProfile.Path), Times.Once());
 
@@ -74,7 +75,7 @@ namespace Disunity.Tests.Management {
 
         [Fact]
         public void RemovesOldLinkIfExists() {
-            var activeProfilePath = _fixture.MockFileSystem.Path.Combine(_fixture.Target.ManagedPath, "profiles", "active");
+            var activeProfilePath = _fixture.MockFileSystem.Path.Combine(_fixture.Target.TargetMeta.ManagedPath, "profiles", "active");
             _fixture.MockFileSystem.File.Create(activeProfilePath).Close();
             
             _fixture.Target.SetActiveProfile(_fixture.MockFileSystem, _fixture.MockSymbolicLink, _fixture.DefaultProfile);
@@ -84,11 +85,11 @@ namespace Disunity.Tests.Management {
         
         [Fact]
         public void CanDeleteTarget() {
-            Util.AssertDirectoryExists(_fixture.MockFileSystem, _fixture.Target.ManagedPath);
+            Util.AssertDirectoryExists(_fixture.MockFileSystem, _fixture.Target.TargetMeta.ManagedPath);
 
             _fixture.Target.Delete(_fixture.MockFileSystem);
             
-            Util.AssertDirectoryNotExists(_fixture.MockFileSystem, _fixture.Target.ManagedPath);
+            Util.AssertDirectoryNotExists(_fixture.MockFileSystem, _fixture.Target.TargetMeta.ManagedPath);
         }
 
     }

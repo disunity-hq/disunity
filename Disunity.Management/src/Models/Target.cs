@@ -11,30 +11,17 @@ using Newtonsoft.Json;
 
 namespace Disunity.Management.Models {
 
-    [JsonObject(MemberSerialization.OptIn)]
-    public partial class Target {
+    public class Target {
 
-        [JsonProperty] public string TargetPath { get; set; }
-        [JsonProperty] public string ExecutableName { get; set; }
+        public Target(TargetMeta targetMeta) {
+            TargetMeta = targetMeta;
+        }
 
-        [JsonProperty] public string DisplayName { get; set; }
-
-        [JsonProperty] public string Slug { get; set; }
+        public TargetMeta TargetMeta { get; }
         
-        [JsonProperty] public Dictionary<string,VersionRange> ModVersionMap { get; }
-
-        public string ManagedPath { get; set; }
-
-        public string ExecutablePath => Path.Combine(TargetPath, ExecutableName);
-
-        public string MetaFilePath => Path.Combine(ManagedPath, "target-info.json");
-
-    }
-
-    public partial class Target {
-
+        
         public void SetActiveProfile(IFileSystem fileSystem, ISymbolicLink symbolicLink, Profile profile) {
-            var activeProfilePath = fileSystem.Path.Combine(ManagedPath, "profiles", "active");
+            var activeProfilePath = fileSystem.Path.Combine(TargetMeta.ManagedPath, "profiles", "active");
 
             // remove old link if it exists
             if (fileSystem.File.Exists(activeProfilePath)) {
@@ -44,39 +31,9 @@ namespace Disunity.Management.Models {
             symbolicLink.CreateDirectoryLink(activeProfilePath, profile.Path);
         }
 
-        public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj)) {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj)) {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType()) {
-                return false;
-            }
-
-            return Equals((Target) obj);
-        }
-
-        protected bool Equals(Target target) {
-            return string.Equals(TargetPath, target.TargetPath) && string.Equals(ExecutableName, target.ExecutableName) && string.Equals(DisplayName, target.DisplayName) && string.Equals(Slug, target.Slug) && string.Equals(ManagedPath, target.ManagedPath);
-        }
-
-        public override int GetHashCode() {
-            unchecked {
-                var hashCode = (TargetPath != null ? TargetPath.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ExecutableName != null ? ExecutableName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Slug != null ? Slug.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ManagedPath != null ? ManagedPath.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
 
         public void Delete(IFileSystem fileSystem) {
-            fileSystem.Directory.Delete(ManagedPath, true);
+            fileSystem.Directory.Delete(TargetMeta.ManagedPath, true);
         }
 
     }

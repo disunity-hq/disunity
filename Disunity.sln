@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Client", "Disunity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Management.Ui", "Disunity.Management.Ui\Disunity.Management.Ui.csproj", "{466EBC8C-C817-4B5E-AD4F-18589301A191}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Disunity.Management.Startup", "Disunity.Management.Startup\Disunity.Management.Startup.csproj", "{7F046E68-6F73-4899-B731-D325161E442F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -157,6 +159,18 @@ Global
 		{466EBC8C-C817-4B5E-AD4F-18589301A191}.Release|x64.Build.0 = Release|Any CPU
 		{466EBC8C-C817-4B5E-AD4F-18589301A191}.Release|x86.ActiveCfg = Release|Any CPU
 		{466EBC8C-C817-4B5E-AD4F-18589301A191}.Release|x86.Build.0 = Release|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Release|x64.Build.0 = Release|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F046E68-6F73-4899-B731-D325161E442F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

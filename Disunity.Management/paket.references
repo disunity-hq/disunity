@@ -2,3 +2,5 @@ BindingAttributes
 Newtonsoft.Json
 System.IO.Abstractions
 Microsoft.Extensions.Options
+Microsoft.Extensions.Options.ConfigurationExtensions
+Microsoft.EntityFrameworkCore.Sqlite

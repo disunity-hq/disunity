@@ -23,15 +23,16 @@ namespace Disunity.Tests.Management {
         public IFileSystem MockFileSystem { get; }
 
         public ProfileFixture() {
-            Target = new Target {
+            var targetMeta = new TargetMeta {
                 Slug = "risk-of-rain-2",
                 DisplayName = "Risk of Rain 2",
-                ExecutableName = "Risk of Rain.exe",
+                ExecutablePath = @"C:\Program Files\Risk of Rain 2\Risk of Rain.exe",
                 ManagedPath = @"C:\test\managed\risk-of-rain-2_1492FF6C8FD37B8D9BC9120CEF7A8409",
-                TargetPath = @"C:\Program Files\Risk of Rain 2"
             };
 
-            var defaultProfilePath = new MockFileSystem().Path.Combine(Target.ManagedPath, "profiles", "default");
+            Target = new Target(targetMeta);
+
+            var defaultProfilePath = new MockFileSystem().Path.Combine(Target.TargetMeta.ManagedPath, "profiles", "default");
             var defaultProfileMetaPath = new MockFileSystem().Path.Combine(defaultProfilePath, "meta.json");
 
             DefaultProfile = new Profile {

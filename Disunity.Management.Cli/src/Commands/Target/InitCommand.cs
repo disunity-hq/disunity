@@ -49,7 +49,7 @@ namespace Disunity.Management.Cli.Commands.Target {
             // 4. Create managed target dir
             var target = await _targetFactory.CreateManagedTarget(Options.ExecutablePath, targetInfo.DisplayName, targetInfo.Slug);
             // 5. Install disunity version to default profile
-            await _disunityStore.CreatePackageReference(disunityPackage, _fileSystem.Path.Combine(target.ManagedPath, "profiles", "active", "distro"));
+            await _disunityStore.CreatePackageReference(disunityPackage, _fileSystem.Path.Combine(target.TargetMeta.ManagedPath, "profiles", "active", "distro"));
             // 6. Add and configure doorstop to target install
             throw new System.NotImplementedException();
         }

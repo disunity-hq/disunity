@@ -15,25 +15,7 @@ namespace Disunity.Management.Factories {
         /// <returns>A parsed <see cref="Target"/> or <code>null</code> if the file doesn't exist</returns>
         Task<Target> FromFile(string path);
 
-        /// <summary>
-        /// Find and parse all managed target directories within <see cref="path"/>
-        /// </summary>
-        /// <remarks>
-        /// Will search exactly one directory deep for <code>target-info.json</code>.
-        /// Example:
-        /// <code>
-        /// managed
-        /// └───risk-of-rain-2
-        ///        │   target-info.json
-        ///        │
-        ///        └───foo
-        ///            target-info.json
-        /// </code>
-        /// </remarks>
-        /// <param name="path">The directory to search in</param>
-        /// <returns>A <see cref="List{Target}"/> of all the found <see cref="Target"/>s.</returns>
-        Task<List<Target>> LoadAllFromPath(string path);
-
+        
         /// <summary>
         /// Setup a managed target directory and create the corresponding <see cref="Target"/>
         /// </summary>

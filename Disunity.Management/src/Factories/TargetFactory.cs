@@ -10,6 +10,8 @@ using Disunity.Management.Models;
 using Disunity.Management.Services;
 using Disunity.Management.Util;
 
+using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
 
 
@@ -23,13 +25,14 @@ namespace Disunity.Management.Factories {
         private readonly ISymbolicLink _symbolicLink;
         private readonly Crypto _crypto;
 
-        public string ManagedRoot { get; set; }
+        private readonly string _managedRoot;
 
-        public TargetFactory(IFileSystem fileSystem, IProfileFactory profileFactory, ISymbolicLink symbolicLink, Crypto crypto) {
+        public TargetFactory(IConfiguration config, IFileSystem fileSystem, IProfileFactory profileFactory, ISymbolicLink symbolicLink, Crypto crypto) {
             _fileSystem = fileSystem;
             _profileFactory = profileFactory;
             _symbolicLink = symbolicLink;
             _crypto = crypto;
+            _managedRoot = config["ManagedRoot"];
         }
         
         public async Task<Target> FromFile(string path) {
@@ -55,17 +58,18 @@ namespace Disunity.Management.Factories {
         }
 
         public async Task<Target> CreateManagedTarget(string executablePath, string displayName, string slug, int? hashLength=null) {
-            var target = new Target {
+            var targetMeta = new TargetMeta {
                 DisplayName = displayName,
-                ExecutableName = Path.GetFileName(executablePath),
-                TargetPath = Path.GetDirectoryName(executablePath),
-                Slug = slug
+                ExecutablePath = Path.GetFileName(executablePath),
+                Slug = slug,
             };
+            
+            var target = new Target(targetMeta) ;
 
             var targetDir = _crypto.CalculateManagedPath(target, hashLength);
-            target.ManagedPath = Path.Combine(ManagedRoot, targetDir);
+            targetMeta.ManagedPath = Path.Combine(_managedRoot, targetDir);
 
-            var defaultProfilePath = _fileSystem.Path.Combine(target.ManagedPath, "profiles", "default");
+            var defaultProfilePath = _fileSystem.Path.Combine(targetMeta.ManagedPath, "profiles", "default");
             var defaultProfile = await _profileFactory.CreateExactPath(defaultProfilePath,"Default");
             
             target.SetActiveProfile(_fileSystem,_symbolicLink, defaultProfile);

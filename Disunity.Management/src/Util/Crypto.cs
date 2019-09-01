@@ -38,9 +38,9 @@ namespace Disunity.Management.Util {
         /// <returns></returns>
         public string CalculateManagedPath(Target target, int? hashLength = null) {
             using (var hash = HashAlgorithm.Create(_algo)) {
-                var pathHash = hash.ComputeHash(System.Text.Encoding.ASCII.GetBytes(target.ExecutablePath));
+                var pathHash = hash.ComputeHash(System.Text.Encoding.ASCII.GetBytes(target.TargetMeta.ExecutablePath));
                 var sb = new StringBuilder();
-                sb.Append(target.Slug);
+                sb.Append(target.TargetMeta.Slug);
 
                 var hashChars = (from b in pathHash select b.ToString("X2")).ToList();
 
