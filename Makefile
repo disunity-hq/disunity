@@ -1,13 +1,14 @@
 # project paths
-CORE = Disunity.Core
-EDITOR = Disunity.Editor
-PRELOADER = Disunity.Preloader
-RUNTIME = Disunity.Runtime
-MANAGEMENT = Disunity.Management
-MANAGER_UI = Disunity.Management.Ui
-CLI = Disunity.Management.Cli
-CLIENT = Disunity.Client
-STORE = Disunity.Store
+CORE := Disunity.Core
+EDITOR := Disunity.Editor
+PRELOADER := Disunity.Preloader
+RUNTIME := Disunity.Runtime
+MANAGEMENT := Disunity.Management
+MANAGEMENT_STARTUP := $(MANAGEMENT).Startup
+MANAGER_UI := $(MANAGEMENT).Ui
+CLI := $(MANAGEMENT).Cli
+CLIENT := Disunity.Client
+STORE := Disunity.Store
 
 # makefile boilerplate
 DIR := ${CURDIR}
@@ -19,11 +20,11 @@ UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 DOTNET_ARGS = -p:SolutionDir=$(DIR)
 
-DOTNET_COMMAND :=
-ifeq (, $(shell which dotnet-nix))
-	DOTNET_COMMAND +=dotnet
+DOTNET :=
+ifeq (, $(shell which dotnet-nix 2>/dev/null))
+	DOTNET +=dotnet
 else
-	DOTNET_COMMAND +=dotnet-nix
+	DOTNET +=dotnet-nix
 endif
 
 OSFLAG :=
@@ -55,7 +56,7 @@ paket:
 	$(PAKET) $(PAKET_ARGS)
 
 restore:
-	$(DOTNET_COMMAND) restore $(ARGS)
+	$(DOTNET) restore $(ARGS)
 
 paket-refresh: clean clean-paket-files install-deps
 
@@ -152,7 +153,7 @@ travis-release:
 
 store-run:
 # TODO need some way to set the db ip
-	$(DOTNET_COMMAND) run -p Disunity.Store/Disunity.Store.csproj
+	$(DOTNET) run -p Disunity.Store/Disunity.Store.csproj
 
 store-build:
 	$(COMPOSE) build web $(ARGS)
@@ -165,19 +166,34 @@ store-up-quick:
 	$(COMPOSE) up db cache frontend web
 
 store-db:
-	$(DOTNET_COMMAND) ef --project Disunity.Store $(ARGS)
+	$(DOTNET) ef --project $(STORE) $(ARGS)
 
 store-db-migrate:
-	$(DOTNET_COMMAND) ef --project Disunity.Store migrations add -o Entities/Migrations $(ARGS)
+	$(DOTNET) ef --project $(STORE) migrations add -o Entities/Migrations $(ARGS)
 
 store-db-init:
-	$(DOTNET_COMMAND) ef --project Disunity.Store migrations add Initial -o Entities/Migrations
+	$(DOTNET) ef --project $(STORE) migrations add Initial -o Entities/Migrations
 
 store-db-drop:
 	docker rm --project-directory $(shell pwd) -f store_db_1
 	docker volume rm store_db-data
 
+# management db commands
+managment-db-drop:
+	$(DOTNET) ef --project $(MANAGEMENT) --startup-project $(MANAGEMENT_STARTUP) database drop
+	
+management-db-migrate:
+	$(DOTNET) ef --project $(MANAGEMENT) --startup-project $(MANAGEMENT_STARTUP) database update
+	
+managment-db-migration: MIGRATION ?= Initial
+managment-db-migration:
+	$(DOTNET) ef --project $(MANAGEMENT) --startup-project $(MANAGEMENT_STARTUP) migrations add -o src/Data/Migrations $(MIGRATION)
 
+management-db-clean-migrations:
+	rm -rf $(MANAGEMENT)/src/Data/Migrations
+
+management-db-reset: management-db-clean-migrations managment-db-migration management-db-migrate
+	
 # Db commands
 
 db-up:
@@ -194,5 +210,5 @@ watcher:
 .SECONDEXPANSION:
 
 %/bin %/publish: paket-files $$(shell find %/$$(SRC_DIR) -type f -not -path "*/obj/*" -not -path "*/bin/*") $$(shell find % -type f -name *.csproj)
-	$(DOTNET_COMMAND) $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
+	$(DOTNET) $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
 	touch $@

@@ -13,3 +13,5 @@ paket-files/
 ExampleMod/Assets/Disunity/
 Release/
 **/nupkg/
+paket.local
+*.db
