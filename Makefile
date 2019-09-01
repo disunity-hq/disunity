@@ -19,6 +19,13 @@ UNITY_EDITOR ?= /mnt/c/Program\ Files/Unity/Editor/Unity.exe
 COMPOSE = docker-compose --project-directory ${DIR} -f docker/docker-compose.yml
 DOTNET_ARGS = -p:SolutionDir=$(DIR)
 
+DOTNET_COMMAND :=
+ifeq (, $(shell which dotnet-nix))
+	DOTNET_COMMAND +=dotnet
+else
+	DOTNET_COMMAND +=dotnet-nix
+endif
+
 OSFLAG :=
 ifeq ($(OS),Windows_NT)
 	OSFLAG += WIN32
@@ -48,7 +55,7 @@ paket:
 	$(PAKET) $(PAKET_ARGS)
 
 restore:
-	dotnet restore $(ARGS)
+	$(DOTNET_COMMAND) restore $(ARGS)
 
 paket-refresh: clean clean-paket-files install-deps
 
@@ -145,7 +152,7 @@ travis-release:
 
 store-run:
 # TODO need some way to set the db ip
-	dotnet run -p Disunity.Store/Disunity.Store.csproj
+	$(DOTNET_COMMAND) run -p Disunity.Store/Disunity.Store.csproj
 
 store-build:
 	$(COMPOSE) build web $(ARGS)
@@ -158,13 +165,13 @@ store-up-quick:
 	$(COMPOSE) up db cache frontend web
 
 store-db:
-	dotnet ef --project Disunity.Store $(ARGS)
+	$(DOTNET_COMMAND) ef --project Disunity.Store $(ARGS)
 
 store-db-migrate:
-	dotnet ef --project Disunity.Store migrations add -o Entities/Migrations $(ARGS)
+	$(DOTNET_COMMAND) ef --project Disunity.Store migrations add -o Entities/Migrations $(ARGS)
 
 store-db-init:
-	dotnet ef --project Disunity.Store migrations add Initial -o Entities/Migrations
+	$(DOTNET_COMMAND) ef --project Disunity.Store migrations add Initial -o Entities/Migrations
 
 store-db-drop:
 	docker rm --project-directory $(shell pwd) -f store_db_1
@@ -187,5 +194,5 @@ watcher:
 .SECONDEXPANSION:
 
 %/bin %/publish: paket-files $$(shell find %/$$(SRC_DIR) -type f -not -path "*/obj/*" -not -path "*/bin/*") $$(shell find % -type f -name *.csproj)
-	dotnet $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
+	$(DOTNET_COMMAND) $(COMMAND) $(DOTNET_ARGS) $(shell dirname $@) $(ARGS)
 	touch $@
