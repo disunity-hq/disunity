@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Disunity.Management.PackageStores;
 
 
-namespace Disunity.Management.Attributes {
+namespace Disunity.Management.PackageSources {
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
     public class PackageSourceAttribute:Attribute {
@@ -37,6 +38,31 @@ namespace Disunity.Management.Attributes {
             
             UriPrefix = uriPrefix;
             AvailableStores = new HashSet<Type>(storeTypes);
+        }
+        
+        public static Dictionary<string, List<Type>> GetAvailableSourceTypes(params Assembly[] assemblies) {
+            if (assemblies.Length == 0) assemblies = new[] {Assembly.GetExecutingAssembly()};
+            var sourceTypeMap = new Dictionary<string, List<Type>>();
+
+            var types = assemblies
+                        .SelectMany(a => a.GetTypes())
+                        .Where(t => typeof(IPackageSource).IsAssignableFrom(t));
+
+            foreach (var type in types) {
+                foreach (var attr in type.GetCustomAttributes<PackageSourceAttribute>()) {
+                    List<Type> prefixSources;
+
+                    if (!sourceTypeMap.TryGetValue(attr.UriPrefix, out prefixSources)) {
+                        prefixSources = new List<Type>();
+                        sourceTypeMap.Add(attr.UriPrefix, prefixSources);
+                    }
+
+                    prefixSources.Add(type);
+
+                }
+            }
+
+            return sourceTypeMap;
         }
     }
 
