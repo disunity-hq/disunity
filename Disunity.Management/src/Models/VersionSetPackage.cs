@@ -19,9 +19,11 @@ namespace Disunity.Management.Models {
         public void Configure(EntityTypeBuilder<VersionSetPackage> builder) {
             builder.HasKey(m => new {m.VersionSetId, m.PackageId});
 
+#pragma warning disable 618
             builder.HasOne(m => m.VersionSet)
                    .WithMany(v => v.VersionSetPackages)
                    .HasForeignKey(m => m.VersionSetId);
+#pragma warning restore 618
 
             builder.HasOne(m => m.Package)
                    .WithMany()

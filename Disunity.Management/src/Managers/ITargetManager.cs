@@ -13,7 +13,7 @@ namespace Disunity.Management.Managers {
         IReadOnlyList<ITarget> Targets { get; }
 
         /// <summary>
-        /// Find and parse all managed target directories within <see cref="path"/>
+        /// Find and parse all managed target directories within the managed folder
         /// </summary>
         /// <returns>A <see cref="List{T}"/> of all the found <see cref="Target"/>s.</returns>
         Task<List<ITarget>> LoadTargets();

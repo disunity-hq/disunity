@@ -5,6 +5,7 @@
         <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
+        <NoWarn>1591</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Disunity.Client\Disunity.Client.csproj" />
