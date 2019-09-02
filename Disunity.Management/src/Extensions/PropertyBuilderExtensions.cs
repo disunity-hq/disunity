@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
 
 
-namespace Disunity.Management.Util {
+namespace Disunity.Management.Extensions {
 
     public static class PropertyBuilderExtensions {
 

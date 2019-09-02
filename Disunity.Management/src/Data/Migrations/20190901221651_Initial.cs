@@ -1,7 +1,9 @@
 ﻿using System;
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Disunity.Management.src.Data.Migrations
+
+namespace Disunity.Management.Data.Migrations
 {
     public partial class Initial : Migration
     {

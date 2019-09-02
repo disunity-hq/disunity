@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Disunity.Core.Archives;
+using Disunity.Management.Extensions;
 using Disunity.Management.PackageStores;
 using Disunity.Management.Util;
 
