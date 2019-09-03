@@ -11,7 +11,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 
-namespace Disunity.Store.Tests {
+namespace Disunity.Tests {
     
 
     public class ManifestFixture {

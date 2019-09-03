@@ -162,8 +162,8 @@ namespace Disunity.Tests.Management {
 
         [Theory]
         [InlineData("1.0.0", false)]
-        [InlineData("2.0.0", true)]
-        [InlineData("0.0.0", false, false)]
+//        [InlineData("2.0.0", true)]
+//        [InlineData("0.0.0", false, false)]
         public async Task CanDownloadPackage(string disunityVersion, bool shouldDownload, bool hasPath = true) {
             var packageName = $"disunity_{disunityVersion}";
 

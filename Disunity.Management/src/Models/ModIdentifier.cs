@@ -26,6 +26,14 @@ namespace Disunity.Management.Models {
         /// </summary>
         public string Version => Regex.Match(Id, Pattern).Groups[3].Value;
 
+        public ModIdentifier() {
+            
+        }
+
+        public ModIdentifier(string owner, string mod, string version) {
+            Id = $"{owner}_{mod}_{version}";
+        }
+
         public override bool Validate() {
             return Regex.IsMatch(Id, Pattern);
         }

@@ -15,12 +15,23 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.6" />
     </ItemGroup>
     <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
       <Compile Update="src\Models\ModIdentifier.cs">
         <DependentUpon>PackageIdentifier.cs</DependentUpon>
       </Compile>
       <Compile Update="src\Models\DisunityDistroIdentifier.cs">
         <DependentUpon>PackageIdentifier.cs</DependentUpon>
       </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
     <Import Project="..\common.props" />
     <Import Project="..\.paket\Paket.Restore.targets" />
