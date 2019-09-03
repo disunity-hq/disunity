@@ -18,9 +18,7 @@ namespace Disunity.Management.Util {
     public interface IPackageSourceFactory {
 
         List<Type> FindMatchingSourceTypes(string uri);
-
-        List<IPackageSource> InstantiateSources(IList<string> sourceUris);
-
+        
         IEnumerable<IPackageSource> InstantiateSource(string uri);
 
     }
@@ -54,22 +52,6 @@ namespace Disunity.Management.Util {
 
             return matchingKey.Length > 0 ? SourceTypeMap[matchingKey] : null;
 
-        }
-
-        public List<IPackageSource> InstantiateSources(IList<string> sourceUris) {
-            var packageSources = new List<IPackageSource>();
-            
-            if (sourceUris.Count == 0) {
-                throw new InvalidOperationException("At least one package source must be specified");
-            }
-
-            foreach (var sourceUri in sourceUris) {
-                var uriSources = InstantiateSource(sourceUri);
-                packageSources.AddRange(uriSources);
-                
-            }
-
-            return packageSources;
         }
 
         public IEnumerable<IPackageSource> InstantiateSource(string uri) {

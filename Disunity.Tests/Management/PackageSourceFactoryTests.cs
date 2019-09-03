@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using Disunity.Management.Extensions;
 using Disunity.Management.Models;
 using Disunity.Management.Options;
 using Disunity.Management.PackageSources;

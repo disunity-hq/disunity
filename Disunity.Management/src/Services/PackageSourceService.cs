@@ -35,14 +35,10 @@ namespace Disunity.Management.Services {
     [AsSingleton(typeof(IPackageSourceService))]
     public class PackageSourceService : IPackageSourceService {
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IOptions<ManagementOptions> _options;
         private readonly List<IPackageSource> _sources;
 
-        public PackageSourceService(IServiceProvider serviceProvider, IOptions<ManagementOptions> options, IPackageSourceFactory packageSourceFactory) {
-            _serviceProvider = serviceProvider;
-            _options = options;
-            _sources = packageSourceFactory.InstantiateSources(_options.Value.PackageSources);
+        public PackageSourceService(IOptions<ManagementOptions> options, IPackageSourceFactory packageSourceFactory) {
+            _sources = packageSourceFactory.InstantiateSources(options.Value.PackageSources);
         }
 
         public async Task<Stream> GetPackageImportStream(PackageIdentifier packageIdentifier) {
