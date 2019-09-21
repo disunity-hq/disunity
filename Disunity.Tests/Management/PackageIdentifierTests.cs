@@ -10,19 +10,19 @@ namespace Disunity.Tests.Management {
 
         [Fact]
         public void CanParseDisunityDistroIdentifier() {
-            var id = new DisunityDistroIdentifier {Id = "disunity_1.0.0"};
-            
+            var id = new DisunityDistroIdentifier("1.0.0");
+
             Assert.True(id.Validate());
-            
+
             Assert.Equal("1.0.0", id.Version);
         }
-        
+
         [Fact]
         public void CanParseModIdentifier() {
-            var id = new ModIdentifier{Id = "my-org_my-mod_1.0.0"};
-            
+            var id = new ModIdentifier("my-org", "my-mod", "1.0.0");
+
             Assert.True(id.Validate());
-            
+
             Assert.Equal("my-org", id.OwnerSlug);
             Assert.Equal("my-mod", id.ModSlug);
             Assert.Equal("1.0.0", id.Version);

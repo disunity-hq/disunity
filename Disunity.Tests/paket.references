@@ -1,5 +1,6 @@
 Microsoft.NET.Test.Sdk
 Microsoft.Extensions.Options
+Microsoft.EntityFrameworkCore.InMemory
 Moq
 System.IO.Abstractions.TestingHelpers
 xunit

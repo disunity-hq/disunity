@@ -49,6 +49,7 @@ nuget Westwind.AspNetCore.Markdown 3.2.5
 
 # test dependencies
 nuget System.IO.Abstractions.TestingHelpers >= 6.0.21
+nuget Microsoft.EntityFrameworkCore.InMemory >= 2.2.6
 
 # ui dependencies
 nuget Avalonia >= 0.8.0

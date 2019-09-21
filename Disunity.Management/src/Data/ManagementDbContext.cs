@@ -29,5 +29,4 @@ namespace Disunity.Management.Data {
         }
 
     }
-
 }

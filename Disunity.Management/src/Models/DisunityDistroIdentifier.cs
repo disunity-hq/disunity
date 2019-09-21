@@ -10,19 +10,9 @@ namespace Disunity.Management.Models {
         private static readonly string VersionPattern = Schema.VERSION_PATTERN.Substring(1, Schema.VERSION_PATTERN.Length - 2);
         private static readonly string Pattern = $"^disunity_({VersionPattern})$";
 
-        /// <summary>
-        /// The version segment parsed out of the <see cref="PackageIdentifier.Id"/>
-        /// </summary>
-        public string Version => Regex.Match(Id, Pattern).Groups[1].Value;
+        public DisunityDistroIdentifier(): base("disunity") { }
 
-        public DisunityDistroIdentifier() { }
-
-        public DisunityDistroIdentifier(string version) {
-            Id = $"disunity_{version}";
-        }
-
-        public override bool Validate() {
-            return Regex.IsMatch(Id, Pattern);
+        public DisunityDistroIdentifier(string version): base("disunity",version) {
         }
 
     }

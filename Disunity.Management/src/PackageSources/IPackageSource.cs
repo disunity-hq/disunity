@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 using Disunity.Management.Models;
 
+using SemVersion;
+
 
 namespace Disunity.Management.PackageSources {
 
@@ -33,6 +35,8 @@ namespace Disunity.Management.PackageSources {
         /// <param name="packageIdentifier">The unique identifier for the requested package</param>
         /// <returns></returns>
         Task<bool> CanHandlePackage(PackageIdentifier packageIdentifier);
+
+//        Task<SemanticVersion> GetAvailableVersions(PackageIdentifier packageIdentifier);
 
     }
 

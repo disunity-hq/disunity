@@ -43,7 +43,7 @@ namespace Disunity.Management.Models {
             builder.Property(p => p.Id)
                    .HasConversion(
                        s => s.Id,
-                       d => new PackageIdentifier {Id = d});
+                       d => new PackageIdentifier(d));
         }
 
     }

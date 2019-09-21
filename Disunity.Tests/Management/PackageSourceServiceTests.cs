@@ -67,7 +67,7 @@ namespace Disunity.Tests.Management {
         [Fact]
         public async void CanGetImportStream() {
 
-            var packageId = new DisunityDistroIdentifier() {Id = "disunity_1.0.0"};
+            var packageId = new DisunityDistroIdentifier("1.0.0");
 
             var actual = await _fixture.PackageSourceService.GetPackageImportStream(packageId);
 
